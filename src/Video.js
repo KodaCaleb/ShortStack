@@ -1,11 +1,11 @@
-import './Video.css';
+import "./Video.css";
 
 function Video() {
   return (
-    <div className='video'>
+    <div className="video">
       <h1>This is a video</h1>
       {/* <VideoFooter />*/}
-     {/* <VideoSideBar /> */}
+      {/* <VideoSideBar /> */}
     </div>
   );
 }

@@ -2,7 +2,6 @@ import "./App.css";
 import Home from "./pages/Home";
 import Video from "./components/VideoContainer/video";
 
-
 function App() {
   return (
     <div className="app">

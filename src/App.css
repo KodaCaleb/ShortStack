@@ -1,10 +1,10 @@
-html {
-  scroll-snap-type: y mandatory;
-}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-snap-type: y mandatory;
+}
 
 .app {
   height: 100vh;

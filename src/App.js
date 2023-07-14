@@ -1,13 +1,17 @@
-
-import './App.css';
-import Home from './pages/Home';
+import "./App.css";
+import Home from "./pages/Home";
+import Video from "./components/VideoContainer/video";
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Home />
-
-
+      <div className="app_videos">
+        <Video />
+        <Video />
+        <Video />
+        <Video />
+      </div>
     </div>
   );
 }

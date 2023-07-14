@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import "./Video.css";
-import sampleVid1 from "./assets/sampleVid1.mp4";
+import "../../Video.css";
+import sampleVid1 from "../../assets/sampleVid1.mp4";
 
 function Video() {
   const [playing, setPlaying] = useState(false);

@@ -1,6 +1,6 @@
 import "./App.css";
-import Home from "./pages/Home";
-import Video from "./Video";
+import Home from "./pages/home";
+import Video from "./components/VideoContainer/video";
 
 function App() {
   return (

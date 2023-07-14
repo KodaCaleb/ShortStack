@@ -1,6 +1,11 @@
 html {
   scroll-snap-type: y mandatory;
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 .app {
   height: 100vh;
   background-color: black;

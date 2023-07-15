@@ -1,8 +1,6 @@
 import "./App.css";
 import React from "react";
 import Home from "./pages/Home";
-// import Video from "./components/VideoContainer/video";
-// import Navbar from "./components/Header/navBar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./pages/layout";
 

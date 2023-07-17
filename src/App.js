@@ -1,23 +1,21 @@
 import "./App.css";
+import React from "react";
 import Home from "./pages/Home";
-import Video from "./components/VideoContainer/video";
-import LoginModal from "./components/Modals/login"
-import SignUpModal from "./components/Modals/signUp"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./pages/layout";
 
 function App() {
   return (
-    <div className="app">
-      <Home />
-      <LoginModal />
-      <SignUpModal />
-      <div className="app_videos">
-        <Video />
-        <Video />
-        <Video />
-        <Video />
-      </div>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>  
+    </BrowserRouter>
+
+
+  )
 }
 
 export default App;

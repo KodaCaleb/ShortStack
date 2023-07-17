@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import sampleVid1 from "../../assets/sampleVid1.MP4"";
+import sampleVid1 from "../../assets/sampleVid1.MP4";
 
 function Video() {
   const [playing, setPlaying] = useState(false);
@@ -16,9 +16,8 @@ function Video() {
   };
 
   return (
-    <div className="videoContainer mt-4">
-      <video 
-      className="videoPlayer" 
+    <div className="relative bg-white w-full h-full videoContainer mt-4">
+      <video className="object-fill w-full h-full" 
       src={sampleVid1} 
       ref={videoRef}
       onClick={onVideoPress} 

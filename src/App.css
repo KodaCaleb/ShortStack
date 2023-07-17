@@ -5,17 +5,8 @@
 html {
   scroll-snap-type: y mandatory;
 }
-.app {
-  height: 100vh;
-  background-color: black;
-  display: grid;
-  place-items: center;
-}
 .app_videos {
-  position: relative;
   height: 800px;
-  border-radius: 20px;
-  overflow: scroll;
   width: 80%;
   max-width: 500px;
   scroll-snap-type: y mandatory;
@@ -30,14 +21,5 @@ html {
   scrollbar-width: none; /* Firefox */
 }
 .videoContainer {
-  position: relative;
-  background-color: white;
-  width: 100%;
-  height: 100%;
   scroll-snap-align: start;
-}
-.videoPlayer {
-  object-fit: fill;
-  width: 100%;
-  height: 100%;
 }

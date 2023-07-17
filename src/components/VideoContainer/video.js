@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import "../../Video.css";
-import sampleVid1 from "../../assets/sampleVid1.mp4";
+import sampleVid1 from "../../assets/sampleVid1.MP4"";
 
 function Video() {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
+
   const onVideoPress = () => {
     if (playing) {
       videoRef.current.pause();
@@ -16,7 +16,7 @@ function Video() {
   };
 
   return (
-    <div className="videoContainer">
+    <div className="videoContainer mt-4">
       <video 
       className="videoPlayer" 
       src={sampleVid1} 
@@ -24,8 +24,6 @@ function Video() {
       onClick={onVideoPress} 
       loop 
       ></video>
-      {/* <VideoFooter />*/}
-      {/* <VideoSideBar /> */}
     </div>
   );
 }

@@ -1,12 +1,11 @@
-// import "../Header/navBar.js";
-import { useRef } from "react";
+
 
 function Navbar() {
-    const navRef = useRef();
+    
 
     return (
-        <header>
-            <nav className="flex items-center space-x-64">
+        <header className="w-full">
+            <nav className="flex items-center justify-between w-full">
                 <h1>Pancake Logo</h1>
                 <div>
                 <form>

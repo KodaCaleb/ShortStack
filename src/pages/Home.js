@@ -1,17 +1,18 @@
 import React from "react";
-import Video from "../components/VideoContainer/video"
+import Video from "../components/VideoContainer/video";
 
 export default function Home() {
-
   return (
-    <div className="h-screen bg-black flex items-center justify-center"> 
-      <div className="app_videos relative rounded-2xl overflow-scroll">
-        <Video />
-        <Video />
-        <Video />
-      </div>
+    <div className="bg h-screen flex pt-40 justify-center">
+      <div frame className="frame-minimal-phone">
+        <div className="app_videos relative rounded-2xl overflow-scroll">
+          <Video />
+          <Video />
+          <Video />
+        </div>
+       </div> 
     </div>
-
-
+    
   );
 }
+ 

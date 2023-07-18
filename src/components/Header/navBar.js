@@ -81,7 +81,7 @@ function Navbar() {
       
         {/* </div> */}
       </nav>
-      <LoginModal isOpen={isModalOpen} onClose={closeModal}/>
+      <LoginModal isOpen={isModalOpen} closeModal={closeModal}/>
     </header>
   );
 }

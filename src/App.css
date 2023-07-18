@@ -51,35 +51,35 @@ html {
   font-size: 2.5rem;
   line-height: 2.5rem;
   color: #fff;
-  animation: shaking 0.4s steps(6, end) infinite;
+  animation: shaking .5s steps(6, end) infinite;
   /* white-space: nowrap;
   mix-blend-mode: screen; */
 }
 
 @keyframes shaking {
   0% {
-    filter: drop-shadow(3px 3px 0px #0ff) drop-shadow(-3px -3px 0px #f00);
+    filter: drop-shadow(3px 3px 0px rgb(1, 84, 10)) drop-shadow(-3px -3px 0px rgb(181, 128, 3));
     transform: translate(1px, 1px);
   }
   20% {
-    filter: drop-shadow(-3px 3px 0px #0ff) drop-shadow(3px -3px 0px #f00);
+    filter: drop-shadow(-3px 3px 0px rgb(255, 225, 0)) drop-shadow(-3px -3px 0px rgb(181, 128, 3));
     transform: translate(-2px, 1px);
   }
   40% {
-    filter: drop-shadow(3px -3px 0px #0ff) drop-shadow(3px -3px 0px #f00);
+    filter: drop-shadow(3px -3px 0px rgb(1, 84, 10)) drop-shadow(-3px -3px 0px rgb(181, 128, 3));
     transform: translate(1px, -1px);
   }
   60% {
-    filter: drop-shadow(-3px -3px 0px #0ff) drop-shadow(3px 3px 0px #f00);
+    filter: drop-shadow(-3px -3px 0px rgb(255, 225, 0)) drop-shadow(-3px -3px 0px rgb(181, 128, 3));
     transform: translate(-1px, -1px);
   }
   80% {
-    filter: drop-shadow(-2px 3px 0px #0ff) drop-shadow(-3px 2px 0px #f00);
+    filter: drop-shadow(-2px 3px 0px rgb(1, 84, 10)) drop-shadow(-3px 2px 0px rgb(217, 153, 6));
     transform: translate(2px, 0px);
   }
   100% {
     filter: drop-shadow(-3px 1px 0px rgb(255, 204, 0))
-      drop-shadow(1px -3px 0px #f00);
+      drop-shadow(1px -3px 0px rgb(217, 153, 6));
     transform: translate(1px, 1px);
   }
 }

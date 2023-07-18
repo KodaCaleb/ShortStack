@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import sampleVid1 from "../../assets/sampleVid1.MP4";
+import sampleVid1 from "../../assets/sampleVid1.mp4";
 import VideoFooter from "./videoFooter";
 
 

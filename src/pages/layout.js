@@ -6,6 +6,7 @@ export default function Layout() {
     return (
         <>
         <div className="bg h-full w-full flex flex-col">
+
             <Navbar />
             <Outlet />
         </div>

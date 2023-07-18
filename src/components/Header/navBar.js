@@ -2,6 +2,7 @@ import { useState } from "react";
 import PancakeLogo from "../../assets/pancakeLogo.png";
 // import Syrup from "../../assets/syrupStack2.svg";
 import LoginModal from "../Modals/login";
+import CollapseMenu from "./collapseMenu";
 
 function Navbar() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -17,12 +18,7 @@ function Navbar() {
     <header className="w-full">
       <nav className="flex items-center justify-between w-full p-3 bg-black">
         <div className="flex">
-          <img className="h-14" src={PancakeLogo}></img>
-          {/* <img 
-            className="h-14"
-            // type="img/svg+xml"
-            src={Syrup}>
-            </img> */}
+          <CollapseMenu />
           <h1 className="text-white align-middle ml-2 pt-2 title">
             short_Stack
           </h1>

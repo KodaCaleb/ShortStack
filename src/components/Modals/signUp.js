@@ -1,14 +1,14 @@
 import React from "react";
 
-export default function SignUpModal() {
+export default function SignUpModal({closeModal}) {
   return (
     <>
       {/* Modal */}
 
-      <div className="flex flex-col items-center justify-center text-gray-700">
+      <div className="flex flex-col items-center justify-center text-yellow-500">
         <h3 className="pt-4 text-2xl text-center"> Create an Account!</h3>
         <form
-          className="flex flex-col bg-white rounded shadow-lg p-12 mt-12"
+          className="flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12"
           action=""
         >
           <div className="mb-4 md:flex md:justify-between">
@@ -50,7 +50,7 @@ export default function SignUpModal() {
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="text"
+            type="text" placeholder="Username or Email"
           />
           <label
             className="block mb-2 text-sm font-bold text-gray-700"
@@ -61,10 +61,15 @@ export default function SignUpModal() {
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="password"
+            type="password" placeholder="password"
           />
-          <button className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700">
+          <div className="flex items-center justify-center">
+          <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300">
             Create
+          </button>
+          </div>
+          <button className=" absolute top-2 right-2 px-2 py-2" onClick={closeModal}>
+           X
           </button>
         </form>
       </div>

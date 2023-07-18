@@ -1,6 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
+import SignUpModal from "./signUp";
 
 export default function LoginModal({ isOpen, closeModal }) {
+  const [modalMode, setModalMode] = useState (false);
+
+  const toggleSignUpMode = () => {
+    setModalMode(!modalMode)
+  }
+  
   if (!isOpen) {
     return null;
   }
@@ -9,7 +16,9 @@ export default function LoginModal({ isOpen, closeModal }) {
       {/* Modal */}
 
       <div className="flex flex-col items-center justify-center text-white">
-        <form
+        {modalMode ? (
+          <SignUpModal isOpen={isOpen} closeModal={closeModal}/>
+        ) : (<form
           className=" relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
           action=""
           
@@ -38,14 +47,15 @@ export default function LoginModal({ isOpen, closeModal }) {
               Forgot Password
             </a>
             <span className="mx-2 text-gray-300">/</span>
-            <a href="#" className="text-blue-499 hover:text-yellow-300">
-              Sign up
+            <a href="#" className="text-blue-499 hover:text-yellow-300" onClick={toggleSignUpMode}>
+              {modalMode ? "Back to Login" : "Sign Up"}
             </a>
           </div>
           <button className=" absolute top-2 right-2 px-2 py-2" onClick={closeModal}>
            X
           </button>
-        </form>
+        </form>)}
+        
       </div>
     </>
   );

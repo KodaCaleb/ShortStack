@@ -57,8 +57,9 @@ export default function UserProfileHeading() {
 
   return (
     <>
-      <div className="flex md:flex-row justify-center md:justify-between w-full mx-4 sm:mx-4 md:mx-4 md:w-1/2 w-3/4">
-        <div className="self-start rounded-full relative flex items-center justify-center px-4 max-w-[150px] max-h-[150px]" 
+    <div className="flex h-screen flex-col items-center">
+      <div className="flex justify-center md:flex-row mx-4 md:w-1/2 border border-white m-20">
+        <div className="self-start rounded-full relative flex items-center justify-center px-4 max-w-[150px] max-h-[150px] border border-white bg-yellow-400" 
           onMouseEnter={handleImageMouseEnter}
           onMouseLeave={handleImageMouseLeave}
           onClick={handleImageClick}>
@@ -77,15 +78,15 @@ export default function UserProfileHeading() {
               <img src={image} alt="self" className="w-full h-full object-cover rounded-full" />
               {isImageHovered && (
                   <div className="absolute top-2 right-2">
-                    <FaPencilAlt className="text-xl" />
+                    <FaPencilAlt className="text-xl text-white" />
                   </div>
                 )}
               </>
             )}
         </div>
-        <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
+        <div className="flex flex-col justify-start px-4 md:pl-4 w-full border border-white">
           {/* stack of username and bio */}
-          <div className="relative p-1 my-4"
+          <div className="relative p-1 my-4 border border-white text-white"
             onMouseEnter={handleUsernameMouseEnter}
             onMouseLeave={handleUsernameMouseLeave}
             onClick={handleUsernameClick}
@@ -101,13 +102,13 @@ export default function UserProfileHeading() {
                 <span className="text-xl">{username}</span>
                 {isUsernameHovered && (
                   <div className="absolute top-2 right-2">
-                    <FaPencilAlt className="text-xl" />
+                    <FaPencilAlt className="text-xl text-white" />
                   </div>
                 )}
               </>
             )}
           </div>
-          <div className="relative p-1" onMouseEnter={handleBioMouseEnter} onMouseLeave={handleBioMouseLeave} onClick={handleBioClick}>
+          <div className="relative p-1 border border-white text-white" onMouseEnter={handleBioMouseEnter} onMouseLeave={handleBioMouseLeave} onClick={handleBioClick}>
             {isBioEditable ? (
               <input
                 type="text"
@@ -119,7 +120,7 @@ export default function UserProfileHeading() {
                 {bioInfo}
                 {isBioHovered && (
                   <div className="absolute top-2 right-2">
-                    <FaPencilAlt className="text-xl" />
+                    <FaPencilAlt className="text-xl text-white" />
                   </div>
                 )}
               </>
@@ -127,6 +128,7 @@ export default function UserProfileHeading() {
           </div>
         </div>
       </div >
+      </div>
     </>
   );
 

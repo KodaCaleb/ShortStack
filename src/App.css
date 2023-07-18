@@ -31,7 +31,6 @@ html {
 }
 .video-frame {
   border-radius: 24px;
-  padding: 10px;
   background-image: linear-gradient(to right, #434343 0%, black 100%);
   box-shadow: 0px 8px 16px 0px rgba(18, 1, 64, 0.1);
   height: 800px;

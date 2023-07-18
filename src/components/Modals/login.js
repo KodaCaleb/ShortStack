@@ -1,9 +1,11 @@
 import React from "react";
 
-export default function LoginModal() {
+export default function LoginModal({ isOpen, closeModal }) {
+  if (!isOpen) {
+    return null;
+  }
   return (
     <>
-    
       {/* Modal */}
 
       <div className="flex flex-col items-center justify-center text-gray-700">
@@ -39,6 +41,9 @@ export default function LoginModal() {
               Sign up
             </a>
           </div>
+          <button className="bg-gray-200 px-4 py-2 rounded-lg" onClick={closeModal}>
+            close
+          </button>
         </form>
       </div>
     </>

@@ -1,19 +1,32 @@
+import { useState } from "react";
 import PancakeLogo from "../../assets/pancakeLogo.png";
 // import Syrup from "../../assets/syrupStack2.svg";
+import LoginModal from "../Modals/login";
 
 function Navbar() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false)
+  }
   return (
     <header className="w-full">
       <nav className="flex items-center justify-between w-full p-3 bg-black">
         <div className="flex">
-            <img className="h-14" src={PancakeLogo}></img>
-            {/* <img 
+          <img className="h-14" src={PancakeLogo}></img>
+          {/* <img 
             className="h-14"
             // type="img/svg+xml"
             src={Syrup}>
             </img> */}
-            <h1 className="text-white align-middle ml-2 pt-2 title">short_Stack</h1>
-            </div>
+          <h1 className="text-white align-middle ml-2 pt-2 title">
+            short_Stack
+          </h1>
+        </div>
         <div>
           <form>
             <label
@@ -30,7 +43,6 @@ function Navbar() {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 20 20"
-
                 >
                   <path
                     stroke="currentColor"
@@ -62,11 +74,14 @@ function Navbar() {
           type="button"
           className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
           data-modal-target="authentication-modal"
+          onClick={openModal}
         >
           Login
         </button>
+      
         {/* </div> */}
       </nav>
+      <LoginModal isOpen={isModalOpen} closeModal={closeModal}/>
     </header>
   );
 }

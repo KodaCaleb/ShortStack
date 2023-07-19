@@ -12,9 +12,6 @@ html {
   font-family: "Roboto Mono", monospace;
 }
 .app_videos {
-  height: 100%;
-  width: 100%;
-  max-width: 500px;
   scroll-snap-type: y mandatory;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -29,12 +26,6 @@ html {
 .videoContainer {
   scroll-snap-align: start;
 }
-.video-frame {
-  border-radius: 24px;
-  background-image: linear-gradient(to right, #434343 0%, black 100%);
-  box-shadow: 0px 8px 16px 0px rgba(18, 1, 64, 0.1);
-  height: 800px;
-}
 .videoFooter_icon {
   animation: iconSpin infinite 4s linear;
 }
@@ -47,12 +38,8 @@ html {
   }
 }
 .title {
-  font-size: 2.5rem;
-  line-height: 2.5rem;
-  color: #fff;
   animation: shaking .5s steps(6, end) infinite;
-  /* white-space: nowrap;
-  mix-blend-mode: screen; */
+  mix-blend-mode: screen;
 }
 
 @keyframes shaking {

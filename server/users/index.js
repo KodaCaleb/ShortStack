@@ -1,14 +1,20 @@
 const {firebase} = require ("../config/firebase")
-const  {collection, getFirestore}  = require ("@firebase/firestore")
+const  {collection, getFirestore, getDocs}  = require ("@firebase/firestore")
 
 const firestore = getFirestore(firebase)
 const users = collection( firestore,'Users');
 
-const querySnapshot = users.get();
+getDocs(users)
+.then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, '=>', doc.data());
+      });
+})
+.catch((error) => {
+    console.log("error getting document: ", error)
+})
 
-querySnapshot.forEach(doc => {
-    console.log(doc.id, '=>', doc.data());
-  });
+
 
 
 // if (!doc.exists) {

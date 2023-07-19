@@ -2,6 +2,7 @@ import React from "react";
 import Video from "../components/VideoContainer/video";
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BiCommentDetail, BiShare, BiBookmarks } from 'react-icons/bi';
+import PostContainer from "../components/VideoContainer/PostContainer";
 
 export default function Home() {
   return (

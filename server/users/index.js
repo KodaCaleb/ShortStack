@@ -1,10 +1,14 @@
 const {firebase} = require ("../config/firebase")
-const  {collection, getFirestore, getDocs}  = require ("@firebase/firestore")
+const  {collection, getFirestore, getDocs, doc}  = require ("@firebase/firestore")
 
 const firestore = getFirestore(firebase)
 const users = collection( firestore,'Users');
 
-getDocs(users)
+const userDocRef = doc(users, '1AgshjHIigujTKEXtVQR')
+const nestedCollectionRef = collection(userDocRef, 'userInfo')
+
+
+getDocs(nestedCollectionRef)
 .then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
         console.log(doc.id, '=>', doc.data());

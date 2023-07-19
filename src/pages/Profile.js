@@ -60,7 +60,7 @@ export default function UserProfileHeading() {
 
   return (
     <>
-      <div className="flex h-screen flex-col items-center">
+      <div className="flex h-100 flex-col items-center">
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
           <div
             className="self-start rounded-full relative flex items-center justify-center px-4 max-w-[150px] max-h-[150px] border border-white bg-yellow-400"

@@ -15,11 +15,11 @@ export default function LoginModal({ isOpen, closeModal }) {
     <>
       {/* Modal */}
 
-      <div className="flex flex-col items-center justify-center text-white">
+      <div className="absolute z-10 flex flex-col items-center justify-center text-white h-screen w-screen bg-black bg-opacity-80 backdrop-blur-sm">
         {modalMode ? (
-          <SignUpModal isOpen={isOpen} closeModal={closeModal}/>
+          <SignUpModal isOpen={isOpen} closeModal={closeModal} toggleModalMode={toggleSignUpMode}/>
         ) : (<form
-          className=" relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
+          className=" border-white border relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
           action=""
           
         >

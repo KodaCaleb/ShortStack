@@ -8,7 +8,9 @@ export default function Layout() {
         <div className="bg h-full w-full flex flex-col">
 
             <Navbar />
-            <Outlet />
+            <div className="flex-grow">
+        <Outlet />
+      </div>
         </div>
         </>
     )

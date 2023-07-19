@@ -19,7 +19,7 @@ function Navbar() {
       <nav className="flex items-center justify-between w-full p-3 bg-black">
         <div className="flex">
           <CollapseMenu />
-          <h1 className="text-white align-middle ml-2 pt-2 title">
+          <h1 className="text-white text-5xl align-middle ml-2 pt-2 title">
             short_Stack
           </h1>
         </div>

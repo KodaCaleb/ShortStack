@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
-import Video from '../components/VideoContainer/video';
+import PostContainer from "../components/VideoContainer/PostContainer"
 
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -147,29 +147,15 @@ export default function UserProfileHeading() {
             </div>
           </div>
         </div>
-        <div className="w-3/4 grid grid-cols-3 gap-8">
-        <div className="bg-black h-4/5 rounded-2xl p-2 w-auto">
-          <div className="app_videos h-full w-full max-w-125px relative rounded-2xl overflow-scroll">
-            <Video />
-          </div>
+        <div className="w-3/4 grid grid-cols-3">
+          <PostContainer />
+          <PostContainer />
+          <PostContainer />
+          <PostContainer />
+          <PostContainer />
+          <PostContainer />
         </div>
-        <div className="bg-black h-4/5 rounded-2xl p-2 w-auto">
-          <div className="app_videos h-full w-full max-w-125px relative rounded-2xl overflow-scroll">
-            <Video />
-          </div>
-        </div>
-        <div className="bg-black h-4/5 rounded-2xl p-2 w-auto">
-          <div className="app_videos h-full w-full max-w-125px relative rounded-2xl overflow-scroll">
-            <Video />
-          </div>
-        </div>  
-        <div className="bg-black h-4/5 rounded-2xl p-2 w-auto">
-          <div className="app_videos h-full w-full max-w-125px relative rounded-2xl overflow-scroll">
-            <Video />
-          </div>
-        </div>
-      </div>
       </div>
     </>
   );
-}
+};

@@ -128,6 +128,14 @@ export default function UserProfileHeading() {
           </div>
         </div>
       </div >
+      <div className="flex flex-wrap justify-center my-4 border border-white h-3/4 w-3/4">
+        <div className="bg-black h-4/5 rounded-2xl p-2 w-auto">Div 1</div>
+        <div className="w-1/4 bg-gray-500 m-8 border border-white">Div 2</div>
+        <div className="w-1/4 bg-gray-500 m-8 border border-white">Div 3</div>
+        <div className="w-1/4 bg-gray-500 m-8 border border-white">Div 4</div>
+        <div className="w-1/4 bg-gray-500 m-8 border border-white">Div 5</div>
+        <div className="w-1/4 bg-gray-500 m-8 border border-white">Div 6</div>
+      </div>
       </div>
     </>
   );

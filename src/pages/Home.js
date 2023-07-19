@@ -15,10 +15,10 @@ export default function Home() {
             </div>
           </div>
           <div className="">
-          <AiOutlineHeart className="m-5" style={{color: 'tan'}} size={32} />
-          <BiCommentDetail className="m-5" style={{color: 'tan'}} size={32} />
-          <BiBookmarks className="m-5" style={{color: 'tan'}} size={32} />
-          <BiShare className="m-5" style={{color: 'tan'}} size={32} />
+          <a href=""><AiOutlineHeart className="m-5" style={{color: 'tan'}} size={32} /></a>
+          <a href=""><BiCommentDetail className="m-5" style={{color: 'tan'}} size={32} /></a>
+          <a href=""><BiBookmarks className="m-5" style={{color: 'tan'}} size={32} /></a>
+          <a href=""><BiShare className="m-5" style={{color: 'tan'}} size={32} /></a>
           </div>
         </div>
     </div>

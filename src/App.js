@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./pages/layout";
 import Profile from "./pages/Profile";
-import UserAccount from "./pages/UserAccount";
+import Account from "./pages/Account";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/account" element={<UserAccount />} />
+          <Route path="/account" element={<Account />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>  

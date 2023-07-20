@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PancakeLogo from "../../assets/pancakeLogo.png";
 // import Syrup from "../../assets/syrupStack2.svg";
-import LoginModal from "../Modals/login";
+import LoginModal from "../Modals/Login";
 import CollapseMenu from "./collapseMenu";
 
 function Navbar() {

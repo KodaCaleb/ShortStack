@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import SignUpModal from "./signUp";
+import SignUpModal from "./SignUp";
 
 export default function LoginModal({ isOpen, closeModal }) {
   const [modalMode, setModalMode] = useState (false);

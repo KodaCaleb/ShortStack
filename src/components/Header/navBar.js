@@ -1,8 +1,8 @@
 import { useState } from "react";
 import PancakeLogo from "../../assets/pancakeLogo.png";
 // import Syrup from "../../assets/syrupStack2.svg";
-import LoginModal from "../Modals/login";
-import CollapseMenu from "./collapseMenu";
+import LoginModal from "../Modals/Login";
+import CollapseMenu from "./CollapseMenu";
 
 function Navbar() {
   const [isModalOpen, setModalOpen] = useState(false);

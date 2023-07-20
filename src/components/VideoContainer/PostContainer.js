@@ -1,5 +1,5 @@
 import React from "react";
-import Video from "./video";
+import Video from "./Video";
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BiCommentDetail, BiShare, BiBookmarks } from 'react-icons/bi';
 

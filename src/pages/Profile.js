@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/VideoContainer/PostContainer"
+import AccountModal from './Account';
 // import AccountModal from './Account';
 
 export default function UserProfileHeading() {
@@ -10,15 +11,15 @@ export default function UserProfileHeading() {
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
-  // const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  // const openModal = () => {
-  //   setModalOpen(true);
-  // };
+  const openModal = () => {
+    setModalOpen(true);
+  };
 
-  // constCloseModal = () => {
-  //   setModalOpen(false)
-  // };
+  const closeModal = () => {
+    setModalOpen(false)
+  };
 
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
@@ -154,6 +155,17 @@ export default function UserProfileHeading() {
                   )}
                 </>
               )}
+               <button
+          type="button"
+          className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+          data-modal-target="authentication-modal"
+          onClick={openModal}
+        >
+          Login
+        </button>
+      
+        {/* </div> */}
+        <AccountModal isOpen={isModalOpen} closeModal={closeModal}/>
             </div>
           </div>
         </div>

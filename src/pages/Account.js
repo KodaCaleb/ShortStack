@@ -1,4 +1,6 @@
 import React from 'react';
+import { FaPencilArt } from 'react-icons/fa';
+import PostContainer from "../components/VideoContainer/PostContainer"
 
 export default function Account() {
     return(
@@ -7,3 +9,4 @@ export default function Account() {
         </div>
     )
 }
+

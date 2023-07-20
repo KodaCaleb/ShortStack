@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/VideoContainer/PostContainer"
+// import AccountModal from './Account';
 
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -9,6 +10,15 @@ export default function UserProfileHeading() {
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
+  // const [isModalOpen, setModalOpen] = useState(false);
+
+  // const openModal = () => {
+  //   setModalOpen(true);
+  // };
+
+  // constCloseModal = () => {
+  //   setModalOpen(false)
+  // };
 
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'

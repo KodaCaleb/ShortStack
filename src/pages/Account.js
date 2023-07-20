@@ -75,12 +75,12 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
           />
               <div className="flex mt-6 justify-center text-xs">
             <a href="#" className="text-blue-499 hover:text-yellow-300" onClick={toggleModalMode}>
-              Back to Login
+              Delete Account
             </a>
           </div>
           <div className="flex items-center justify-center">
           <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300">
-            Create
+            Save Changes
           </button>
           </div>
           <button className=" absolute top-2 right-2 px-2 py-2" onClick={closeModal}>

@@ -177,12 +177,12 @@ export default function UserProfileHeading() {
         {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
 
         <div className="w-3/4 grid grid-cols-3">
+          {/* <PostContainer />
           <PostContainer />
           <PostContainer />
           <PostContainer />
           <PostContainer />
-          <PostContainer />
-          <PostContainer />
+          <PostContainer /> */}
         </div>
       </div>
       </div>

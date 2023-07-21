@@ -70,7 +70,7 @@ export default function UserProfileHeading() {
     setIsBioEditable(!isBioEditable);
   };
 
-  return (
+  return ( 
     <>
       <div className="flex h-100 flex-col items-center">
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">

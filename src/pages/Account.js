@@ -2,6 +2,9 @@ import React from 'react';
 
 
 export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
+    if(!isOpen){
+        return null
+    }
     return (
         <>
         

@@ -12,14 +12,17 @@ export default function UserProfileHeading() {
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isBlurBackground, setBlurBackground] = useState(false);
  
   const openModal = () => {
     console.log("modal should open");
     setModalOpen(true);
+    setBlurBackground(true);
   };
 
   const closeModal = () => {
-    setModalOpen(false)
+    setModalOpen(false);
+    setBlurBackground(false);
   };
 
   const [image, setImage] = useState(
@@ -72,6 +75,7 @@ export default function UserProfileHeading() {
 
   return ( 
     <>
+    <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
       <div className="flex h-100 flex-col items-center">
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
           <div
@@ -180,6 +184,7 @@ export default function UserProfileHeading() {
           <PostContainer />
           <PostContainer />
         </div>
+      </div>
       </div>
     </>
   );

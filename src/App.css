@@ -37,9 +37,14 @@ html {
     transform: rotate(360deg);
   }
 }
+
 .title {
   animation: shaking .5s steps(6, end) infinite;
   mix-blend-mode: screen;
+}
+
+h1{
+  font-size: xx-large;
 }
 
 @keyframes shaking {

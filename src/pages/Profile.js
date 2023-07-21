@@ -3,7 +3,7 @@ import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/videoContainer/PostContainer"
 import { firestore } from "../firebase"
 import { doc } from "firebase/firestore"
-import { useDocument } from 'react-firebase-hooks/firestore';
+import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 import AccountModal from './Account';
 // import AccountModal from './Account';
 
@@ -37,16 +37,16 @@ export default function UserProfileHeading() {
 // starting framework to get fields from profile document
   const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
   // use the UseDocumentOnce hook 
-  const [profile, loading, error] = useDocument(userProfileRef);
+  const [profile, loading, error] = useDocumentOnce(userProfileRef);
 
   const [profileData, setProfileData] = useState(null);
-  // // using useEffect to make API call only when profile is updated
+  // using useEffect to make API call only when profile is updated
   useEffect(() => {
     if (!loading && !error && profile && profile.exists()) {
       setProfileData(profile.data());
     }
   }, [loading, error, profile]);
-  // useEffect(() => {
+
 // display when data is being retrieved
   if (loading) {
     return <p>Loading...</p>;
@@ -61,7 +61,6 @@ export default function UserProfileHeading() {
     const { bio, darkMode, photo, username } = profileData;
     console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
   }
-// },[profile]);
 
 
   const handleImageMouseEnter = () => {

@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { firestore } from "../../firebase";
+import { collection, addDoc } from "firebase/firestore"
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [firstName, setFirstName] = useState("");
@@ -8,28 +10,31 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [password, setPassword] = useState("");
 
   // Event handlers for users entering data
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
+  const handleCreateAccount = async (e) => {
+    e.preventDefault();
+
+    if(!firstName || !lastName || !email || !password){
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    try{
+      const usersCollection = collection(firestore, "Users");
+      await addDoc(usersCollection, userData);
+      console.log("user data added to firestore", userData);
+    }catch (error){
+      console.log("error adding user data to firestore", error)
+    }
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogData = () => {
-    console.log("First Name:", firstName);
-    console.log("Last Name:", lastName);
-    console.log("Username or Email:", email);
-    console.log("Password:", password);
-  };
-
+  //Object for user data 
+  const userData = {
+    firstName,
+    lastName,
+    email,
+    password
+  }
+  
   return (
     <>
       {/* Modal */}
@@ -39,6 +44,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         <form
           className="relative flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
           action=""
+          onSubmit={handleCreateAccount}
         >
           <div className="mb-4 md:flex md:justify-between">
             <div class="mb-4 md:mr-2 md:mb-0">
@@ -54,7 +60,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 type="text"
                 placeholder="First Name"
                 value={firstName}
-                onChange={handleFirstNameChange}
+                onChange={(e) => setFirstName(e.target.value)} 
               />
             </div>
             <div className="md:ml-2">
@@ -70,7 +76,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 type="text"
                 placeholder="Last Name"
                 value={lastName}
-                onChange={handleLastNameChange}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
           </div>
@@ -86,7 +92,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
@@ -100,7 +106,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <div className="flex mt-6 justify-center text-xs">
             <a
@@ -114,7 +120,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           <div className="flex items-center justify-center">
             <button 
             className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300"
-            onClick={handleLogData}
+            type="submit"
+          
             >
               Create
             </button>

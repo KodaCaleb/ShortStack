@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Video from "./Video";
+import Video from "./video";
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BiCommentDetail, BiShare, BiBookmarks } from 'react-icons/bi';
 import { firestore } from "../../firebase";

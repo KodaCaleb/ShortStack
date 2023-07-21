@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { firestore } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore"
+import { collection, addDoc, doc } from "firebase/firestore"
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [firstName, setFirstName] = useState("");
@@ -18,9 +18,12 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       return;
     }
 
+    const userId = Math.floor( Math.random() * 100)
+
     try{
-      const usersCollection = collection(firestore, "Users");
-      await addDoc(usersCollection, userData);
+      const userDoc = doc(firestore, {})
+      // const usersCollection = collection(firestore, `Users/${userId}/userInfo`);
+      await addDoc(userDoc, userData);
       console.log("user data added to firestore", userData);
     }catch (error){
       console.log("error adding user data to firestore", error)

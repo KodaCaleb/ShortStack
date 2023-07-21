@@ -13,6 +13,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
 
+  const [selectedFileName, setSelectedFileName] = useState("");
+
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
@@ -49,7 +51,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setPhoto(file)
+    setPhoto(file);
+    setSelectedFileName(file.name)
   }
   
   return (
@@ -61,7 +64,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         <form
           className="relative flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
           action=""
-          onSubmit={handleCreateAccount}
+          
         >
           <div className="mb-4 md:flex md:justify-between">
             <div class="mb-4 md:mr-2 md:mb-0">
@@ -161,16 +164,20 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               className="block mb-2 text-sm font-bold text-yellow-300"
               htmlFor="photo"
             >
-              <span className="border"> Photo</span>
+              <span> Photo</span>
              
             </label>
             <div>
               <input
                 type="file"
-                value={photo}
-                accept="image/*" // Only Image uploads
+                accept= "image/*"
                 onChange={handleImageChange}
+                style={{ display: "none" }} 
               />
+              <button
+              className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-300" onClick={() => document.querySelector('input[type="file"]').click()}> Upload Photo
+
+              </button>
               </div>
             
           </div>
@@ -185,15 +192,19 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Back to Login
             </a>
           </div>
+
+          {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button 
-            className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300"
+            className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold  text-blue-100 hover:bg-yellow-300"
             type="submit"
+            onClick={handleCreateAccount}
           
             >
               Create
             </button>
           </div>
+          {/* Exit out of modal button */}
           <button
             className=" absolute top-2 right-2 px-2 py-2"
             onClick={closeModal}

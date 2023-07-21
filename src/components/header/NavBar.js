@@ -4,7 +4,7 @@ import PancakeLogo from "../../assets/pancakeLogo.png";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 
-function Navbar() {
+function NavBar() {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -82,4 +82,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;

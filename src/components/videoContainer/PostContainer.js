@@ -2,7 +2,6 @@ import React from "react";
 import Video from "./Video";
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BiCommentDetail, BiShare, BiBookmarks } from 'react-icons/bi';
-
 export default function PostContainer({ videoData }) {
     return (
         <div className="flex justify-center flex-row">

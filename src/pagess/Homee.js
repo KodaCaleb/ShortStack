@@ -1,5 +1,5 @@
 import React from "react";
-import PostContainer from "../components/videoContainer/PostContainer"
+import PostContainer from "../componentss/videoContainer/PostContainer"
 
 export default function Home() {
   return (

@@ -7,6 +7,7 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
     }
     return (
         <>
+        
          <div className="flex flex-col items-center justify-center text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> View Account Info</h3>
         <form

@@ -16,15 +16,18 @@ export default function UserProfileHeading() {
   const [isBioEditable, setIsBioEditable] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);
+ 
   const openModal = () => {
     console.log("modal should open");
     setModalOpen(true);
     setBlurBackground(true);
   };
+
   const closeModal = () => {
     setModalOpen(false);
     setBlurBackground(false);
   };
+
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
   );
@@ -57,36 +60,46 @@ export default function UserProfileHeading() {
   const handleImageMouseEnter = () => {
     setIsImageHovered(true);
   };
+
   const handleImageMouseLeave = () => {
     setIsImageHovered(false);
   };
+
   const handleImageClick = (e) => {
     e.preventDefault();
     setIsImageEditable(!isImageEditable);
   };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     // TODO add code to handle saving image and to use setImage useState
   };
+
   const handleUsernameMouseEnter = () => {
     setIsUsernameHovered(true);
   };
+
   const handleUsernameMouseLeave = () => {
     setIsUsernameHovered(false);
   };
+
   const handleUsernameClick = () => {
     setIsUsernameEditable(!isUsernameEditable);
   };
+
   const handleBioMouseEnter = () => {
     setIsBioHovered(true);
   };
+
   const handleBioMouseLeave = () => {
     setIsBioHovered(false);
   };
+
   const handleBioClick = () => {
     setIsBioEditable(!isBioEditable);
   };
-  return (
+
+  return ( 
     <>
     <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
       <div className="flex h-100 flex-col items-center">
@@ -185,8 +198,10 @@ export default function UserProfileHeading() {
         <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
           </div>
         </div>
+
         {/* </div> */}
         {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
+
         <div className="w-3/4 grid grid-cols-3">
           {/* <PostContainer />
           <PostContainer />

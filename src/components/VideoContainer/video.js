@@ -1,6 +1,6 @@
 // Importing necessary hooks and functions from React and Firebase
 import { useRef, useState, useEffect } from "react";
-import VideoFooter from "./videoFooter";
+import VideoFooter from "./VideoFooter";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { firestore } from "../../firebase";
+import { IoIosArrowBack} from "react-icons/io";
 import { collection, addDoc, doc, setDoc } from "firebase/firestore"
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
@@ -173,12 +174,14 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               </div>
             
           </div>
-          <div className="flex mt-6 justify-center text-xs">
+          <div className="flex flex-row mt-6 justify-center items-center text-xs">
+        <IoIosArrowBack className="mr-3"/>
             <a
               href="#"
               className="text-blue-499 hover:text-yellow-300"
               onClick={toggleModalMode}
             >
+              
               Back to Login
             </a>
           </div>

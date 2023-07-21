@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/videoContainer/PostContainer"
 import { firestore } from "../firebase"
-import { collection, getDocs, doc } from "firebase/firestore"
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { collection, doc } from "firebase/firestore"
+import { useCollectionData, useDocumentOnce } from 'react-firebase-hooks/firestore';
 
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -19,51 +19,30 @@ export default function UserProfileHeading() {
   const [username, setUsername] = useState("");
   const [bioInfo, setBioInfo] = useState('Here for the lulz');
 
-  const [users, setUsers] = useState([])
-
-  const query = collection( firestore,'Users');
-  const [docs, loading, error] = useCollectionData(query)
-  console.log(query)
-
-  
-// Create a reference to the Users collection
-// const usersCollectionRef = collection( firestore,'Users');
-
-// // Define the specific user ID
-// const userId = '1AgshjHIigujTKEXtVQR';
-
-// // Create a reference to the Users document
-// const userDocRef = doc(usersCollectionRef, userId);
-
-// // Define the name of the nested subcollection you want to access
-// const nestedCollectionName = 'userInfo';
-
-// // Create a reference to the nested subcollection using the Users document reference
-// const nestedCollectionRef = collection(userDocRef, nestedCollectionName);
-
-// // Create a reference to the ID of the targeted document
-// const subDocId = 'profile';
-
-// // Create a reference to the specific element being targeted
-// const inputField = 'bio'
-
-// // Get the data for a single subdocument
-// getDocs(nestedCollectionRef)
-// .then((querySnapshot) => {
-//     // Loops through the data and returns all available subdocuments
-//     querySnapshot.forEach((doc) => {
-//         // Matches the specific subdocument wanted
-//         if (doc.id === subDocId) {
-//             // Targets the specific key/value data for front end use
-//             console.log(subDocId, '=>', doc.data()[inputField]);
-//         };
-//     });
-// })
-// .catch((error) => {
-//     console.log("error getting document: ", error);
-// })
+  const [users, setUsers] = useState([]);
 
 
+  // const query = collection(firestore, "Users/1AgshjHIigujTKEXtVQR/userInfo");
+  // const [docs, loading, error] = useCollectionData(query)
+  // console.log(docs)
+
+  const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
+  const [profile, loading, error] = useDocumentOnce(userProfileRef);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  if (profile && profile.exists()) {
+    const profileData = profile.data();
+    // Now you can use the data from the "profile" document.
+    const { bio, darkMode, photo, username } = profileData;
+    console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
+  }
     // useEffect(() => {
 
     //   const getUsers = async () => {
@@ -209,9 +188,9 @@ export default function UserProfileHeading() {
           <PostContainer />
           <PostContainer />
           <PostContainer />
+          {/* <PostContainer />
           <PostContainer />
-          <PostContainer />
-          <PostContainer />
+          <PostContainer /> */}
         </div>
       </div>
     </>

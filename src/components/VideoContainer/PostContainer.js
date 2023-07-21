@@ -16,7 +16,7 @@ export default function PostContainer() {
                 const videosSnapshot = await getDocs(videosCollection);
                 const videosData = videosSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
                 setVideos(videosData);
-                console.log("LOOK HERE", videosData);
+                // console.log("LOOK HERE", videosData);
             } catch (error) {
                 console.error("Error fetching videos", error);
             }

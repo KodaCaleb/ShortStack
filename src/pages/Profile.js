@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/videoContainer/PostContainer"
 import { firestore } from "../firebase"
-import { collection, doc } from "firebase/firestore"
-import { useCollectionData, useDocumentOnce } from 'react-firebase-hooks/firestore';
+import { doc } from "firebase/firestore"
+import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -16,45 +16,33 @@ export default function UserProfileHeading() {
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
   );
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("Username");
   const [bioInfo, setBioInfo] = useState('Here for the lulz');
 
-  const [users, setUsers] = useState([]);
-
-
-  // const query = collection(firestore, "Users/1AgshjHIigujTKEXtVQR/userInfo");
-  // const [docs, loading, error] = useCollectionData(query)
-  // console.log(docs)
-
+// starting framework to get fields from profile document
   const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
+  // use the UseDocumentOnce hook 
   const [profile, loading, error] = useDocumentOnce(userProfileRef);
 
+  // using useEffect to make API call only when profile is updated
   useEffect(() => {
-
+// display when data is being retrieved
   if (loading) {
     return <p>Loading...</p>;
   }
-
+// display when data is being retrieved
   if (error) {
     return <p>Error: {error.message}</p>;
   }
 
   if (profile && profile.exists()) {
     const profileData = profile.data();
-    // Now you can use the data from the "profile" document.
+    // Use the data from the "profile" document.
     const { bio, darkMode, photo, username } = profileData;
     console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
   }
 }, [profile]);
-    // useEffect(() => {
 
-    //   const getUsers = async () => {
-    //     const data = await getDocs(usersCollectionRef)
-    //     console.log(data)
-    //     setUsers(data.docs.map((doc) => (console.log({...doc.data(), id:doc.id }))))
-    //   }
-    //   getUsers()
-    // }, []);
 
   const handleImageMouseEnter = () => {
     setIsImageHovered(true);
@@ -191,9 +179,9 @@ export default function UserProfileHeading() {
           <PostContainer />
           <PostContainer />
           <PostContainer />
-          {/* <PostContainer />
           <PostContainer />
-          <PostContainer /> */}
+          <PostContainer />
+          <PostContainer />
         </div>
       </div>
     </>

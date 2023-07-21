@@ -1,19 +1,22 @@
 import React from "react";
 import { useState } from "react";
 import { firestore } from "../../firebase";
-import { collection, addDoc, doc } from "firebase/firestore"
+import { collection, addDoc, doc, setDoc } from "firebase/firestore"
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [photo, setPhoto] = useState("");
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
 
-    if(!firstName || !lastName || !email || !password){
+    if(!firstName || !lastName || !email || !password || !username || !bio){
       alert("Please fill in all required fields");
       return;
     }
@@ -21,21 +24,31 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     const userId = Math.floor( Math.random() * 100)
 
     try{
-      const userDoc = doc(firestore, {})
+      const userDoc = doc(firestore,"Users", `${userId}`, "userInfo", "account")
       // const usersCollection = collection(firestore, `Users/${userId}/userInfo`);
-      await addDoc(userDoc, userData);
-      console.log("user data added to firestore", userData);
+      await setDoc(userDoc, accountData);
+      console.log("user data added to firestore", accountData);
     }catch (error){
       console.log("error adding user data to firestore", error)
     }
   };
 
   //Object for user data 
-  const userData = {
+  const accountData = {
     firstName,
     lastName,
     email,
     password
+  }
+  const profileData = {
+    username,
+    bio,
+    photo
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setPhoto(file)
   }
   
   return (
@@ -111,6 +124,55 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+                <label
+              class="block mb-2 text-sm font-bold text-yellow-300"
+              for="username"
+            >
+              Username
+            </label>
+            <input
+              class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="username"
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <div className="mb-4">
+            <label
+              class="block mb-2 text-sm font-bold text-yellow-300"
+              for="bio"
+            >
+              Bio
+            </label>
+            <input
+              class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="bio"
+              type="text"
+              placeholder="Bio"
+              value={lastName}
+              onChange={(e) => setBio(e.target.value)}
+            />
+            </div>
+        
+            <div className="mb-4"> 
+            <label
+              className="block mb-2 text-sm font-bold text-yellow-300"
+              htmlFor="photo"
+            >
+              <span className="border"> Photo</span>
+             
+            </label>
+            <div>
+              <input
+                type="file"
+                value={photo}
+                accept="image/*" // Only Image uploads
+                onChange={handleImageChange}
+              />
+              </div>
+            
+          </div>
           <div className="flex mt-6 justify-center text-xs">
             <a
               href="#"

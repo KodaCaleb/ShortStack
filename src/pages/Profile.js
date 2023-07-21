@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
-import PostContainer from "../components/VideoContainer/PostContainer"
+import PostContainer from "../components/videoContainer/PostContainer"
 import AccountModal from './Account';
 // import AccountModal from './Account';
 

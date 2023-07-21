@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/videoContainer/PostContainer"
+import { firestore } from "../firebase"
+import { doc } from "firebase/firestore"
+import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 import AccountModal from './Account';
-// import AccountModal from './Account';
 
+// import AccountModal from './Account';
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
   const [isImageEditable, setIsImageEditable] = useState(false);
@@ -13,67 +16,77 @@ export default function UserProfileHeading() {
   const [isBioEditable, setIsBioEditable] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);
- 
   const openModal = () => {
     console.log("modal should open");
     setModalOpen(true);
     setBlurBackground(true);
   };
-
   const closeModal = () => {
     setModalOpen(false);
     setBlurBackground(false);
   };
-
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
   );
-  const [username, setUsername] = useState('Jim Halpert');
+  const [username, setUsername] = useState("Username");
   const [bioInfo, setBioInfo] = useState('Here for the lulz');
-
+// starting framework to get fields from profile document
+  const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
+  // use the UseDocumentOnce hook
+  const [profile, loading, error] = useDocumentOnce(userProfileRef);
+  const [profileData, setProfileData] = useState(null);
+  // using useEffect to make API call only when profile is updated
+  useEffect(() => {
+    if (!loading && !error && profile && profile.exists()) {
+      setProfileData(profile.data());
+    }
+  }, [loading, error, profile]);
+// display when data is being retrieved
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+// display when data is being retrieved
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+  if (profileData) {
+    // Use the data from the "profile" document.
+    const { bio, darkMode, photo, username } = profileData;
+    console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
+  }
   const handleImageMouseEnter = () => {
     setIsImageHovered(true);
   };
-
   const handleImageMouseLeave = () => {
     setIsImageHovered(false);
   };
-
   const handleImageClick = (e) => {
     e.preventDefault();
     setIsImageEditable(!isImageEditable);
   };
-
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     // TODO add code to handle saving image and to use setImage useState
   };
-
   const handleUsernameMouseEnter = () => {
     setIsUsernameHovered(true);
   };
-
   const handleUsernameMouseLeave = () => {
     setIsUsernameHovered(false);
   };
-
   const handleUsernameClick = () => {
     setIsUsernameEditable(!isUsernameEditable);
   };
-
   const handleBioMouseEnter = () => {
     setIsBioHovered(true);
   };
-
   const handleBioMouseLeave = () => {
     setIsBioHovered(false);
   };
-
   const handleBioClick = () => {
     setIsBioEditable(!isBioEditable);
   };
-
-  return ( 
+  return (
     <>
     <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
       <div className="flex h-100 flex-col items-center">
@@ -116,7 +129,7 @@ export default function UserProfileHeading() {
           <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
             {/* stack of username and bio */}
             <div
-              className="relative p-1 my-4  text-white"
+              className="relative p-1 my-4 border border-white text-white"
               onMouseEnter={handleUsernameMouseEnter}
               onMouseLeave={handleUsernameMouseLeave}
               onClick={handleUsernameClick}
@@ -129,9 +142,9 @@ export default function UserProfileHeading() {
                 />
               ) : (
                 <>
-                  <span className=" text-6xl">{username}</span>
+                  <span className="text-xl">{username}</span>
                   {isUsernameHovered && (
-                    <div className="absolute top-5 right-2">
+                    <div className="absolute top-2 right-2">
                       <FaPencilAlt className="text-xl text-white" />
                     </div>
                   )}
@@ -139,7 +152,7 @@ export default function UserProfileHeading() {
               )}
             </div>
             <div
-              className="relative p-1  text-white"
+              className="relative p-1 border border-white text-white"
               onMouseEnter={handleBioMouseEnter}
               onMouseLeave={handleBioMouseLeave}
               onClick={handleBioClick}
@@ -172,12 +185,15 @@ export default function UserProfileHeading() {
         <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
           </div>
         </div>
-
         {/* </div> */}
         {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
-
-        <div className="w-3/4 grid grid-cols-3 flex-col">
+        <div className="w-3/4 grid grid-cols-3">
+          {/* <PostContainer />
           <PostContainer />
+          <PostContainer />
+          <PostContainer />
+          <PostContainer />
+          <PostContainer /> */}
         </div>
       </div>
       </div>

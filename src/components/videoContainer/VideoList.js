@@ -5,7 +5,6 @@ import { collection, getDocs } from "firebase/firestore";
 
 export default function VideoList() {
   const [videos, setVideos] = useState([]);
-
   useEffect(() => {
     const fetchVideos = async () => {
       try {
@@ -21,10 +20,8 @@ export default function VideoList() {
         console.error("Error fetching videos", error);
       }
     };
-
     fetchVideos();
   }, []);
-
   return (
     <div className="h-screen w-full flex p-4 justify-center">
       <div className="flex h-full w-full flex-row">
@@ -39,4 +36,3 @@ export default function VideoList() {
     </div>
   );
 }
-

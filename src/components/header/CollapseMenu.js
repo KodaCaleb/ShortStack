@@ -1,14 +1,11 @@
 import PancakeLogo from "../../assets/pancakeLogo.png";
 import { useState } from "react";
-
 export default function CollapseMenu() {
   const [isMenuOpen, setMenuOpen] = useState(false);
-
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
     console.log(isMenuOpen);
   };
-
   return (
     <>
       <div>

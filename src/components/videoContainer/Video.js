@@ -3,14 +3,10 @@ import { useRef, useState, useEffect } from "react";
 // import VideoFooter from "./VideoFooter";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
-
 // Component for displaying a video
 export default function Video({ videoData }) {
   const [playing, setPlaying] = useState(false); // State for managing whether the video is currently playing
   const videoRef = useRef(null); // A ref that points to the video element in the DOM
-
-
-
   useEffect(() => {
      // Extracting the file path from videoData.vidRef, removing the initial part of the Firebase storage URL to keep only the path to the file.
     const filepath = videoData.vidRef.replace('gs://project3-15aff.appspot.com/', '')
@@ -28,8 +24,6 @@ export default function Video({ videoData }) {
     })
     ;
   }, [videoData]); // This useEffect hook runs whenever videoData changes
-
-
   const onVideoPress = () => {
     if (playing) {
       // If the video is currently playing, pause the video and update the state
@@ -41,13 +35,12 @@ export default function Video({ videoData }) {
       setPlaying(true);
     }
   };
-
   return (
    <div className="  w-1/2 h-full videoContainer">
-      <video className="object-fill rounded w-auto h-auto" 
+      <video className="object-fill rounded w-auto h-auto"
         ref={videoRef}
-        onClick={onVideoPress} 
-        loop 
+        onClick={onVideoPress}
+        loop
       >
       </video>
       {/* <VideoFooter /> */}

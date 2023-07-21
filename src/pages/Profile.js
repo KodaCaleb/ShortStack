@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
-import PostContainer from "../componentss/videoContainer/PostContainer"
+import PostContainer from "../components/videoContainer/PostContainer"
 
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);

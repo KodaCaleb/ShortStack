@@ -12,8 +12,9 @@ export default function UserProfileHeading() {
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-
+ 
   const openModal = () => {
+    console.log("modal should open");
     setModalOpen(true);
   };
 
@@ -164,11 +165,12 @@ export default function UserProfileHeading() {
         >
           Account Info
         </button>
+        <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
           </div>
         </div>
 
         {/* </div> */}
-        <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
+        {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
 
         <div className="w-3/4 grid grid-cols-3">
           <PostContainer />

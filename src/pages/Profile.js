@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
-import PostContainer from "../components/VideoContainer/PostContainer"
+import PostContainer from "../components/videoContainer/PostContainer"
 import AccountModal from './Account';
 // import AccountModal from './Account';
 
@@ -28,7 +28,7 @@ export default function UserProfileHeading() {
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
   );
-  const [username, setUsername] = useState('Username');
+  const [username, setUsername] = useState('Jim Halpert');
   const [bioInfo, setBioInfo] = useState('Here for the lulz');
 
   const handleImageMouseEnter = () => {
@@ -116,7 +116,7 @@ export default function UserProfileHeading() {
           <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
             {/* stack of username and bio */}
             <div
-              className="relative p-1 my-4 border border-white text-white"
+              className="relative p-1 my-4  text-white"
               onMouseEnter={handleUsernameMouseEnter}
               onMouseLeave={handleUsernameMouseLeave}
               onClick={handleUsernameClick}
@@ -129,9 +129,9 @@ export default function UserProfileHeading() {
                 />
               ) : (
                 <>
-                  <span className="text-xl">{username}</span>
+                  <span className=" text-6xl">{username}</span>
                   {isUsernameHovered && (
-                    <div className="absolute top-2 right-2">
+                    <div className="absolute top-5 right-2">
                       <FaPencilAlt className="text-xl text-white" />
                     </div>
                   )}
@@ -139,7 +139,7 @@ export default function UserProfileHeading() {
               )}
             </div>
             <div
-              className="relative p-1 border border-white text-white"
+              className="relative p-1  text-white"
               onMouseEnter={handleBioMouseEnter}
               onMouseLeave={handleBioMouseLeave}
               onClick={handleBioClick}
@@ -176,12 +176,7 @@ export default function UserProfileHeading() {
         {/* </div> */}
         {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
 
-        <div className="w-3/4 grid grid-cols-3">
-          <PostContainer />
-          <PostContainer />
-          <PostContainer />
-          <PostContainer />
-          <PostContainer />
+        <div className="w-3/4 grid grid-cols-3 flex-col">
           <PostContainer />
         </div>
       </div>

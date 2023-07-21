@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import sampleVid1 from "../../assets/sampleVid1.mp4";
-import VideoFooter from "./videoFooter";
+import VideoFooter from "./VideoFooter";
 
 
 export default function Video() {

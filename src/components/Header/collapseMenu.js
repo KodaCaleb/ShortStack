@@ -1,59 +1,45 @@
 import PancakeLogo from "../../assets/pancakeLogo.png";
 import { useState } from "react";
 
-
 export default function CollapseMenu() {
-    const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setMenuOpen(!isMenuOpen);
-        console.log(isMenuOpen);
-    }
+  const toggleMenu = () => {
+    setMenuOpen(!isMenuOpen);
+    console.log(isMenuOpen);
+  };
 
-
-    return (
-        <>
-        <img 
-            className="h-14 cursor-pointer" 
-            src={PancakeLogo} 
-            alt=""
-            onClick={toggleMenu}
-        />
-        {isMenuOpen && (
-            <div className="absolute top-20 left-0 w-1/4 h-2/3 bg-opacity-50">
-                <div className=" top-0 left-0 flex flex-col justify-between bg-black bg-opacity-40 rounded-xl border-white border w-1/2 h-full">
-                    <ul className="flex flex-col items-start p-2 justify-start h-auto">
-                        <li className="text-white">
-                            <a href="/">
-                                Following
-                            </a>
-                        </li>
-                        <li className="text-white">
-                            <a href="/">
-                                Browse/Explore
-                            </a>
-                        </li>
-                        <li className="text-white">
-                            <a href="/">
-                                Bookmarked
-                            </a>
-                        </li>
-                    </ul>
-                    <ul className="p-2 items-start">
-                        <li className="text-white">
-                            <a href="/">
-                                My Account
-                            </a>
-                        </li>
-                        <li className="text-white">
-                            <a href="/">
-                                Login/Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>    
-            </div>
-        )}
-        </>
-    )
+  return (
+    <>
+      <div>
+        <ul className="main p-0 relative list-none inline-block">
+          <li className="relative inline-block ml-5 mr-2 cursor-pointer z-5">
+            <img className="h-14 cursor-pointer flex-shrink-0" src={PancakeLogo} alt="" />
+            <ul className="drop list-none absolute w-28 left-0 top-100">
+              <div className="relative">
+                <li className="text-white text-center block p-0 align-middle rounded-lg mt-3">
+                  <a href="/">Following</a>
+                </li>
+                <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
+                  <a href="/">Explore</a>
+                </li>
+                <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+                  <a href="/">Bookmarked</a>
+                </li>
+                <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+                  <a href="/Upload">Upload</a>
+                </li>
+                <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
+                  <a href="/">My Account</a>
+                </li>
+                <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+                  <a href="/">Logout</a>
+                </li>
+              </div>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </>
+  );
 }

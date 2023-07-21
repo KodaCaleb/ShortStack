@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SignUpModal({closeModal, toggleModalMode}) {
+export default function SignUpModal({ closeModal, toggleModalMode }) {
   return (
     <>
       {/* Modal */}
@@ -50,7 +50,8 @@ export default function SignUpModal({closeModal, toggleModalMode}) {
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="text" placeholder="Username or Email"
+            type="text"
+            placeholder="Username or Email"
           />
           <label
             className="block mb-2 text-sm font-bold text-gray-700"
@@ -61,20 +62,28 @@ export default function SignUpModal({closeModal, toggleModalMode}) {
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="password" placeholder="password"
+            type="password"
+            placeholder="password"
           />
-              <div className="flex mt-6 justify-center text-xs">
-            <a href="#" className="text-blue-499 hover:text-yellow-300" onClick={toggleModalMode}>
+          <div className="flex mt-6 justify-center text-xs">
+            <a
+              href="#"
+              className="text-blue-499 hover:text-yellow-300"
+              onClick={toggleModalMode}
+            >
               Back to Login
             </a>
           </div>
           <div className="flex items-center justify-center">
-          <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300">
-            Create
-          </button>
+            <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300">
+              Create
+            </button>
           </div>
-          <button className=" absolute top-2 right-2 px-2 py-2" onClick={closeModal}>
-           X
+          <button
+            className=" absolute top-2 right-2 px-2 py-2"
+            onClick={closeModal}
+          >
+            X
           </button>
         </form>
       </div>

@@ -29,6 +29,8 @@ export default function UserProfileHeading() {
   const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
   const [profile, loading, error] = useDocumentOnce(userProfileRef);
 
+  useEffect(() => {
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -43,6 +45,7 @@ export default function UserProfileHeading() {
     const { bio, darkMode, photo, username } = profileData;
     console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
   }
+}, [profile]);
     // useEffect(() => {
 
     //   const getUsers = async () => {

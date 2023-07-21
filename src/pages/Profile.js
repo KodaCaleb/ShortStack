@@ -3,7 +3,7 @@ import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/videoContainer/PostContainer"
 import { firestore } from "../firebase"
 import { doc } from "firebase/firestore"
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
 import AccountModal from './Account';
 // import AccountModal from './Account';
 
@@ -37,10 +37,16 @@ export default function UserProfileHeading() {
 // starting framework to get fields from profile document
   const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
   // use the UseDocumentOnce hook 
-  const [profile, loading, error] = useDocumentOnce(userProfileRef);
+  const [profile, loading, error] = useDocument(userProfileRef);
 
-  // using useEffect to make API call only when profile is updated
+  const [profileData, setProfileData] = useState(null);
+  // // using useEffect to make API call only when profile is updated
   useEffect(() => {
+    if (!loading && !error && profile && profile.exists()) {
+      setProfileData(profile.data());
+    }
+  }, [loading, error, profile]);
+  // useEffect(() => {
 // display when data is being retrieved
   if (loading) {
     return <p>Loading...</p>;
@@ -50,13 +56,12 @@ export default function UserProfileHeading() {
     return <p>Error: {error.message}</p>;
   }
 
-  if (profile && profile.exists()) {
-    const profileData = profile.data();
+  if (profileData) { 
     // Use the data from the "profile" document.
     const { bio, darkMode, photo, username } = profileData;
     console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
   }
-}, [profile]);
+// },[profile]);
 
 
   const handleImageMouseEnter = () => {
@@ -205,12 +210,12 @@ export default function UserProfileHeading() {
         {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
 
         <div className="w-3/4 grid grid-cols-3">
+          {/* <PostContainer />
           <PostContainer />
           <PostContainer />
           <PostContainer />
           <PostContainer />
-          <PostContainer />
-          <PostContainer />
+          <PostContainer /> */}
         </div>
       </div>
       </div>

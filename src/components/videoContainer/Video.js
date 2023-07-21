@@ -1,6 +1,6 @@
 // Importing necessary hooks and functions from React and Firebase
 import { useRef, useState, useEffect } from "react";
-import VideoFooter from "./videoFooter";
+// import VideoFooter from "./VideoFooter";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 
@@ -43,14 +43,14 @@ export default function Video({ videoData }) {
   };
 
   return (
-   <div className="relative bg-white w-full h-full videoContainer mt-4">
-      <video className="object-fill w-full h-full" 
+   <div className="  w-1/2 h-full videoContainer">
+      <video className="object-fill rounded w-auto h-auto" 
         ref={videoRef}
         onClick={onVideoPress} 
         loop 
       >
       </video>
-      <VideoFooter />
+      {/* <VideoFooter /> */}
     </div>
   );
 }

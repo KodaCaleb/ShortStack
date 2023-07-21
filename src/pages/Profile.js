@@ -4,6 +4,8 @@ import PostContainer from "../components/videoContainer/PostContainer"
 import { firestore } from "../firebase"
 import { doc } from "firebase/firestore"
 import { useDocumentOnce } from 'react-firebase-hooks/firestore';
+import AccountModal from './Account';
+// import AccountModal from './Account';
 
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -12,6 +14,19 @@ export default function UserProfileHeading() {
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isBlurBackground, setBlurBackground] = useState(false);
+ 
+  const openModal = () => {
+    console.log("modal should open");
+    setModalOpen(true);
+    setBlurBackground(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setBlurBackground(false);
+  };
 
   const [image, setImage] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
@@ -86,8 +101,9 @@ export default function UserProfileHeading() {
     setIsBioEditable(!isBioEditable);
   };
 
-  return (
+  return ( 
     <>
+    <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
       <div className="flex h-100 flex-col items-center">
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
           <div
@@ -173,8 +189,21 @@ export default function UserProfileHeading() {
                 </>
               )}
             </div>
+            <button
+          type="button"
+          className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4"
+          data-modal-target="authentication-modal"
+          onClick={openModal}
+        >
+          Account Info
+        </button>
+        <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
           </div>
         </div>
+
+        {/* </div> */}
+        {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
+
         <div className="w-3/4 grid grid-cols-3">
           <PostContainer />
           <PostContainer />
@@ -183,6 +212,7 @@ export default function UserProfileHeading() {
           <PostContainer />
           <PostContainer />
         </div>
+      </div>
       </div>
     </>
   );

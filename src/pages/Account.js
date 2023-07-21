@@ -83,7 +83,7 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
             </a>
           </div>
           <div className="flex items-center justify-center">
-          <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300">
+          <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300" onClick={closeModal}>
             Save Changes
           </button>
           </div>

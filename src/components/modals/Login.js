@@ -16,8 +16,7 @@ export default function LoginModal({ isOpen, closeModal }) {
     return null;
   }
 
-  const handleLoginForm = async (e) => {
-    e.preventDefault()
+  const handleLoginForm = async () => {
 
     if (!email || !password) {
         alert("Please fill in all required fields");

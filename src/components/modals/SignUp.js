@@ -4,13 +4,6 @@ import { firestore, auth } from "../../firebase";
 import { IoIosArrowBack } from "react-icons/io";
 import { collection, addDoc, doc, setDoc, runTransaction } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth"; 
-import {
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  runTransaction,
-} from "firebase/firestore";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [firstName, setFirstName] = useState("");

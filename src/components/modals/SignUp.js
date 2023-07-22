@@ -83,10 +83,10 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             action=""
           >
             <div className="mb-4 md:flex md:justify-between">
-              <div class="mb-4 md:mr-2 md:mb-0">
+              <div className="mb-4 md:mr-2 md:mb-0">
                 <label
-                  class="block mb-2 text-sm font-bold text-yellow-300"
-                  for="firstName"
+                  className="block mb-2 text-sm font-bold text-yellow-300"
+                  htmlFor="firstName"
                 >
                   First Name
                 </label>
@@ -101,13 +101,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               </div>
               <div className="md:ml-2">
                 <label
-                  class="block mb-2 text-sm font-bold text-yellow-300"
-                  for="lastName"
+                  className="block mb-2 text-sm font-bold text-yellow-300"
+                  htmlFor="lastName"
                 >
                   Last Name
                 </label>
                 <input
-                  class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="lastName"
                   type="text"
                   placeholder="Last Name"
@@ -118,7 +118,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             </div>
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
-              for="emailField"
+              htmlFor="emailField"
             >
               {" "}
               Email
@@ -132,7 +132,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             />
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
-              for="passwordField"
+              htmlFor="passwordField"
             >
               {" "}
               Password
@@ -145,13 +145,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               onChange={(e) => setPassword(e.target.value)}
             />
             <label
-              class="block mb-2 text-sm font-bold text-yellow-300"
-              for="username"
+              className="block mb-2 text-sm font-bold text-yellow-300"
+              htmlFor="username"
             >
               Username
             </label>
             <input
-              class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="username"
               type="text"
               placeholder="Username"
@@ -160,13 +160,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             />
             <div className="mb-4">
               <label
-                class="block mb-2 text-sm font-bold text-yellow-300"
-                for="bio"
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="bio"
               >
                 Bio
               </label>
               <input
-                class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 id="bio"
                 type="text"
                 placeholder="Bio"

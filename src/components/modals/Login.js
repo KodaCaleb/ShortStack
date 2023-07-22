@@ -23,7 +23,7 @@ export default function LoginModal({ isOpen, closeModal }) {
           action=""
           
         >
-          <label className="font-semibold text-xs" for="usernameField">
+          <label className="font-semibold text-xs" htmlFor="usernameField">
             {" "}
             Username or Email
           </label>
@@ -31,7 +31,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
             type="text"
           />
-          <label className="font-semibold text-xs pt-5" for="passwordField">
+          <label className="font-semibold text-xs pt-5" htmlFor="passwordField">
             {" "}
             Password
           </label>

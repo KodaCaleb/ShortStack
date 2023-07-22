@@ -12,15 +12,44 @@ function Navbar() {
     setModalOpen(false);
   };
   return (
-    <header className="w-full header-glow">
-      <nav className="sm:flex sm:justify-between sm:items-center md:grid md:grid-cols-3 w-full p-4 bg-black">
-        <div className="flex items-center">
+    <header className="w-full">
+      <nav
+      className="
+      border-4
+      sm:flex 
+      sm:flex-col
+      pt-4
+      pb-4
+      pl-14
+      pr-14
+      sm:items-center 
+      md:grid 
+      md:grid-cols-3 
+      w-full 
+      bg-black
+      relative"
+      >
+        <div className="flex items-center justify-center">
+          <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-25 filter blur"></div>
           <CollapseMenu />
-          <h1 className="text-white md:text-4xl text-3xl ml-2 title">
+          <h1 className="
+          text-white 
+          sm:text-xs
+          md:text-5xl 
+          text-5xl 
+          ml-2 
+          title">
             short_Stack
           </h1>
         </div>
-        <div className="container w-72 h-24 relative left-10">
+
+        <div
+          className="
+        container 
+        w-9/12 
+        h-24 
+        relative
+        ">
           <input
             className="bg-yellow-600"
             type="text"
@@ -28,7 +57,8 @@ function Navbar() {
           />
           <div className="search bg-yellow-400"></div>
         </div>
-        <div className="flex sm:justify-end sm:items-center md:col-span-1 mr-5">
+
+        <div className="flex sm:justify-end sm:items-center">
           <button
             type="button"
             className="focus:outline-none

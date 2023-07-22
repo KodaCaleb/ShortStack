@@ -4,7 +4,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 
 export default function LoginModal({ isOpen, closeModal }) {
-  const [modalMode, setModalMode] = useState (false);
+  const [modalMode, setModalMode] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const toggleSignUpMode = () => {
     setModalMode(!modalMode)
@@ -25,21 +27,25 @@ export default function LoginModal({ isOpen, closeModal }) {
           action=""
           
         >
-          <label className="font-semibold text-xs" for="usernameField">
+          <label className="font-semibold text-xs" HtmlFor="usernameField">
             {" "}
             Username or Email
           </label>
           <input
             className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
             type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <label className="font-semibold text-xs pt-5" for="passwordField">
+          <label className="font-semibold text-xs pt-5" HtmlFor="passwordField">
             {" "}
             Password
           </label>
           <input
-            className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+            className="flex items-center text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button className="flex items-center justify-center h-12 px-6  w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400">
             Login

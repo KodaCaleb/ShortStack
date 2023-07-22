@@ -29,6 +29,9 @@ export default function CollapseMenu() {
                 <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
                   <a href="/profile">My Profile</a>
                 </li>
+                <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
+                  <a href="/account">Edit Account</a>
+                </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
                   <a href="/logout">Logout</a>
                 </li>

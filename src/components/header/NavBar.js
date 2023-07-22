@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
-import "../../App.css";
+// import "../../App.css";
 function Navbar() {
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {

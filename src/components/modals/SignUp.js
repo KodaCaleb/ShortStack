@@ -1,7 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { firestore } from "../../firebase";
+import { firestore, auth } from "../../firebase";
 import { IoIosArrowBack } from "react-icons/io";
+import { collection, addDoc, doc, setDoc, runTransaction } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth"; 
 import {
   collection,
   addDoc,

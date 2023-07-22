@@ -3,11 +3,14 @@ import { AiOutlineSearch } from "react-icons/ai";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
+
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 // import "../../App.css";
 
 function Navbar() {
   const { isLoggedIn } = useContext(AuthContext);
-  // console.log("THIS IS THE LOG IN STATUS:", isLoggedIn);
+  console.log("Login status:", isLoggedIn)
 
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
@@ -17,6 +20,17 @@ function Navbar() {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+const handleLogout = async () => {
+  // Firebase method to sign the user out
+  await signOut(auth).then(() => {
+      alert("You have been signed out successfully.")
+      // ToDo: add conditional rendering for page routing
+  })
+  .catch((error) => {
+      console.log(error)
+  });
+};
 
   return (
     <header className="w-full header-glow">
@@ -36,14 +50,24 @@ function Navbar() {
           <div className="search bg-yellow-400"></div>
         </div>
         <div className="flex sm:justify-end sm:items-center md:col-span-1 mr-5">
+          {isLoggedIn ? (
+            <button
+              type="button"
+              className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+              data-modal-target="authentication-modal"
+              onClick={handleLogout}>
+              Logout
+          </button>
+          ) : (
           <button
             type="button"
             className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
             data-modal-target="authentication-modal"
             onClick={openModal}
-          >
+            >
             Login
           </button>
+          )}
         </div>
       </nav>
       <LoginModal isOpen={isModalOpen} closeModal={closeModal} />

@@ -1,10 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&family=Roboto:wght@500&display=swap');
+
 
 html {
   scroll-snap-type: y mandatory;
+  font-family: 'Roboto Mono', monospace;
+  font-family: 'Roboto', sans-serif;
 }
 .bg {
   background-color: #000000;
@@ -76,4 +79,205 @@ h1{
   }
 }
 
+:root {
+  --min-width: 120px;
+}
 
+@-webkit-keyframes transform {
+  from {
+    -webkit-transform: translate(0);
+  }
+  to {
+    -webkit-transform: translate(0);
+  }
+}
+
+@keyframes transform {
+  from {
+    transform: translate(0);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+
+@-webkit-keyframes transition {
+  from {
+    -webkit-transition: none;
+  }
+  to {
+    -webkit-transition: none;
+  }
+}
+
+@keyframes transition {
+  from {
+    transition: none;
+  }
+  to {
+    transition: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+.drop {
+  overflow: hidden;
+}
+.drop div {
+  -webkit-transform: translate(0, -110%);
+  transform: translate(0, -110%);
+  -webkit-transition: all 0.5s 0.1s;
+  transition: all 0.5s 0.1s;
+}
+.drop li {
+  background: #9e570c39 !important;
+}
+
+/* Hover styles for each list item */
+.main li:nth-child(1):hover ul div {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.main li:nth-child(1):hover ~ #marker {
+  -webkit-transform: translate(-1 * var(--min-width), 0);
+  transform: translate(-1 * var(--min-width), 0);
+}
+
+.main li:nth-child(2):hover ul div {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.main li:nth-child(2):hover ~ #marker {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.main li:nth-child(3):hover ul div {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.main li:nth-child(3):hover ~ #marker {
+  -webkit-transform: translate(1 * var(--min-width), 0);
+  transform: translate(1 * var(--min-width), 0);
+}
+
+.main li:nth-child(4):hover ul div {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.main li:nth-child(4):hover ~ #marker {
+  -webkit-transform: translate(2 * var(--min-width), 0);
+  transform: translate(2 * var(--min-width), 0);
+}
+
+.container .search {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  transition: all 1s;
+  z-index: 4;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+}
+
+.container .search:hover {
+  cursor: pointer;
+}
+
+.container .search::before {
+  content: "";
+  position: absolute;
+  margin: auto;
+  top: 22px;
+  right: 0;
+  bottom: 0;
+  left: 22px;
+  width: 12px;
+  height: 2px;
+  background: black;
+  transform: rotate(45deg);
+  transition: all .5s;
+}
+
+.container .search::after {
+  content: "";
+  position: absolute;
+  margin: auto;
+  top: -5px;
+  right: 0;
+  bottom: 0;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 3px solid black;
+  transition: all .5s;
+}
+
+.container input {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  outline: none;
+  border: none;
+  color: white;
+  text-shadow: 0 0 10px brown;
+  padding: 0 80px 0 20px;
+  border-radius: 30px;
+  box-shadow: 0 0 25px 0 brown, 0 20px 25px 0 rgba(0, 0, 0, 0.2);
+  transition: all 1s;
+  opacity: 0;
+  z-index: 5;
+  font-weight: bolder;
+  letter-spacing: 0.1em;
+}
+
+.container input:hover {
+  cursor: pointer;
+}
+
+.container input:focus {
+  width: 300px;
+  opacity: 1;
+  cursor: text;
+}
+
+.container input:focus ~ .search {
+  right: -250px;
+  background: #151515;
+  z-index: 6;
+}
+
+.container input:focus ~ .search::before {
+  top: 0;
+  left: 0;
+  width: 25px;
+}
+
+.container input:focus ~ .search::after {
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 2px;
+  border: none;
+  background: black;
+  border-radius: 0%;
+  transform: rotate(-45deg);
+}
+
+.container input::placeholder {
+  color: black;
+  font-weight: bolder;
+}

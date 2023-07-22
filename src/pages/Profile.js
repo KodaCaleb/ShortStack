@@ -5,8 +5,8 @@ import { firestore } from "../firebase"
 import { doc } from "firebase/firestore"
 import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 import AccountModal from './Account';
-// import AccountModal from './Account';
 
+// import AccountModal from './Account';
 export default function UserProfileHeading() {
   const [isImageHovered, setIsImageHovered] = useState(false);
   const [isImageEditable, setIsImageEditable] = useState(false);
@@ -33,12 +33,10 @@ export default function UserProfileHeading() {
   );
   const [username, setUsername] = useState("Username");
   const [bioInfo, setBioInfo] = useState('Here for the lulz');
-
 // starting framework to get fields from profile document
   const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
-  // use the UseDocumentOnce hook 
+  // use the UseDocumentOnce hook
   const [profile, loading, error] = useDocumentOnce(userProfileRef);
-
   const [profileData, setProfileData] = useState(null);
   // using useEffect to make API call only when profile is updated
   useEffect(() => {
@@ -46,7 +44,6 @@ export default function UserProfileHeading() {
       setProfileData(profile.data());
     }
   }, [loading, error, profile]);
-
 // display when data is being retrieved
   if (loading) {
     return <p>Loading...</p>;
@@ -55,14 +52,11 @@ export default function UserProfileHeading() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-
-  if (profileData) { 
+  if (profileData) {
     // Use the data from the "profile" document.
     const { bio, darkMode, photo, username } = profileData;
     console.log("Bio:", bio, "Dark Mode:", {darkMode}, "Photo:", {photo}, "Username:", {username})
   }
-
-
   const handleImageMouseEnter = () => {
     setIsImageHovered(true);
   };

@@ -12,26 +12,65 @@ function Navbar() {
     setModalOpen(false);
   };
   return (
-    <header className="w-full header-glow">
-      <nav className="sm:flex sm:justify-between sm:items-center md:grid md:grid-cols-3 w-full p-4 bg-black">
-        <div className="flex items-center">
+    <header className="w-full">
+      <nav
+      className="
+      w-full 
+      pt-4
+      pb-4
+      pl-14
+      pr-14
+      sm:items-center 
+      md:grid 
+      md:grid-cols-3 
+      bg-black
+      relative"
+      >
+        <div className="flex items-center justify-center w-full">
+          <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
           <CollapseMenu />
-          <h1 className="text-white text-2xl md:text-3xl  ml-2 title">
+          <h1 className="
+          text-white 
+          md:text-4xl 
+          lg:text-5xl
+          text-5xl  
+          title">
             short_Stack
           </h1>
         </div>
-        <div className="container w-72 h-24 relative left-10">
+
+        <div
+          className="
+        container 
+        h-14
+        w-auto
+        relative
+        ">
           <input
             className="bg-yellow-600"
             type="text"
             placeholder="Search Tutorials"
           />
-          <div className="search bg-yellow-400"></div>
+          <div className="search h-8 w-8
+           bg-yellow-400"></div>
         </div>
-        <div className="flex sm:justify-end sm:items-center md:col-span-1 mr-5">
+
+        <div className="flex sm:justify-end sm:items-center">
           <button
             type="button"
-            className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+            className="focus:outline-none
+            text-black
+            bg-yellow-400
+            hover:bg-yellow-500
+            focus:ring-4
+            focus:ring-yellow-300
+            font-medium
+            rounded-lg
+            text-sm
+            px-5 py-2.5
+            dark:focus:ring-yellow-900
+            w-full 
+            md:w-auto"
             data-modal-target="authentication-modal"
             onClick={openModal}
           >

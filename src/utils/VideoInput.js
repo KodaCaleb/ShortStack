@@ -18,7 +18,7 @@ export default function VideoInput(props) {
   };
 
   return (
-    <div className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-2xl justify-center bg-black">
+    <div className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-black">
       <h3 className=" bg-yellow-950 rounded-2xl p-4 mt-5 text-center italic">720x1280 resolution or higher 
       <br></br>Up to 5 minutes 
       <br></br>Less than 2 GB</h3>

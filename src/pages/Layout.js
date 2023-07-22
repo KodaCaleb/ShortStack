@@ -18,7 +18,7 @@ export default function Layout() {
 
     return (
         <>
-        <div className="bg h-full w-full flex flex-col">
+        <div className="flex flex-col">
             <NavBar />
             <div className="flex-grow">
                 <Outlet />

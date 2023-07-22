@@ -1,7 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&family=Roboto:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nabla&family=Roboto+Mono:wght@700&family=Roboto:wght@500&display=swap');
+
+/* @font-face {
+  font-family: "Nabia";
+  src: url("./fonts/Nabla-Regular-VariableFont_EDPT\,EHLT.ttf")format("truetype");
+  src: url("./fonts/Nabla-Regular.ttf") format("truetype");
+} */
 
 
 html {
@@ -43,8 +49,9 @@ html {
 
 
 .title {
-  animation: shaking .5s steps(6, end) infinite;
+  animation: shaking .6s steps(6, end) infinite;
   mix-blend-mode: screen;
+  font-family: 'Nabla', cursive;
 }
 
 h1{

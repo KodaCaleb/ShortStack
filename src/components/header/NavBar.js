@@ -16,7 +16,7 @@ function Navbar() {
       <nav className="sm:flex sm:justify-between sm:items-center md:grid md:grid-cols-3 w-full p-4 bg-black">
         <div className="flex items-center">
           <CollapseMenu />
-          <h1 className="text-white text-2xl md:text-3xl  ml-2 title">
+          <h1 className="text-white md:text-4xl text-3xl ml-2 title">
             short_Stack
           </h1>
         </div>
@@ -31,7 +31,18 @@ function Navbar() {
         <div className="flex sm:justify-end sm:items-center md:col-span-1 mr-5">
           <button
             type="button"
-            className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+            className="focus:outline-none
+            text-black
+            bg-yellow-400
+            hover:bg-yellow-500
+            focus:ring-4
+            focus:ring-yellow-300
+            font-medium
+            rounded-lg
+            text-sm
+            px-5 py-2.5
+            dark:focus:ring-yellow-900
+            w-full md:w-auto"
             data-modal-target="authentication-modal"
             onClick={openModal}
           >

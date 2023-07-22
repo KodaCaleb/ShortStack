@@ -15,9 +15,7 @@ function Navbar() {
     <header className="w-full">
       <nav
       className="
-      border-4
-      sm:flex 
-      sm:flex-col
+      w-full 
       pt-4
       pb-4
       pl-14
@@ -25,16 +23,14 @@ function Navbar() {
       sm:items-center 
       md:grid 
       md:grid-cols-3 
-      w-full 
       bg-black
       relative"
       >
-        <div className="flex items-center justify-center">
-          <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-25 filter blur"></div>
+        <div className="flex items-center justify-center w-full">
+          <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
           <CollapseMenu />
           <h1 className="
           text-white 
-          sm:text-xs
           md:text-5xl 
           text-5xl 
           ml-2 
@@ -46,7 +42,6 @@ function Navbar() {
         <div
           className="
         container 
-        w-9/12 
         h-24 
         relative
         ">

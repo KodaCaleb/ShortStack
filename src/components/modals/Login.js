@@ -1,5 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import SignUpModal from "./SignUp";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 
 export default function LoginModal({ isOpen, closeModal }) {
   const [modalMode, setModalMode] = useState (false);

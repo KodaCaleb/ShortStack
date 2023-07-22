@@ -20,8 +20,20 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
-
   const [selectedFileName, setSelectedFileName] = useState("");
+    
+    // Firebase authentication method to create a new user
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {

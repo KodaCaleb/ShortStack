@@ -64,7 +64,7 @@ export default function SignUpModal({closeModal, toggleModalMode}) {
             type="password" placeholder="password"
           />
               <div className="flex mt-6 justify-center text-xs">
-            <a href="#" className="text-blue-499 hover:text-yellow-300" onClick={toggleModalMode}>
+            <a href="/#" className="text-blue-499 hover:text-yellow-300" onClick={toggleModalMode}>
               Back to Login
             </a>
           </div>

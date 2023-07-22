@@ -8,8 +8,8 @@ import AccountModal from './Account';
 // import AccountModal from './Account';
 
 export default function UserProfileHeading() {
-  const [isImageHovered, setIsImageHovered] = useState(false);
-  const [isImageEditable, setIsImageEditable] = useState(false);
+  const [isPhotoHovered, setIsPhotoHovered] = useState(false);
+  const [isPhotoEditable, setIsPhotoEditable] = useState(false);
   const [isUsernameHovered, setIsUsernameHovered] = useState(false);
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [isBioHovered, setIsBioHovered] = useState(false);
@@ -28,7 +28,7 @@ export default function UserProfileHeading() {
     setBlurBackground(false);
   };
 
-  const [image, setImage] = useState(
+  const [photo, setPhoto] = useState(
     process.env.PUBLIC_URL + '/pancakeholder.img.png'
   );
   const [username, setUsername] = useState("Username");
@@ -63,22 +63,22 @@ export default function UserProfileHeading() {
   }
 
 
-  const handleImageMouseEnter = () => {
-    setIsImageHovered(true);
+  const handlePhotoMouseEnter = () => {
+    setIsPhotoHovered(true);
   };
 
-  const handleImageMouseLeave = () => {
-    setIsImageHovered(false);
+  const handlePhotoMouseLeave = () => {
+    setIsPhotoHovered(false);
   };
 
-  const handleImageClick = (e) => {
+  const handlePhotoClick = (e) => {
     e.preventDefault();
-    setIsImageEditable(!isImageEditable);
+    setIsPhotoEditable(!isPhotoEditable);
   };
 
-  const handleImageUpload = (e) => {
+  const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
-    // TODO add code to handle saving image and to use setImage useState
+    // TODO add code to handle saving photo and to use setPhoto useState
   };
 
   const handleUsernameMouseEnter = () => {
@@ -112,20 +112,20 @@ export default function UserProfileHeading() {
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
           <div
             className="self-start rounded-full relative flex items-center justify-center px-4 max-w-[150px] max-h-[150px] border border-white bg-yellow-400"
-            onMouseEnter={handleImageMouseEnter}
-            onMouseLeave={handleImageMouseLeave}
-            onClick={handleImageClick}
+            onMouseEnter={handlePhotoMouseEnter}
+            onMouseLeave={handlePhotoMouseLeave}
+            onClick={handlePhotoClick}
           >
-            {isImageEditable ? (
+            {isPhotoEditable ? (
               <>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="photo/*"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  onChange={handleImageUpload}
+                  onChange={handlePhotoUpload}
                 />
                 <img
-                  src={image}
+                  src={photo}
                   alt="self"
                   className="w-full h-full object-cover rounded-full"
                 />
@@ -133,11 +133,11 @@ export default function UserProfileHeading() {
             ) : (
               <>
                 <img
-                  src={image}
+                  src={photo}
                   alt="self"
                   className="w-full h-full object-cover rounded-full"
                 />
-                {isImageHovered && (
+                {isPhotoHovered && (
                   <div className="absolute top-2 right-2">
                     <FaPencilAlt className="text-xl text-white" />
                   </div>

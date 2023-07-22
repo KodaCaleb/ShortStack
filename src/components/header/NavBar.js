@@ -1,11 +1,9 @@
 import { useState, useContext } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
+import HandleLogout from "../../utils/Logout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
 // import "../../App.css";
 
 function Navbar() {
@@ -20,17 +18,6 @@ function Navbar() {
   const closeModal = () => {
     setModalOpen(false);
   };
-
-const handleLogout = async () => {
-  // Firebase method to sign the user out
-  await signOut(auth).then(() => {
-      alert("You have been signed out successfully.")
-      // ToDo: add conditional rendering for page routing
-  })
-  .catch((error) => {
-      console.log(error)
-  });
-};
 
   return (
     <header className="w-full header-glow">
@@ -55,7 +42,7 @@ const handleLogout = async () => {
               type="button"
               className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
               data-modal-target="authentication-modal"
-              onClick={handleLogout}>
+              onClick={HandleLogout}>
               Logout
           </button>
           ) : (

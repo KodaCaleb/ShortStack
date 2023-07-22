@@ -8,7 +8,7 @@ import {
   setDoc,
   runTransaction,
 } from "firebase/firestore";
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
 
 export default function EditAccount() {
   const [firstName, setFirstName] = useState("");
@@ -20,37 +20,40 @@ export default function EditAccount() {
   const [photo, setPhoto] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
 
+  const auth = getAuth();
+  const user = auth.currentUser;
+  console.log(user)
+  if(user!== null) {
+    //   const displayName = user.
+      const email = user.email
+      const firstName = user.firstName
+      const lastName = user.lastName
+
+    //   const userId = User.getToken()
+  }
+
+
   // Event handlers for users entering data
   const handleEditAccount = async (e) => {
     e.preventDefault();
 
-    const auth = getAuth();
-    updateProfile(auth.currentUser, {
-      displayName: "Jane Q. User",
-      photoURL: "https://example.com/jane-q-user/profile.jpg",
-    })
-      .then(() => {
-        // Profile updated!
-        // ...
-      })
-      .catch((error) => {
-        // An error occurred
-        // ...
-      });
 
-    // Generate a unique user ID (replace this with your method to generate user IDs)
-    const userId = "the_user_id";
-    const accountData = {
-      firstName,
-      lastName,
-      email,
-      password,
-    };
-    const profileData = {
-      username,
-      bio,
-      photo,
-    };
+
+
+
+    // updateProfile(auth.currentUser, {
+    //   displayName: "Jane Q. User",
+    //   photoURL: "https://example.com/jane-q-user/profile.jpg",
+    // })
+    //   .then(() => {
+    //     // Profile updated!
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     // An error occurred
+    //     // ...
+    //   });
+
   };
 
 

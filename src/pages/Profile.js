@@ -125,7 +125,7 @@ export default function UserProfileHeading() {
                   onChange={handlePhotoUpload}
                 />
                 <img
-                  src={photo}
+                  src={profileData?.photo}
                   alt="self"
                   className="w-full h-full object-cover rounded-full"
                 />
@@ -133,7 +133,7 @@ export default function UserProfileHeading() {
             ) : (
               <>
                 <img
-                  src={photo}
+                  src={profileData?.photo}
                   alt="self"
                   className="w-full h-full object-cover rounded-full"
                 />
@@ -156,12 +156,12 @@ export default function UserProfileHeading() {
               {isUsernameEditable ? (
                 <input
                   type="text"
-                  defaultValue={username}
+                  defaultValue={profileData?.username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               ) : (
                 <>
-                  <span className="text-xl">{username}</span>
+                  <span className="text-xl">{profileData?.username}</span>
                   {isUsernameHovered && (
                     <div className="absolute top-2 right-2">
                       <FaPencilAlt className="text-xl text-white" />
@@ -179,12 +179,12 @@ export default function UserProfileHeading() {
               {isBioEditable ? (
                 <input
                   type="text"
-                  defaultValue={bioInfo}
+                  defaultValue={profileData?.bioInfo}
                   onChange={(e) => setBioInfo(e.target.value)}
                 />
               ) : (
                 <>
-                  {bioInfo}
+                  {profileData?.bioInfo}
                   {isBioHovered && (
                     <div className="absolute top-2 right-2">
                       <FaPencilAlt className="text-xl text-white" />

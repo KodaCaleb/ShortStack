@@ -38,7 +38,7 @@ export default function UserProfileHeading() {
   const [bioInfo, setBioInfo] = useState('Here for the lulz');
 
 // starting framework to get fields from profile document
-  const userProfileRef = doc(firestore, 'Users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
+  const userProfileRef = doc(firestore, 'users', '1AgshjHIigujTKEXtVQR', 'userInfo', 'profile');
   // use the UseDocumentOnce hook 
   const [profile, loading, error] = useDocumentOnce(userProfileRef);
 

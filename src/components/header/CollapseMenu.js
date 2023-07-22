@@ -21,16 +21,16 @@ export default function CollapseMenu() {
                   <a href="/">Explore</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                  <a href="/">Bookmarked</a>
+                  <a href="/favorites">Bookmarked</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
                   <a href="/Upload">Upload</a>
                 </li>
                 <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
-                  <a href="/">My Account</a>
+                  <a href="/profile">My Profile</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                  <a href="/">Logout</a>
+                  <a href="/logout">Logout</a>
                 </li>
               </div>
             </ul>

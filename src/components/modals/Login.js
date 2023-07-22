@@ -49,7 +49,7 @@ export default function LoginModal({ isOpen, closeModal }) {
           className=" border-white border relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
           action=""
         >
-          <label className="font-semibold text-xs" HtmlFor="usernameField">
+          <label className="font-semibold text-xs" htmlFor="usernameField">
             {" "}
             Email
           </label>
@@ -59,7 +59,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label className="font-semibold text-xs pt-5" HtmlFor="passwordField">
+          <label className="font-semibold text-xs pt-5" htmlFor="passwordField">
             {" "}
             Password
           </label>

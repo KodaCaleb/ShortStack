@@ -179,12 +179,12 @@ export default function UserProfileHeading() {
               {isBioEditable ? (
                 <input
                   type="text"
-                  defaultValue={profileData?.bioInfo}
+                  defaultValue={profileData?.bio}
                   onChange={(e) => setBioInfo(e.target.value)}
                 />
               ) : (
                 <>
-                  {profileData?.bioInfo}
+                  {profileData?.bio}
                   {isBioHovered && (
                     <div className="absolute top-2 right-2">
                       <FaPencilAlt className="text-xl text-white" />

@@ -20,23 +20,23 @@ export default function LoginModal({ isOpen, closeModal }) {
     e.preventDefault()
 
     if (!email || !password) {
-      alert("Please fill in all required fields");
-      return;
+        alert("Please fill in all required fields");
+        return;
     }
 
     // Firebase authenticator to log in a user
     await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user, ": is now logged in!");
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user, ": is now logged in!");
 
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  };
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
+};
 
   return (
     <>
@@ -54,7 +54,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             Email
           </label>
           <input
-            className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+            className="flex items-center text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

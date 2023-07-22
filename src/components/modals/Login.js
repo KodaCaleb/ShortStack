@@ -12,6 +12,10 @@ export default function LoginModal({ isOpen, closeModal }) {
     setModalMode(!modalMode)
   }
 
+  if (!isOpen) {
+    return null;
+  }
+
   const handleLoginForm = async (e) => {
     e.preventDefault()
 
@@ -47,7 +51,7 @@ export default function LoginModal({ isOpen, closeModal }) {
         >
           <label className="font-semibold text-xs" HtmlFor="usernameField">
             {" "}
-            Username or Email
+            Email
           </label>
           <input
             className="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
@@ -65,7 +69,10 @@ export default function LoginModal({ isOpen, closeModal }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="flex items-center justify-center h-12 px-6  w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400">
+          <button
+            type="button"
+            onClick={handleLoginForm}
+            className="flex items-center justify-center h-12 px-6  w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400">
             Login
           </button>
           <div className="flex mt-6 justify-center text-xs">

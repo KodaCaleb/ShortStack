@@ -4,8 +4,6 @@ import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 
-// import "../../App.css";
-
 function Navbar() {
   const { isLoggedIn } = useContext(AuthContext);
   console.log("Login status:", isLoggedIn)

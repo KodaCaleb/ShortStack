@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
+import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 // import "../../App.css";
+
 function Navbar() {
+  const { isLoggedIn } = useContext(AuthContext);
+  // console.log("THIS IS THE LOG IN STATUS:", isLoggedIn);
+
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
   };
+
   const closeModal = () => {
     setModalOpen(false);
   };
+
   return (
     <header className="w-full header-glow">
       <nav className="sm:flex sm:justify-between sm:items-center md:grid md:grid-cols-3 w-full p-4 bg-black">

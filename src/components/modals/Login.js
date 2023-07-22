@@ -11,21 +11,39 @@ export default function LoginModal({ isOpen, closeModal }) {
   const toggleSignUpMode = () => {
     setModalMode(!modalMode)
   }
-  
-  if (!isOpen) {
-    return null;
-  }
+
+  const handleLoginForm = async (e) => {
+    e.preventDefault()
+
+    if (!email || !password) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    // Firebase authenticator to log in a user
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user, ": is now logged in!");
+
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
+
   return (
     <>
       {/* Modal */}
 
       <div className="absolute z-10 flex flex-col items-center justify-center text-white h-screen w-screen bg-black bg-opacity-80 backdrop-blur-sm">
         {modalMode ? (
-          <SignUpModal isOpen={isOpen} closeModal={closeModal} toggleModalMode={toggleSignUpMode}/>
+          <SignUpModal isOpen={isOpen} closeModal={closeModal} toggleModalMode={toggleSignUpMode} />
         ) : (<form
           className=" border-white border relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
           action=""
-          
         >
           <label className="font-semibold text-xs" HtmlFor="usernameField">
             {" "}
@@ -60,10 +78,9 @@ export default function LoginModal({ isOpen, closeModal }) {
             </a>
           </div>
           <button className=" absolute top-2 right-2 px-2 py-2" onClick={closeModal}>
-           X
+            X
           </button>
         </form>)}
-        
       </div>
     </>
   );

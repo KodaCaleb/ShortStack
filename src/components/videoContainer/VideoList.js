@@ -26,10 +26,10 @@ export default function VideoList() {
   }, []);
 
   return (
-    <div className="h-screen w-full border-4 border-red-600 flex p-4 justify-center items-center">
-      <div className="flex  w-full flex-row border-4 border-yellow-300 h-3/4">
-        <div className=" h-full rounded-2xl p-2 w-full border-4 border-cyan-200">
-          <div className="app_videos snap-y snap-mandatory h-full w-full relative rounded-2xl overflow-scroll border-4 border-indigo-400">
+    <div className="h-screen w-full flex p-4 justify-center items-center">
+      <div className="flex  w-full flex-row h-3/4">
+        <div className=" h-full rounded-2xl p-2 w-full">
+          <div className="app_videos snap-y snap-mandatory h-full w-full relative rounded-2xl overflow-scroll">
             {videos.map((video) => (
               <PostContainer key={video.id} videoData={video} />
             ))}

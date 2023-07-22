@@ -31,9 +31,9 @@ function Navbar() {
           <CollapseMenu />
           <h1 className="
           text-white 
-          md:text-5xl 
-          text-5xl 
-          ml-2 
+          md:text-4xl 
+          lg:text-5xl
+          text-5xl  
           title">
             short_Stack
           </h1>
@@ -42,7 +42,8 @@ function Navbar() {
         <div
           className="
         container 
-        h-24 
+        h-14
+        w-auto
         relative
         ">
           <input
@@ -50,7 +51,8 @@ function Navbar() {
             type="text"
             placeholder="Search Tutorials"
           />
-          <div className="search bg-yellow-400"></div>
+          <div className="search h-8 w-8
+           bg-yellow-400"></div>
         </div>
 
         <div className="flex sm:justify-end sm:items-center">
@@ -67,7 +69,8 @@ function Navbar() {
             text-sm
             px-5 py-2.5
             dark:focus:ring-yellow-900
-            w-full md:w-auto"
+            w-full 
+            md:w-auto"
             data-modal-target="authentication-modal"
             onClick={openModal}
           >

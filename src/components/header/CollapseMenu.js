@@ -12,8 +12,8 @@ export default function CollapseMenu() {
         <ul className="main p-0 relative list-none inline-block ">
           <li className="relative inline-block  mr-2 cursor-pointer z-5 w-20">
             <img className="h-14 w-11/12 cursor-pointer " src={PancakeLogo} alt="" />
-            <ul className="drop list-none absolute left-0 z-0">
-              <div className="relative">
+            <ul className="drop top-12  list-none absolute left-0 z-10">
+              <div className="relative p-2 ">
                 <li className="text-white text-center block p-0 align-middle rounded-lg mt-3">
                   <a href="/">Following</a>
                 </li>

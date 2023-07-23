@@ -70,9 +70,8 @@ function Navbar() {
               className="focus:outline-none
             text-black
             bg-yellow-400
-            hover:bg-yellow-500
             focus:ring-4
-            focus:ring-yellow-300
+            hover:bg-yellow-500 focus:ring-yellow-300 ease-in-out duration-500
             font-medium
             rounded-lg
             text-sm

@@ -142,7 +142,7 @@ export default function UserProfileHeading() {
           <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
             {/* stack of username and bio */}
             <div
-              className="relative p-1 my-2 text-white"
+              className="username-floating relative text-white"
               onMouseEnter={handleUsernameMouseEnter}
               onMouseLeave={handleUsernameMouseLeave}
               onClick={handleUsernameClick}
@@ -155,7 +155,7 @@ export default function UserProfileHeading() {
                 />
               ) : (
                 <>
-                  <span className="text-xl">{username}</span>
+                  <span className="text-5xl text-amber-300">{username}</span>
                   {isUsernameHovered && (
                     <div className="absolute top-2 right-2">
                       <FaPencilAlt className="text-xl text-white" />
@@ -165,7 +165,7 @@ export default function UserProfileHeading() {
               )}
             </div>
             <div
-              className="relative p-1 text-white"
+              className="bio-floating relative p-1 text-white"
               onMouseEnter={handleBioMouseEnter}
               onMouseLeave={handleBioMouseLeave}
               onClick={handleBioClick}
@@ -189,7 +189,7 @@ export default function UserProfileHeading() {
             </div>
             <button
           type="button"
-          className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4"
+          className="focus:outline-none text-black bg-amber-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4"
           data-modal-target="authentication-modal"
           onClick={openModal}
         >

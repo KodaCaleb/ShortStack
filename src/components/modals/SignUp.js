@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -92,8 +92,10 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       // Reference the "Users" collection in Firestore
       const usersCollection = collection(firestore, "Users");
 
+      const userDocRef = doc(usersCollection, uid)
+
       // Add the user data to Firestore using the uid as the document ID
-      await addDoc(usersCollection, { ...userInfo, uid });
+      await setDoc(userDocRef, userInfo);
 
       console.log("User data added to Firestore successfully.");
     } catch (error) {

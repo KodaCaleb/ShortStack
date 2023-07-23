@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { firestore, auth } from "../firebase";
 import {
   collection,
@@ -11,35 +11,37 @@ import {
 import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
 
 export default function EditAccount() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
 
+  const firstNameRef = useRef()
+
   const auth = getAuth();
   const user = auth.currentUser;
   console.log(user)
-  if(user!== null) {
-    //   const displayName = user.
-      const email = user.email
-      const firstName = user.firstName
-      const lastName = user.lastName
+  
+  useEffect(() => {
+    if(user) {
+        setFirstName(user.firstName || "");
+        setLastName(user.lastName || "");
+        setEmail(user.email || "");
+        setUsername(user.username || "");
+        //   const userId = User.getToken()
+        
+    }
+  }, [user])
 
-    //   const userId = User.getToken()
-  }
 
 
   // Event handlers for users entering data
   const handleEditAccount = async (e) => {
     e.preventDefault();
-
-
-
-
 
     // updateProfile(auth.currentUser, {
     //   displayName: "Jane Q. User",
@@ -53,16 +55,15 @@ export default function EditAccount() {
     //     // An error occurred
     //     // ...
     //   });
+    // const handleImageChange = (e) => {
+    //     const file = e.target.files[0];
+    //     setPhoto(file);
+    //     setSelectedFileName(file.name);
+    //   };
 
   };
 
 
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setPhoto(file);
-    setSelectedFileName(file.name);
-  };
 
   return (
     <>
@@ -84,8 +85,9 @@ export default function EditAccount() {
                 className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 id="firstName"
                 type="text"
+                name="firstName"
+                ref={firstNameRef}
                 placeholder="First Name"
-                value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
@@ -176,7 +178,6 @@ export default function EditAccount() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleImageChange}
                 style={{ display: "none" }}
               />
               <button

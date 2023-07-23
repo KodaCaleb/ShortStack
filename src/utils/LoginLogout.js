@@ -3,21 +3,20 @@ import { auth } from "../firebase";
 import { useContext } from "react";
 import AuthContext from "../utils/AuthContext"; // Import the AuthContext
 
+
+export const HandleLogout = async () => {
+    // Firebase method to sign the user out
+    await signOut(auth)
+    .then(() => {
+        alert("You have been signed out successfully.");
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+};
+
 export default function LoginLogout(props) {
     const { isLoggedIn } = useContext(AuthContext);
-
-    const HandleLogout = async () => {
-
-        // Firebase method to sign the user out
-        await signOut(auth).then(() => {
-            alert("You have been signed out successfully.")
-            // ToDo: add conditional rendering for page routing
-        })
-            .catch((error) => {
-                console.log(error)
-            });
-
-    }
 
     // Firebase authenticator to log in a user
     const HandleLogin = async () => {
@@ -37,8 +36,8 @@ export default function LoginLogout(props) {
                 const errorCode = error.code;
                 const errorMessage = error.message;
             })
-
     }
+
     return (
         <div>
             {isLoggedIn ? (

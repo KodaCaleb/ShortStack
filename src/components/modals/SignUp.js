@@ -2,13 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { firestore, auth } from "../../firebase";
 import { IoIosArrowBack } from "react-icons/io";
-import {
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  runTransaction,
-} from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, runTransaction } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
@@ -23,39 +17,48 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [photoURL, setPhotoURL] = useState("");
-
+  
   // const [emailVerified, setEmailVerified] = useState(""); <-- this is for account display only signup will send out an auto generated email
   // const [uid, setUid] = useState(""); <-- this is for account display
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !email || !password || !displayName || !bio) {
+    
+    if (!firstName || !lastName || !bio || !displayName || !email || !password || !phoneNumber) {
       alert("Please fill in all required fields");
       return;
     }
 
-    // Firebase authentication method to create a new user
-    createUserWithEmailAndPassword(auth, email, password)
+    try {
+      // Creates a new user in the Firebase authenticator
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+
+        // Update the user's displayName, phoneNumber, and photoURL (if one is provided)
+        
 
         // Signed in
         const user = userCredential.user;
         console.log(user);
-        const userId = user.uid;
+        
+        
+        const uid = userCredential.user.uid;
         const userInfo = {
           firstName,
           lastName,
           bio,
         };
-        addUserToFirestore(userId, userInfo);
+        addUserToFirestore(uid, userInfo);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.error("Error creating user:", errorCode, errorMessage);
       });
-  };
-
+    };
+    
+  }
   // Sending user input to create account and profile document
   const addUserToFirestore = async (userId, userInfo) => {
     try {

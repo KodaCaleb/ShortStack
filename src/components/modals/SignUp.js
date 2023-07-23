@@ -35,12 +35,19 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
 
-        // Update the user's displayName, phoneNumber, and photoURL (if one is provided)
-        
-
         // Signed in
         const user = userCredential.user;
         console.log(user);
+
+        // Update the user's displayName, phoneNumber, and photoURL (if one is provided)
+        await updateProfile(user, {
+          displayNAme: displayName,
+          phoneNumber: phoneNumber,
+          photoURL: photoURL,
+        });
+
+        console.log("User profile updated successfully with displayName and phoneNumber and photoURL.");
+
         
         
         const uid = userCredential.user.uid;

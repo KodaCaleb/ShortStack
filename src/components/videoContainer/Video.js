@@ -27,8 +27,10 @@ export default function Video({ videoData }) {
 
   // Function to update video progress as it plays
   const handleTimeUpdate = () => {
-    const progress = videoRef.current.currentTime / videoRef.current.duration;
-    setProgress(progress);
+    if (videoRef.current.duration > 0) {
+      const progress = videoRef.current.currentTime / videoRef.current.duration;
+      setProgress(progress);
+    }
   };
 
   // Function to scrub through video when progress bar is clicked
@@ -55,7 +57,7 @@ export default function Video({ videoData }) {
   };
 
   return (
-    <div className="w-1/2 h-full videoContainer">
+    <div className="w-1/4 mb-4 h-full mt-4 videoContainer">
       <div className="video-container relative">
         <video
           className="object-fill rounded w-auto h-auto"
@@ -80,9 +82,8 @@ export default function Video({ videoData }) {
           onChange={handleVolumeChange}
           className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200" // Apply similar hover effect as progress bar
         />
+        
       </div>
     </div>
   );
 }
-
-// className="w-full video-progress" ref={progressRef} value={progress} max="1" onClick={handleScrub}>

@@ -6,6 +6,7 @@ import {
   getDoc,
   runTransaction,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
@@ -53,7 +54,7 @@ export default function PostContainer({ videoData }) {
     };
 
     checkIfLiked();
-  }, [videoData, uid, loading]); // Add loading as a dependency
+  }, [videoData, uid, loading]);
 
   async function likeVideo(videoId, userId) {
     if (videoId && userId && !loading) { // ensure neither is undefined or loading
@@ -81,10 +82,30 @@ export default function PostContainer({ videoData }) {
     }
   }
 
+  async function unlikeVideo(videoId, userId) {
+    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+      const videoRef = doc(firestore, "videos", videoId);
+      const likeRef = doc(videoRef, "likes", userId);
+
+      await deleteDoc(likeRef); // Remove the user's like from the Firestore
+
+      await runTransaction(firestore, async (transaction) => {
+        const videoDoc = await transaction.get(videoRef);
+        if (!videoDoc.exists()) {
+          throw "Document does not exist!";
+        }
+
+        const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
+        transaction.update(videoRef, { likes: newLikesCount });
+      });
+
+      setUserHasLiked(false); // set userHasLiked to false after a successful unlike action
+    }
+  }
+
   return (
     <div className="flex justify-center flex-row snap start">
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
-        {/* How can we import the username variable here? */}
         {userData && (
           <div className="username pt-20 text-amber-200 text-xl">
             <p>
@@ -105,7 +126,7 @@ export default function PostContainer({ videoData }) {
             onClick={() => {
               console.log('videoData.id:', videoData.id); // debugging logs
               console.log('uid:', uid);
-              likeVideo(videoData.id, uid);
+              unlikeVideo(videoData.id, uid); // Call the unlikeVideo function
             }}
           />
         ) : (
@@ -133,4 +154,5 @@ export default function PostContainer({ videoData }) {
     </div>
   );
 }
+
 

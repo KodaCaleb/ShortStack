@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from 'react-icons/fa';
 import PostContainer from "../components/videoContainer/PostContainer"
 import { firestore } from "../firebase"
@@ -15,8 +16,11 @@ export default function UserProfileHeading() {
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isBlurBackground, setBlurBackground] = useState(false);
- 
+  const [isBlurBackground, setBlurBackground] = useState(false);  
+  
+  const { isLoggedIn, user } = useContext(AuthContext); // This is the global user id reference
+  const { uid, displayName, email, photoURL, emailVerified } = user;
+  
   const openModal = () => {
     console.log("modal should open");
     setModalOpen(true);

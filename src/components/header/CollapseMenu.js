@@ -1,11 +1,16 @@
 import PancakeLogo from "../../assets/pancakeLogo.png";
-import { useState } from "react";
+import { HandleLogout } from "../../utils/LoginLogout";
+import { useState, useContext } from "react";
+import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
+
 export default function CollapseMenu() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
     console.log(isMenuOpen);
   };
+
   return (
     <>
       <div>
@@ -21,19 +26,26 @@ export default function CollapseMenu() {
                   <a href="/">Explore</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                  <a href="/">Favorites</a>
+                  <a href="/favorites">Favorites</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
                   <a href="/Upload">Upload</a>
                 </li>
                 <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
-                  <a href="/">Profile</a>
+                  <a href="/profile">Profile</a>
+                </li>
+                <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
+                  <a href="/account">Account</a>
                 </li>
                 <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
                   <a href="/account">Edit Account</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                  <a href="/logout">Logout</a>
+                  {isLoggedIn ? (
+                    <a onClick={HandleLogout} >Logout</a>
+                  ) : (
+                    <a href="/login">Login</a>
+                  )}
                 </li>
               </div>
             </ul>

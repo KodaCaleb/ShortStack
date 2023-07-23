@@ -6,17 +6,29 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(null);
-    const [uid, setUid] = useState(null)
+    const [userInfo, setUserInfo] = useState(null);
+    // const [emailVerified, setEmailVerified] = useState(null); <--- stretch goal for email confirmation
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // If user is signed in then...
             if (user) {
-                const uid = user.uid
-                setUid(uid)
+                // Conditional rules for a user that is logged in
                 setIsLoggedIn(true);
+
+                // List global props here
+                const userInfo = {
+                uid: user.uid,
+                displayName: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+                emailVerified: user.emailVerified,
+                }
             } else {
-                // User is signed out
+                // Conditional rules for a User that is logged out
                 setIsLoggedIn(false);
+                setUserInfo(null);
+                
             }
         });
 
@@ -24,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, uid }}>
+        <AuthContext.Provider value={{ isLoggedIn, userInfo }}>
             {children}
         </AuthContext.Provider>
     );

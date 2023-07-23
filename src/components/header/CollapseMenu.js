@@ -1,11 +1,16 @@
 import PancakeLogo from "../../assets/pancakeLogo.png";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import HandleLogout from "../../utils/LoginLogout";
+import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
+
 export default function CollapseMenu() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
     console.log(isMenuOpen);
   };
+
   return (
     <>
       <div>
@@ -30,7 +35,11 @@ export default function CollapseMenu() {
                   <a href="/">Profile</a>
                 </li>
                 <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                  <a href="/logout">Logout</a>
+                  {isLoggedIn ? (
+                    <a onClick={HandleLogout} >Logout</a>
+                  ) : (
+                    <a href="/login">Login</a>
+                  )}
                 </li>
               </div>
             </ul>

@@ -132,7 +132,7 @@ body {
   transition: all 0.5s 0.1s;
 }
 .drop li {
-  background: #9e570c39 !important;
+  background: #28160379 !important;
 }
 
 /* Hover styles for each list item */
@@ -305,15 +305,4 @@ body {
   background: #FACC15;
   border-radius: 20px;
 }
-
-.plate {
-  background:#D3EBEA;
-  border-radius:6px 6px 2rem 2rem;
-}
-  .plate-bottom{
-    content:'';
-    background: #bbcdcc;
-    top:100%;
-    margin-left:-70px;
-  }
  

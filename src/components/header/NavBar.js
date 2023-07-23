@@ -22,15 +22,17 @@ function Navbar() {
       <nav
         className="
       w-full 
-      pt-4
-      pb-4
-      pl-14
-      pr-14
+      py-4
+      px-2
       sm:items-center 
+      sm:ease-linear
       md:grid 
       md:grid-cols-3 
+      sm:transition-all
+      duration-500
       bg-black
-      relative"
+      relative
+      "
       >
         <div className="flex items-center justify-center w-full">
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
@@ -71,7 +73,9 @@ function Navbar() {
             text-black
             bg-yellow-400
             focus:ring-4
-            hover:bg-yellow-500 focus:ring-yellow-300 ease-in-out duration-500
+            hover:bg-yellow-500 focus:ring-yellow-300 
+            hover:rounded-3xl
+            ease-in-out duration-500
             font-medium
             rounded-lg
             text-sm

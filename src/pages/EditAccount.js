@@ -9,7 +9,7 @@ import {
   setDoc,
   runTransaction,
 } from "firebase/firestore";
-import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
 
 export default function EditAccount() {
   const [user, setUser] = useState(null);
@@ -29,12 +29,11 @@ export default function EditAccount() {
 
   useEffect(() => {
     //Unsubscribe listener to track changes to authentication state
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
           //user info from firestore and auth user info
           const userDocRef = doc(firestore, "Users", user.uid);
-          const userDocSnapshot = await getDoc(userDocRef);
+          const userDocSnapshot = getDoc(userDocRef);
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
             setFirstName(userData.firstName || "");
@@ -54,8 +53,6 @@ export default function EditAccount() {
         setUser(null);
         setIsLoading(false)
       }
-    });
-    return () => unsubscribe();
   }, [auth]);
 
   // Event handlers for users entering data

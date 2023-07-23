@@ -133,8 +133,8 @@ export default function UserProfileHeading() {
                   className="w-full h-full object-cover rounded-full"
                 />
                 {isImageHovered && (
-                  <div className="absolute top-2 right-2">
-                    <FaPencilAlt className="text-xl text-white opacity-70 hover:opacity-50 cursor-pointer" />
+                  <div className="absolute bottom-1 right-1">
+                    <FaPencilAlt className="text-xl text-white opacity-70 hover:opacity-100 cursor-pointer" />
                   </div>
                 )}
               </>

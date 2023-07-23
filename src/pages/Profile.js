@@ -16,18 +16,11 @@ export default function UserProfileHeading() {
   const [isBioHovered, setIsBioHovered] = useState(false);
   const [isBioEditable, setIsBioEditable] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isBlurBackground, setBlurBackground] = useState(false);
- 
-  const { isLoggedIn, userInfo } = useContext(AuthContext); // This is the global user id reference
-  const { uid, displayName, email, photoURL, emailVerified } = userInfo;
+  const [isBlurBackground, setBlurBackground] = useState(false);  
   
-  if (isLoggedIn && userInfo) {
-  }
-
-  console.log("User ID:", uid);
+  const { isLoggedIn, user } = useContext(AuthContext); // This is the global user id reference
+  const { uid, displayName, email, photoURL, emailVerified } = user;
   
-
-
   const openModal = () => {
     console.log("modal should open");
     setModalOpen(true);

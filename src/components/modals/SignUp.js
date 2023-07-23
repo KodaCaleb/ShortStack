@@ -12,27 +12,33 @@ import {
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
+  // Firestore DB
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [bio, setBio] = useState("");
+
+  // Authenticator DB
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [selectedFileName, setSelectedFileName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+
+  // const [emailVerified, setEmailVerified] = useState(""); <-- this is for account display only signup will send out an auto generated email
+  // const [uid, setUid] = useState(""); <-- this is for account display
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !email || !password || !username || !bio) {
+    if (!firstName || !lastName || !email || !password || !displayName || !bio) {
       alert("Please fill in all required fields");
       return;
     }
-    
+
     // Firebase authentication method to create a new user
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-    
+
         // Signed in
         const user = userCredential.user;
         console.log(user);
@@ -49,15 +55,15 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         const errorMessage = error.message;
       });
   };
-  
+
   // Sending user input to create account and profile document
   const addUserToFirestore = async (userId, userInfo) => {
     try {
-  
+
       // Reference the "Users" collection
       const userDocRef = doc(firestore, "Users", userId);
       await setDoc(userDocRef, userInfo)
-  
+
       // Referencing the "userInfo subcollection
       const userContentCollectionRef = collection(userDocRef, "userContent")
       await addDoc(userContentCollectionRef, {})
@@ -70,10 +76,10 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   };
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setPhoto(file);
-    setSelectedFileName(file.name);
+    setPhotoURL(file);
+    // setSelectedFileName(file.name);
   };
-  
+
   return (
     <>
       {/* Modal */}
@@ -85,6 +91,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         >
           <div className="mb-4 md:flex md:justify-between">
             <div className="mb-4 md:mr-2 md:mb-0">
+
+              {/* First Name */}
               <label
                 className="block mb-2 text-sm font-bold text-yellow-300"
                 htmlFor="firstName"
@@ -101,6 +109,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               />
             </div>
             <div className="md:ml-2">
+
+              {/* Last Name */}
               <label
                 className="block mb-2 text-sm font-bold text-yellow-300"
                 htmlFor="lastName"
@@ -117,6 +127,24 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               />
             </div>
           </div>
+
+          {/* Username */}
+          <label
+            className="block mb-2 text-sm font-bold text-yellow-300"
+            htmlFor="username"
+          >
+            Username
+          </label>
+          <input
+            className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            id="username"
+            type="text"
+            placeholder="Username"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
+
+          {/* Email */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
             htmlFor="emailField"
@@ -131,6 +159,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+
+          {/* Password */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
             htmlFor="passwordField"
@@ -145,20 +175,24 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          {/* Phone Number */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="username"
+            htmlFor="passwordField"
           >
-            Username
+            {" "}
+            Phone Number
           </label>
           <input
-            className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="username"
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            type="phoneNumber"
+            placeholder="Phone Number"
+            value={phoneNumber}
+            onChange={(e) => setPassword(e.target.value)}
           />
+
+          {/* Bio */}
           <div className="mb-4">
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
@@ -175,7 +209,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               onChange={(e) => setBio(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+
+          {/* <div className="mb-4"> */}
+            {/* Photo
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
               htmlFor="photo"
@@ -199,7 +235,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 Upload Photo
               </button>
             </div>
-          </div>
+          </div> */}
+
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <a
@@ -210,7 +247,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Back to Login
             </a>
           </div>
-  
+
           {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button
@@ -221,7 +258,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Create
             </button>
           </div>
-  
+
           {/* Exit out of modal button */}
           <button
             className=" absolute top-2 right-2 px-2 py-2"

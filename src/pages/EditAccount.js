@@ -1,62 +1,50 @@
 import React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { firestore, auth } from "../firebase";
 import {
   collection,
   addDoc,
   getDoc,
   doc,
-  setDoc,
-  runTransaction,
 } from "firebase/firestore";
-import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+import AuthContext from "../utils/AuthContext";
 
 export default function EditAccount() {
-  const [user, setUser] = useState(null);
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [selectedFileName, setSelectedFileName] = useState("");
-  const [isLoading, setIsLoading] = useState(true)
+  const { user } = useContext(AuthContext);
+  console.log("Login status:", user);
 
-  const firstNameRef = useRef();
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [bio, setBio] = useState("")
 
-  const auth = getAuth();
 
   useEffect(() => {
-    //Unsubscribe listener to track changes to authentication state
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          //user info from firestore and auth user info
-          const userDocRef = doc(firestore, "Users", user.uid);
-          const userDocSnapshot = await getDoc(userDocRef);
-          if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            setFirstName(userData.firstName || "");
-            setLastName(userData.lastName || "");
-            setEmail(user.email || "");
-            setUsername(user.username || "");
-            setBio(userData.bio || "");
-            setPhoto(userData.photo || "");
-          }
-          setIsLoading(false)
-        } catch (error) {
-          // Handle any errors that occur during data fetching
-          console.error("Error fetching user data:", error);
-          setIsLoading(false); 
-        }
-      } else {
-        setUser(null);
-        setIsLoading(false)
-      }
-    });
-    return () => unsubscribe();
-  }, [auth]);
+    if (user) {
+        const getUserData = async () => {
+            try{
+                //Get firestore user data with id
+                const userDocRef = doc(firestore, "Users", user.uid);
+
+                //Get the snapshot of the document
+                const userDocSnapshot = await getDoc(userDocRef)
+
+                if(userDocSnapshot.exists()){
+                    const userData = userDocSnapshot.data();
+
+                    setFirstName(userData.firstName || "")
+                    setLastName(userData.lastName || "")
+                    setBio(userData.bio|| "")
+        
+                }
+            } catch (error){
+                console.log("error fetching user data from Firestore:", error)
+            }
+        };
+        getUserData()
+    }
+  }, [user]);
+
+
 
   // Event handlers for users entering data
   const handleEditAccount = async (e) => {
@@ -83,7 +71,8 @@ export default function EditAccount() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center text-yellow-500 ">
+    {user && user.email ? (
+        <div className="flex flex-col items-center justify-center text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> Your Account Info</h3>
         <form
           className="relative flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
@@ -101,10 +90,9 @@ export default function EditAccount() {
                 className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 id="firstName"
                 type="text"
+                value={firstName}
                 name="firstName"
-                ref={firstNameRef}
-                placeholder="First Name"
-                onChange={(e) => setFirstName(e.target.value)}
+                // onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
             <div className="md:ml-2">
@@ -120,7 +108,7 @@ export default function EditAccount() {
                 type="text"
                 placeholder="Last Name"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                // onChange={(e) => setLastName(e.target.value)}
               />
             </div>
           </div>
@@ -135,8 +123,8 @@ export default function EditAccount() {
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={user.email}
+            // onChange={(e) => setEmail(e.target.value)}
           />
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
@@ -149,8 +137,7 @@ export default function EditAccount() {
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            // onChange={(e) => setPassword(e.target.value)}
           />
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
@@ -163,8 +150,8 @@ export default function EditAccount() {
             id="username"
             type="text"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={user.displayName}
+            // onChange={(e) => setUsername(e.target.value)}
           />
           <div className="mb-4">
             <label
@@ -179,7 +166,7 @@ export default function EditAccount() {
               type="text"
               placeholder="Bio"
               value={bio}
-              onChange={(e) => setBio(e.target.value)}
+            //   onChange={(e) => setBio(e.target.value)}
             />
           </div>
 
@@ -191,7 +178,7 @@ export default function EditAccount() {
               <span> Photo</span>
             </label>
             <div>
-              <input type="file" accept="image/*" style={{ display: "none" }} />
+              <input type="file" accept="image/*" style={{ display: "none" }}  />
               <button
                 className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-300"
                 onClick={() =>
@@ -216,6 +203,10 @@ export default function EditAccount() {
           </div>
         </form>
       </div>
+    ) : (
+        <div>Loading...</div>
+    )}
+      
     </>
   );
 }

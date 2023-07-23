@@ -28,32 +28,42 @@ export default function PostContainer({ videoData }) {
 
   return (
     <div className="flex justify-center flex-row snap start">
-      <div className=" h-full rounded-3xl p-5 w-3/4 bg-black">
+      <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
         {/* How can we import the username variable here? */}
         {userData && (
-        <div className="username text-amber-200 text-xl">
-          <p>{userData.firstName} | {userData.bio}</p>
-          <p>{videoData.title}</p>
-        </div>
+          <div className="username pt-20 text-amber-200 text-xl">
+            <p>
+              {userData.firstName} | {userData.bio}
+            </p>
+            <p>{videoData.title}</p>
+          </div>
         )}
         <hr className="mt-2 mb-2" />
         <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll">
           <Video videoData={videoData} />
+          <div className="flex flex-col-reverse">
+            <a href="/">
+              <AiOutlineHeart
+                className="m-4"
+                style={{ color: "tan" }}
+                size={28}
+              />
+            </a>
+            <a href="/">
+              <BiCommentDetail
+                className="m-4"
+                style={{ color: "tan" }}
+                size={28}
+              />
+            </a>
+            <a href="/">
+              <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
+            </a>
+            <a href="/">
+              <BiShare className="m-4" style={{ color: "tan" }} size={28} />
+            </a>
+          </div>
         </div>
-      </div>
-      <div>
-        <a href="/">
-          <AiOutlineHeart className="m-5" style={{ color: "tan" }} size={32} />
-        </a>
-        <a href="/">
-          <BiCommentDetail className="m-5" style={{ color: "tan" }} size={32} />
-        </a>
-        <a href="/">
-          <BiBookmarks className="m-5" style={{ color: "tan" }} size={32} />
-        </a>
-        <a href="/">
-          <BiShare className="m-5" style={{ color: "tan" }} size={32} />
-        </a>
       </div>
     </div>
   );

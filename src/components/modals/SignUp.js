@@ -52,7 +52,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
-          displayNAme: displayName,
+          displayName: displayName,
           phoneNumber: phoneNumber,
           photoURL: photoURL,
         });
@@ -62,7 +62,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Update the user's displayName, phoneNumber
         await updateProfile(user, {
-          displayNAme: displayName,
+          displayName: displayName,
           phoneNumber: phoneNumber,
         });
 
@@ -199,17 +199,19 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Phone Number */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="passwordField"
+            htmlFor="phoneNumberField"
           >
             {" "}
             Phone Number
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="phoneNumber"
+            type="tel"
+            id="phoneNumberField"
+            name="phoneNumber"
             placeholder="Phone Number"
             value={phoneNumber}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPhoneNumber(e.target.value)}
           />
 
           {/* Bio */}
@@ -231,7 +233,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           </div>
 
           <div className="mb-4">
-            Photo
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
               htmlFor="photo"

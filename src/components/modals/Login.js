@@ -4,6 +4,9 @@ import SignUpModal from "./SignUp";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 
 export default function LoginModal({ isOpen, closeModal }) {
+  const { uid} = useContext(AuthContext); // This is the global user id reference
+  console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
+
   const { isLoggedIn } = useContext(AuthContext);
   const [modalMode, setModalMode] = useState(false);
   const [email, setEmail] = useState("");

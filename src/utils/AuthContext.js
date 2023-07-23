@@ -6,23 +6,25 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(null);
-
+    const [uid, setUid] = useState(null)
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in
-            setIsLoggedIn(true);
-        } else {
-            // User is signed out
-            setIsLoggedIn(false);
-        }
+            // If user is signed in then...
+            if (user) {
+                const uid = user.uid
+                setUid(uid)
+                setIsLoggedIn(true);
+            } else {
+                // User is signed out
+                setIsLoggedIn(false);
+            }
         });
-    
+
         return () => unsubscribe();
     }, []);
-    
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, uid }}>
             {children}
         </AuthContext.Provider>
     );

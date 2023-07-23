@@ -49,6 +49,7 @@ export default function VideoInput(props) {
             description,
             vidRef: downloadURL,
             userId: uid,
+            likes: 0,
           };
 
           try {

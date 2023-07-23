@@ -15,18 +15,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [photo, setPhoto] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
     
-    // Firebase authentication method to create a new user
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+   
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
@@ -37,41 +26,68 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       return;
     }
 
-    // Generate a unique user ID (replace this with your method to generate user IDs)
-    const userId = "the_user_id";
-    const accountData = {
-      firstName,
-      lastName,
-      email,
-      password,
-    };
-    const profileData = {
-      username,
-      bio,
-      photo,
-    };
-    addUserToFirestore(userId, accountData, profileData);
+    // Firebase authentication method to create a new user
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
 
+
+    try {
+      // Firebase authentication method to create a new user
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Use the Firebase UID as the userId
+      const userId = user.uid;
+  
+      const accountData = {
+        firstName,
+        lastName,
+        email,
+        password,
+      };
+      const profileData = {
+        username,
+        bio,
+        photo,
+      };
+  
+      // Call the addUserToFirestore function with the Firebase UID as the userId
+      addUserToFirestore(userId, accountData, profileData);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Error creating user:", errorMessage);
+      // Handle the error here
+    }
   };
 
-  //Sending user input to create account and profile document
-    const addUserToFirestore = async (userId, accountData, profileData) => {
-      const userDocRef = doc(firestore, "Users", userId);
-      try {
-        await runTransaction(firestore, async (transaction) => {
-          // Create references to the "account" and "profile" documents
-          const accountDocRef = doc(userDocRef, "userInfo", "account");
-          const profileDocRef = doc(userDocRef, "userInfo", "profile");
-          // Add data to the "account" document
-          transaction.set(accountDocRef, accountData);
-          // Add data to the "profile" document
-          transaction.set(profileDocRef, profileData);
-        });
-        console.log("User data added to Firestore:", { accountData, profileData });
-      } catch (error) {
-        console.error("Error adding user data to Firestore:", error);
-      }
-    };
+  // Sending user input to create account and profile document
+const addUserToFirestore = async (userId, accountData, profileData) => {
+  const userDocRef = doc(firestore, "Users", userId);
+  try {
+    await runTransaction(firestore, async (transaction) => {
+      // Create references to the "account" and "profile" documents
+      const accountDocRef = doc(userDocRef, "userInfo", "account");
+      const profileDocRef = doc(userDocRef, "userInfo", "profile");
+      // Add data to the "account" document
+      transaction.set(accountDocRef, accountData);
+      // Add data to the "profile" document
+      transaction.set(profileDocRef, profileData);
+    });
+    console.log("User data added to Firestore:", { accountData, profileData });
+  } catch (error) {
+    console.error("Error adding user data to Firestore:", error);
+  }
+};
     
     const handleImageChange = (e) => {
       const file = e.target.files[0];

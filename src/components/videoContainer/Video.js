@@ -1,56 +1,88 @@
-// Importing necessary hooks and functions from React and Firebase
 import { useRef, useState, useEffect } from "react";
-// import VideoFooter from "./VideoFooter";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 
-// Component for displaying a video
 export default function Video({ videoData }) {
-  const [playing, setPlaying] = useState(false); // State for managing whether the video is currently playing
-  const videoRef = useRef(null); // A ref that points to the video element in the DOM
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0); // State for tracking video progress
+  const [volume, setVolume] = useState(1);
 
-
+  const videoRef = useRef(null);
+  const progressRef = useRef(null); // Ref for the progress bar
 
   useEffect(() => {
-     // Extracting the file path from videoData.vidRef, removing the initial part of the Firebase storage URL to keep only the path to the file.
-    const filepath = videoData.vidRef.replace('gs://project3-15aff.appspot.com/', '')
-    // Creating a reference to the video file in Firebase Storage
+    const filepath = videoData.vidRef.replace(
+      "gs://project3-15aff.appspot.com/",
+      ""
+    );
     const videoStorageRef = ref(storage, filepath);
-    // Fetching the URL of the video file
     getDownloadURL(videoStorageRef)
-    .then((url) => {
-      // Assigning the fetched URL to the video element's src attribute to display the video
-      videoRef.current.src = url;
-    })
-    .catch((error) => {
-      // Logging any errors that happen while fetching the video URL
-      console.log("error getting video url", error);
-    })
-    ;
-  }, [videoData]); // This useEffect hook runs whenever videoData changes
+      .then((url) => {
+        videoRef.current.src = url;
+      })
+      .catch((error) => {
+        console.log("error getting video url", error);
+      });
+  }, [videoData]);
 
+  // Function to update video progress as it plays
+  const handleTimeUpdate = () => {
+    const progress = videoRef.current.currentTime / videoRef.current.duration;
+    setProgress(progress);
+  };
+
+  // Function to scrub through video when progress bar is clicked
+  const handleScrub = (e) => {
+    const scrubTime =
+      (e.nativeEvent.offsetX / progressRef.current.offsetWidth) *
+      videoRef.current.duration;
+    videoRef.current.currentTime = scrubTime;
+  };
+
+  const handleVolumeChange = (e) => {
+    setVolume(e.target.value);
+    videoRef.current.volume = e.target.value;
+  };
 
   const onVideoPress = () => {
     if (playing) {
-      // If the video is currently playing, pause the video and update the state
       videoRef.current.pause();
       setPlaying(false);
     } else {
-      // If the video is currently paused, play the video and update the state
       videoRef.current.play();
       setPlaying(true);
     }
   };
 
   return (
-   <div className="  w-1/2 h-full videoContainer">
-      <video className="object-fill rounded w-auto h-auto" 
-        ref={videoRef}
-        onClick={onVideoPress} 
-        loop 
-      >
-      </video>
-      {/* <VideoFooter /> */}
+    <div className="w-1/2 h-full videoContainer">
+      <div className="video-container relative">
+        <video
+          className="object-fill rounded w-auto h-auto"
+          ref={videoRef}
+          onClick={onVideoPress}
+          loop
+          onTimeUpdate={handleTimeUpdate}
+        ></video>
+        <progress
+          ref={progressRef}
+          className="video-progress w-full h-2 cursor-pointer absolute bottom-0 opacity-0 transition-opacity duration-200"
+          value={progress}
+          max="1"
+          onClick={handleScrub}
+        ></progress>
+        <input
+          type="range"
+          min="0"
+          max=".5"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+          className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200" // Apply similar hover effect as progress bar
+        />
+      </div>
     </div>
   );
 }
+
+// className="w-full video-progress" ref={progressRef} value={progress} max="1" onClick={handleScrub}>

@@ -280,3 +280,28 @@ body {
   color: black;
   font-weight: bolder;
 }
+
+
+.video-container:hover .video-progress {
+  opacity: 1;
+}
+
+.video-progress {
+  appearance: none;
+  height: 10px;
+}
+
+.video-progress::-webkit-progress-bar {
+  background: #ddd;
+  border-radius: 20px;
+}
+
+.video-progress::-webkit-progress-value {
+  background: #FACC15;
+  border-radius: 20px;
+}
+
+.video-progress::-moz-progress-bar {
+  background: #FACC15;
+  border-radius: 20px;
+}

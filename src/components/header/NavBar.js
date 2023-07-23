@@ -1,20 +1,26 @@
-import { useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
+import { useState, useContext } from "react";
+import LoginLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
-import "../../App.css";
+import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
+
 function Navbar() {
+  const { isLoggedIn } = useContext(AuthContext);
+  console.log("Login status:", isLoggedIn)
+
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
   };
+
   const closeModal = () => {
     setModalOpen(false);
   };
+
   return (
     <header className="w-full">
       <nav
-      className="
+        className="
       w-full 
       pt-4
       pb-4
@@ -52,13 +58,16 @@ function Navbar() {
             placeholder="Search Tutorials"
           />
           <div className="search h-8 w-8
-           bg-yellow-400"></div>
+            bg-yellow-400"></div>
         </div>
 
         <div className="flex sm:justify-end sm:items-center">
-          <button
-            type="button"
-            className="focus:outline-none
+          {isLoggedIn ? (
+            <LoginLogout />
+          ) : (
+            <button
+              type="button"
+              className="focus:outline-none
             text-black
             bg-yellow-400
             hover:bg-yellow-500
@@ -71,11 +80,12 @@ function Navbar() {
             dark:focus:ring-yellow-900
             w-full 
             md:w-auto"
-            data-modal-target="authentication-modal"
-            onClick={openModal}
-          >
-            Login
-          </button>
+              data-modal-target="authentication-modal"
+              onClick={openModal}
+            >
+              Login
+            </button>
+          )}
         </div>
       </nav>
       <LoginModal isOpen={isModalOpen} closeModal={closeModal} />

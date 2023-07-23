@@ -10,9 +10,12 @@ import {
   runTransaction,
 } from "firebase/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
+import { useContext } from "react";
+import AuthContext from "../utils/AuthContext"; // Import the AuthContext
+
 
 export default function EditAccount() {
-  const [user, setUser] = useState(null);
+  const { uid } = useContext(AuthContext);
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -21,25 +24,27 @@ export default function EditAccount() {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
+  console.log("this is the userId:", uid)
   const firstNameRef = useRef();
 
   const auth = getAuth();
 
   useEffect(() => {
     //Unsubscribe listener to track changes to authentication state
-      if (user) {
+      if (uid) {
         try {
           //user info from firestore and auth user info
-          const userDocRef = doc(firestore, "Users", user.uid);
+          console.log(uid)
+          const userDocRef = doc(firestore, "Users", uid);
           const userDocSnapshot = getDoc(userDocRef);
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
             setFirstName(userData.firstName || "");
             setLastName(userData.lastName || "");
-            setEmail(user.email || "");
-            setUsername(user.username || "");
+            setEmail(uid.email || "");
+            setUsername(uid.username || "");
             setBio(userData.bio || "");
             setPhoto(userData.photo || "");
           }
@@ -50,7 +55,6 @@ export default function EditAccount() {
           setIsLoading(false); 
         }
       } else {
-        setUser(null);
         setIsLoading(false)
       }
   }, [auth]);

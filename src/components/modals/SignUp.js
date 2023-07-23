@@ -209,7 +209,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <a
-              href="#"
+              href="/#"
               className="text-blue-499 hover:text-yellow-300"
               onClick={toggleModalMode}
             >

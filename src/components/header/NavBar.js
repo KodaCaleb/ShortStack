@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import HandleLogout from "../../utils/Logout";
+import HandleLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
@@ -20,7 +20,7 @@ function Navbar() {
   return (
     <header className="w-full">
       <nav
-      className="
+        className="
       w-full 
       pt-4
       pb-4
@@ -58,7 +58,7 @@ function Navbar() {
             placeholder="Search Tutorials"
           />
           <div className="search h-8 w-8
-           bg-yellow-400"></div>
+            bg-yellow-400"></div>
         </div>
 
         <div className="flex sm:justify-end sm:items-center">
@@ -69,11 +69,11 @@ function Navbar() {
               data-modal-target="authentication-modal"
               onClick={HandleLogout}>
               Logout
-          </button>
+            </button>
           ) : (
-          <button
-            type="button"
-            className="focus:outline-none
+            <button
+              type="button"
+              className="focus:outline-none
             text-black
             bg-yellow-400
             hover:bg-yellow-500
@@ -86,11 +86,11 @@ function Navbar() {
             dark:focus:ring-yellow-900
             w-full 
             md:w-auto"
-            data-modal-target="authentication-modal"
-            onClick={openModal}
+              data-modal-target="authentication-modal"
+              onClick={openModal}
             >
-            Login
-          </button>
+              Login
+            </button>
           )}
         </div>
       </nav>

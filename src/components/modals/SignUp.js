@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useState } from "react";
 import { firestore, auth } from "../../firebase";
@@ -11,6 +12,14 @@ import {
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
+import {
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  runTransaction,
+} from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -24,7 +33,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
-
     if (!firstName || !lastName || !email || !password || !username || !bio) {
       alert("Please fill in all required fields");
       return;
@@ -53,15 +61,30 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         const errorCode = error.code;
         const errorMessage = error.message;
       });
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        const userId = user.uid;
+        const userInfo= {
+          firstName,
+          lastName,
+          bio,
+        };
+        addUserToFirestore(userId, userInfo);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
   };
-
   // Sending user input to create account and profile document
   const addUserToFirestore = async (userId, userInfo) => {
     try {
       // Reference the "Users" collection
       const userDocRef = doc(firestore, "Users", userId);
       await setDoc(userDocRef, userInfo)
-   // Referencing the "userInfo subcollection 
+   // Referencing the "userInfo subcollection
       const userContentCollectionRef = collection(userDocRef, "userContent")
       await addDoc(userContentCollectionRef, {})
         console.log("User data added to Firestore:", {
@@ -71,17 +94,14 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       console.error("Error adding user data to Firestore:", error);
     }
   };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setPhoto(file);
     setSelectedFileName(file.name);
   };
-
   return (
     <>
       {/* Modal */}
-
       <div className="flex flex-col items-center justify-center text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> Create an Account!</h3>
         <form
@@ -180,7 +200,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               onChange={(e) => setBio(e.target.value)}
             />
           </div>
-
           <div className="mb-4">
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
@@ -216,7 +235,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Back to Login
             </a>
           </div>
-
           {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button

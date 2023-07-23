@@ -11,10 +11,14 @@ export default function VideoList() {
       try {
         const videosCollection = collection(firestore, "videos");
         const videosSnapshot = await getDocs(videosCollection);
-        const videosData = videosSnapshot.docs.map((doc) => ({
+        let videosData = videosSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
+        videosData = videosData.sort(() => Math.random() - 0.5);
+
+
         setVideos(videosData);
         console.log("LOOK HERE", videosData);
       } catch (error) {

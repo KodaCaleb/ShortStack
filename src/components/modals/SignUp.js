@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useState } from "react";
 import { firestore, auth } from "../../firebase";
@@ -34,7 +33,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         const user = userCredential.user;
         console.log(user);
         const userId = user.uid;
-        const userInfo= {
+        const userInfo = {
           firstName,
           lastName,
           bio,
@@ -51,12 +50,12 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     try {
       // Reference the "Users" collection
       const userDocRef = doc(firestore, "Users", userId);
-      await setDoc(userDocRef, userInfo)
-   // Referencing the "userInfo subcollection
-      const userContentCollectionRef = collection(userDocRef, "userContent")
-      await addDoc(userContentCollectionRef, {})
-        console.log("User data added to Firestore:", {
-        userInfo
+      await setDoc(userDocRef, userInfo);
+      // Referencing the "userInfo subcollection
+      const userContentCollectionRef = collection(userDocRef, "userContent");
+      await addDoc(userContentCollectionRef, {});
+      console.log("User data added to Firestore:", {
+        userInfo,
       });
     } catch (error) {
       console.error("Error adding user data to Firestore:", error);

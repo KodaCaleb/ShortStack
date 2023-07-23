@@ -152,6 +152,7 @@ export default function UserProfileHeading() {
                   type="text"
                   defaultValue={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  className = "text-3xl text-stone-200  bg-transparent outline-gray-700 focus:ring-2-gray-800 rounded "
                 />
               ) : (
                 <>
@@ -175,6 +176,7 @@ export default function UserProfileHeading() {
                   type="text"
                   defaultValue={bioInfo}
                   onChange={(e) => setBioInfo(e.target.value)}
+                  className = "text-2xl text-stone-200  bg-transparent outline-gray-700 focus:ring-2-gray-800 rounded "
                 />
               ) : (
                 <>

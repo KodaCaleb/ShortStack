@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes } from "firebase/storage";
-import { collection, addDoc, doc, setDoc, runTransaction } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -65,38 +65,29 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         followerCount,
       };
       addUserToFirestore(uid, userInfo);
-    })
-        .catch ((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error("Error creating user:", errorCode, errorMessage);
-  });
-};
+    }
 
-  }
-// Sending user input to create account and profile document
-const addUserToFirestore = async (userId, userInfo) => {
-  try {
+    catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Error creating user:", errorCode, errorMessage);
+    };
+  };
 
-    // Reference the "Users" collection
-    const userDocRef = doc(firestore, "Users", userId);
-    await setDoc(userDocRef, userInfo)
+  // Sending user input to create account and profile document
+  const addUserToFirestore = async (uid, userInfo) => {
+    try {
+      // Reference the "Users" collection in Firestore
+      const usersCollection = collection(firestore, "Users");
 
-    // Referencing the "userInfo subcollection
-    const userContentCollectionRef = collection(userDocRef, "userContent")
-    await addDoc(userContentCollectionRef, {})
-    console.log("User data added to Firestore:", {
-      userInfo
-    });
-  } catch (error) {
-    console.error("Error adding user data to Firestore:", error);
-  }
-};
-const handleImageChange = (e) => {
-  const file = e.target.files[0];
-  setPhotoURL(file);
-  // setSelectedFileName(file.name);
-};
+      // Add the user data to Firestore using the uid as the document ID
+      await addDoc(usersCollection, { ...userInfo, uid });
+
+      console.log("User data added to Firestore successfully.");
+    } catch (error) {
+      console.error("Error adding user data to Firestore:", error);
+    }
+  };
 
 return (
   <>

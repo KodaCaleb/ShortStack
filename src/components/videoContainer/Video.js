@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
+import { MoonLoader } from "react-spinners";
 
 export default function Video({ videoData }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0); // State for tracking video progress
   const [volume, setVolume] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   const videoRef = useRef(null);
   const progressRef = useRef(null); // Ref for the progress bar
@@ -19,6 +21,11 @@ export default function Video({ videoData }) {
     getDownloadURL(videoStorageRef)
       .then((url) => {
         videoRef.current.src = url;
+        videoRef.current.onloadeddata = () => {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1000);
+        };
       })
       .catch((error) => {
         console.log("error getting video url", error);
@@ -59,12 +66,18 @@ export default function Video({ videoData }) {
   return (
     <div className="w-1/4 mb-4 h-full mt-4 videoContainer">
       <div className="video-container relative">
+        {isLoading && (
+          <div className=" top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+            <MoonLoader color="#e0a712" loading={isLoading} size={80} />
+          </div>
+        )}
         <video
           className="object-fill rounded w-auto h-auto"
           ref={videoRef}
           onClick={onVideoPress}
           loop
           onTimeUpdate={handleTimeUpdate}
+          hidden={isLoading}
         ></video>
         <progress
           ref={progressRef}
@@ -80,9 +93,8 @@ export default function Video({ videoData }) {
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
-          className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200" // Apply similar hover effect as progress bar
+          className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200"
         />
-        
       </div>
     </div>
   );

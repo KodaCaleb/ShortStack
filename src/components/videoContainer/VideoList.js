@@ -11,10 +11,14 @@ export default function VideoList() {
       try {
         const videosCollection = collection(firestore, "videos");
         const videosSnapshot = await getDocs(videosCollection);
-        const videosData = videosSnapshot.docs.map((doc) => ({
+        let videosData = videosSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
+        videosData = videosData.sort(() => Math.random() - 0.5);
+
+
         setVideos(videosData);
         console.log("LOOK HERE", videosData);
       } catch (error) {
@@ -26,10 +30,10 @@ export default function VideoList() {
   }, []);
 
   return (
-    <div className="h-screen w-full flex p-4 justify-center">
-      <div className="flex h-full w-auto flex-row">
+    <div className="h-full w-full flex p-4 justify-center items-center">
+      <div className="flex  w-full flex-row h-3/4">
         <div className=" h-full rounded-2xl p-2 w-full">
-          <div className="app_videos h-full w-full relative rounded-2xl overflow-scroll">
+          <div className="app_videos snap-y snap-mandatory h-full w-full relative rounded-2xl overflow-scroll">
             {videos.map((video) => (
               <PostContainer key={video.id} videoData={video} />
             ))}

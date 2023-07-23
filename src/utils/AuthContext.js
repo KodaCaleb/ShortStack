@@ -31,9 +31,9 @@ export const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    if (!user) {
-        return // Default render to home page
-    }
+    // if (!user) {
+    //     return // Default render to home page
+    // }
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>

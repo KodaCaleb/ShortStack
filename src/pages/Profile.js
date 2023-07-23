@@ -101,7 +101,7 @@ export default function UserProfileHeading() {
 
   return ( 
     <>
-    <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
+    <div className={`main-containe${isBlurBackground ? ' blur-background' : ''}`}>
       <div className="flex h-100 flex-col items-center">
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
           <div
@@ -142,7 +142,7 @@ export default function UserProfileHeading() {
           <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
             {/* stack of username and bio */}
             <div
-              className="relative p-1 my-4 border border-white text-white"
+              className="relative p-1 my-2 text-white"
               onMouseEnter={handleUsernameMouseEnter}
               onMouseLeave={handleUsernameMouseLeave}
               onClick={handleUsernameClick}
@@ -165,7 +165,7 @@ export default function UserProfileHeading() {
               )}
             </div>
             <div
-              className="relative p-1 border border-white text-white"
+              className="relative p-1 text-white"
               onMouseEnter={handleBioMouseEnter}
               onMouseLeave={handleBioMouseLeave}
               onClick={handleBioClick}

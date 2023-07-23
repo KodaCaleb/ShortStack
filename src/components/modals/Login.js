@@ -1,17 +1,16 @@
 import { useState, useContext } from "react";
 import LoginLogout from "../../utils/LoginLogout";
 import SignUpModal from "./SignUp";
-import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 import Syrup from "../../assets/syrup.gif";
+import AuthContext from "../../utils/AuthContext";
 
 export default function LoginModal({ isOpen, closeModal }) {
-  const { uid } = useContext(AuthContext); // This is the global user id reference
-  console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
-
-  const { isLoggedIn } = useContext(AuthContext);
+ 
   const [modalMode, setModalMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { isLoggedIn, userInfo } = useContext(AuthContext); // This is the global user id reference
 
   const toggleSignUpMode = () => {
     setModalMode(!modalMode);

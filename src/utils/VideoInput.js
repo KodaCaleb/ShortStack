@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react"; // import the useContext method
+import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
@@ -6,11 +7,15 @@ import { storage, firestore } from "../firebase";
 export default function VideoInput(props) {
   const { width, height } = props;
 
+  // console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
+  const { uid } = useContext(AuthContext); // This is the global user id reference
+  
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
+
 
   const inputRef = useRef();
 
@@ -43,10 +48,12 @@ export default function VideoInput(props) {
             title,
             description,
             vidRef: downloadURL,
+            userId: uid,
           };
 
           try {
             await addDoc(collection(firestore, "videos"), videoData);
+            await addDoc(collection(firestore, `Users/${uid}/userContent`), videoData)
           } catch (error) {
             console.log("Error adding document", error);
           }
@@ -71,7 +78,6 @@ export default function VideoInput(props) {
         type="file"
         onChange={handleFileChange}
         accept="video/*"
-        required
       />
       <input
         type="text"

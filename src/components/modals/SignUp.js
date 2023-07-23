@@ -237,9 +237,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               className="block mb-2 text-sm font-bold text-yellow-300"
               htmlFor="photo"
             >
-              <span> Photo</span>
             </label>
-            <div>
+            <div className="flex justify-center">
               <input
                 type="file"
                 accept="image/*"
@@ -247,7 +246,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 style={{ display: "none" }}
               />
               <button
-                className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-300"
+                className="bg-yellow-400 h-12 w-44 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800
+                ease-in-out duration-500"
                 onClick={() =>
                   document.querySelector('input[type="file"]').click()
                 }
@@ -272,7 +272,11 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button
-              className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold  text-blue-100 hover:bg-yellow-300"
+              className="flex items-center justify-center h-12 px-6 w-64 mt-8 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+              hover:rounded-3xl
+              hover:border-2 
+              hover:border-amber-700
+              hover:w-80 ease-in-out duration-300"
               type="submit"
               onClick={handleCreateAccount}
             >

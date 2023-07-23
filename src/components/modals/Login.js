@@ -53,7 +53,10 @@ export default function LoginModal({ isOpen, closeModal }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <LoginLogout email={loginInfo.email} password={loginInfo.password} />
+
+          <div className="flex justify-center p-4">
+            <LoginLogout email={loginInfo.email} password={loginInfo.password} />
+          </div>
           <div className="flex mt-6 justify-center text-xs">
             <a href="#" className="text-blue-499 hover:text-yellow-300">
               Forgot Password

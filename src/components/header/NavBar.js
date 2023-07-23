@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import HandleLogout from "../../utils/LoginLogout";
+import LoginLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
@@ -63,13 +63,7 @@ function Navbar() {
 
         <div className="flex sm:justify-end sm:items-center">
           {isLoggedIn ? (
-            <button
-              type="button"
-              className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-              data-modal-target="authentication-modal"
-              onClick={HandleLogout}>
-              Logout
-            </button>
+            <LoginLogout />
           ) : (
             <button
               type="button"

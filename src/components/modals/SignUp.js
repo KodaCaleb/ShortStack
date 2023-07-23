@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useState } from "react";
 import { firestore, auth } from "../../firebase";
@@ -12,14 +11,6 @@ import {
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-import {
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  runTransaction,
-} from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,7 +20,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
- 
+
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
@@ -38,35 +29,15 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       return;
     }
     
-
     // Firebase authentication method to create a new user
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-
-        const userId = user.uid;
-
-        const userInfo= {
-          firstName,
-          lastName,
-          bio,
-        };
-
-
-        addUserToFirestore(userId, userInfo);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-      .then((userCredential) => {
+    
         // Signed in
         const user = userCredential.user;
         console.log(user);
         const userId = user.uid;
-        const userInfo= {
+        const userInfo = {
           firstName,
           lastName,
           bio,
@@ -78,16 +49,19 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         const errorMessage = error.message;
       });
   };
+  
   // Sending user input to create account and profile document
   const addUserToFirestore = async (userId, userInfo) => {
     try {
+  
       // Reference the "Users" collection
       const userDocRef = doc(firestore, "Users", userId);
       await setDoc(userDocRef, userInfo)
-   // Referencing the "userInfo subcollection
+  
+      // Referencing the "userInfo subcollection
       const userContentCollectionRef = collection(userDocRef, "userContent")
       await addDoc(userContentCollectionRef, {})
-        console.log("User data added to Firestore:", {
+      console.log("User data added to Firestore:", {
         userInfo
       });
     } catch (error) {
@@ -99,6 +73,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     setPhoto(file);
     setSelectedFileName(file.name);
   };
+  
   return (
     <>
       {/* Modal */}
@@ -235,6 +210,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Back to Login
             </a>
           </div>
+  
           {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button
@@ -245,6 +221,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Create
             </button>
           </div>
+  
           {/* Exit out of modal button */}
           <button
             className=" absolute top-2 right-2 px-2 py-2"

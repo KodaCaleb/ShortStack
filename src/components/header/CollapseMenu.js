@@ -1,6 +1,6 @@
 import PancakeLogo from "../../assets/pancakeLogo.png";
 import { useState, useContext } from "react";
-import HandleLogout from "../../utils/LoginLogout";
+import { HandleLogout } from "../../utils/LoginLogout";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 
 export default function CollapseMenu() {

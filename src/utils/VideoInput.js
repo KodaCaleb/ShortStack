@@ -7,8 +7,8 @@ import { storage, firestore } from "../firebase";
 export default function VideoInput(props) {
   const { width, height } = props;
 
-  console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
-  const { uid} = useContext(AuthContext); // This is the global user id reference
+  // console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
+  const { uid } = useContext(AuthContext); // This is the global user id reference
   
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
@@ -48,10 +48,12 @@ export default function VideoInput(props) {
             title,
             description,
             vidRef: downloadURL,
+            userId: uid,
           };
 
           try {
             await addDoc(collection(firestore, "videos"), videoData);
+            await addDoc(collection(firestore, `Users/${uid}/userContent`), videoData)
           } catch (error) {
             console.log("Error adding document", error);
           }
@@ -76,7 +78,6 @@ export default function VideoInput(props) {
         type="file"
         onChange={handleFileChange}
         accept="video/*"
-        required
       />
       <input
         type="text"

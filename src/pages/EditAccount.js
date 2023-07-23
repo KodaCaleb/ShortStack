@@ -4,6 +4,7 @@ import { firestore, auth } from "../firebase";
 import {
   collection,
   addDoc,
+  getDoc,
   doc,
   setDoc,
   runTransaction,
@@ -11,6 +12,7 @@ import {
 import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
 
 export default function EditAccount() {
+  const [user, setUser] = useState(null);
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -19,25 +21,42 @@ export default function EditAccount() {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
+  const [isLoading, setIsLoading] = useState(true)
 
-  const firstNameRef = useRef()
+  const firstNameRef = useRef();
 
   const auth = getAuth();
-  const user = auth.currentUser;
-  console.log(user)
-  
+
   useEffect(() => {
-    if(user) {
-        setFirstName(user.firstName || "");
-        setLastName(user.lastName || "");
-        setEmail(user.email || "");
-        setUsername(user.username || "");
-        //   const userId = User.getToken()
-        
-    }
-  }, [user])
-
-
+    //Unsubscribe listener to track changes to authentication state
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          //user info from firestore and auth user info
+          const userDocRef = doc(firestore, "Users", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            setFirstName(userData.firstName || "");
+            setLastName(userData.lastName || "");
+            setEmail(user.email || "");
+            setUsername(user.username || "");
+            setBio(userData.bio || "");
+            setPhoto(userData.photo || "");
+          }
+          setIsLoading(false)
+        } catch (error) {
+          // Handle any errors that occur during data fetching
+          console.error("Error fetching user data:", error);
+          setIsLoading(false); 
+        }
+      } else {
+        setUser(null);
+        setIsLoading(false)
+      }
+    });
+    return () => unsubscribe();
+  }, [auth]);
 
   // Event handlers for users entering data
   const handleEditAccount = async (e) => {
@@ -60,10 +79,7 @@ export default function EditAccount() {
     //     setPhoto(file);
     //     setSelectedFileName(file.name);
     //   };
-
   };
-
-
 
   return (
     <>
@@ -175,11 +191,7 @@ export default function EditAccount() {
               <span> Photo</span>
             </label>
             <div>
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-              />
+              <input type="file" accept="image/*" style={{ display: "none" }} />
               <button
                 className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-300"
                 onClick={() =>

@@ -67,7 +67,12 @@ export default function PostContainer({ videoData }) {
       }
     
       await setDoc(likeRef, {});
-    
+
+      // Add video reference to the user's liked videos subcollection
+      const userRef = doc(firestore, "Users", userId);
+      const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
+      await setDoc(userLikedVideoRef, {});
+
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         if (!videoDoc.exists()) {
@@ -88,6 +93,11 @@ export default function PostContainer({ videoData }) {
       const likeRef = doc(videoRef, "likes", userId);
 
       await deleteDoc(likeRef); // Remove the user's like from the Firestore
+
+      // Remove video reference from the user's liked videos subcollection
+      const userRef = doc(firestore, "Users", userId);
+      const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
+      await deleteDoc(userLikedVideoRef);
 
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
@@ -154,5 +164,6 @@ export default function PostContainer({ videoData }) {
     </div>
   );
 }
+
 
 

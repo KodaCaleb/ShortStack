@@ -5,6 +5,7 @@ import { storage } from "../../firebase";
 export default function Video({ videoData }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0); // State for tracking video progress
+  const [volume, setVolume] = useState(1);
 
   const videoRef = useRef(null);
   const progressRef = useRef(null); // Ref for the progress bar
@@ -38,6 +39,11 @@ export default function Video({ videoData }) {
     videoRef.current.currentTime = scrubTime;
   };
 
+  const handleVolumeChange = (e) => {
+    setVolume(e.target.value);
+    videoRef.current.volume = e.target.value;
+  };
+
   const onVideoPress = () => {
     if (playing) {
       videoRef.current.pause();
@@ -59,12 +65,21 @@ export default function Video({ videoData }) {
           onTimeUpdate={handleTimeUpdate}
         ></video>
         <progress
-        ref={progressRef}
+          ref={progressRef}
           className="video-progress w-full h-2 cursor-pointer absolute bottom-0 opacity-0 transition-opacity duration-200"
           value={progress}
           max="1"
           onClick={handleScrub}
         ></progress>
+        <input
+          type="range"
+          min="0"
+          max=".5"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+          className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200" // Apply similar hover effect as progress bar
+        />
       </div>
     </div>
   );

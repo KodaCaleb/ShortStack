@@ -254,7 +254,7 @@ body {
 }
 
 .container input:focus ~ .search {
-  right: -290px;
+  left: 290px;
   background: #151515a5;
   z-index: 6;
 }

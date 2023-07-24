@@ -12,6 +12,8 @@ export const HandleLogout = async () => {
         alert("You have been signed out successfully.");
     })
     .catch((error) => {
+        //should reload page after signout button is pressed
+        window.location.reload();
         console.log(error);
     });
 };

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import LoginLogout from "../../utils/LoginLogout";
 import SignUpModal from "./SignUp";
 import Syrup from "../../assets/syrup.gif";
@@ -10,11 +10,22 @@ export default function LoginModal({ isOpen, closeModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { isLoggedIn, userInfo } = useContext(AuthContext); // This is the global user id reference
+  const { isLoggedIn, userInfo } = useContext(AuthContext);
 
   const toggleSignUpMode = () => {
     setModalMode(!modalMode);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
   if (!isOpen) {
     return null;
@@ -29,7 +40,7 @@ export default function LoginModal({ isOpen, closeModal }) {
     <>
       {/* Modal */}
 
-      <div className="absolute z-10 flex flex-col items-center justify-center text-white h-screen w-screen bg-black bg-opacity-80 backdrop-blur-sm">
+      <div className="absolute z-10 flex flex-col items-center justify-start text-white h-full w-screen bg-black bg-opacity-80 backdrop-blur-sm">
         {modalMode ? (
           <SignUpModal
             isOpen={isOpen}

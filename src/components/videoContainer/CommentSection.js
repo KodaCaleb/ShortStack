@@ -35,7 +35,30 @@ export default function CommentSection() {
 					</div>
 				</div>
 			</li>
-		</ul>
+		
+    <form  className=" w-11/12 pl-4 pt-5 flex ml-auto items-center"
+            action=""
+          >
+            <input
+              className="text-white w-full h-10 px-3 py-2 text-sm bg-gray-600 bg-opacity-50 mr-3 rounded focus:outline-none focus:ring-1 focus:ring-slate-500"
+              type="text"
+              placeholder="Add a comment..."
+              // value={*videoComment*}
+              // onChange={(e) => addComment functionality here)}
+            />
+             <button
+                className="bg-yellow-400 h-10 w-10  text-sm text-black rounded  hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800
+                ease-in-out duration-500"
+                // onClick={() =>
+                  // add comment fn 
+                // }
+              >
+                {" "}
+                +
+              </button>
+      
+      </form>
+      </ul>
 	</div>
     </>
   )

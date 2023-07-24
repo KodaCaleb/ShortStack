@@ -116,7 +116,8 @@ export default function PostContainer({ videoData }) {
 
   const [showCommentSection, setShowCommentSection] = useState(false);
   async function handleCommentBtnClick() {
-
+// fetch comments for video 
+// post comments for video
   }
 
   return (

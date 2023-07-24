@@ -248,7 +248,7 @@ body {
 }
 
 .container input:focus {
-  width: 300px;
+  width: 380px;
   opacity: 1;
   cursor: text;
 }

@@ -63,7 +63,7 @@ function Navbar() {
 
         {/* <div className="flex sm:justify-end sm:items-center"> */}
           <div className= "flex items-center"></div>
-        <div className="container relative bottom-1 right-10">
+        <div className="container relative bottom-1 right-24">
     <input
       className="bg-yellow-600"
       type="text"

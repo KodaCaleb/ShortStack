@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -33,6 +33,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       alert("Please fill in all required fields");
       return;
     }
+    
 
     try {
       // Creates a new user in the Firebase authenticator
@@ -91,8 +92,10 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       // Reference the "Users" collection in Firestore
       const usersCollection = collection(firestore, "Users");
 
+      const userDocRef = doc(usersCollection, uid)
+
       // Add the user data to Firestore using the uid as the document ID
-      await addDoc(usersCollection, { ...userInfo, uid });
+      await setDoc(userDocRef, userInfo);
 
       console.log("User data added to Firestore successfully.");
     } catch (error) {
@@ -257,7 +260,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               </button>
             </div>
           </div>
-
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <a
@@ -279,7 +281,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Create
             </button>
           </div>
-
           {/* Exit out of modal button */}
           <button
             className=" absolute top-2 right-2 px-2 py-2"
@@ -292,4 +293,3 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     </>
   );
 }
-

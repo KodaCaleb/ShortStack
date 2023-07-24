@@ -3,15 +3,20 @@ import clickedLogo from "../../assets/clickedStack.svg";
 import AuthContext from "../../utils/AuthContext";
 import HomeLink from "../../utils/HomeLink";
 import { HandleLogout } from "../../utils/LoginLogout";
+import NavBar from "../header/NavBar";
 import { useState, useContext } from "react";
 
-export default function CollapseMenu() {
+export default function CollapseMenu({openModal}) {
   const { isLoggedIn } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = (isMenuOpen) => {
     setIsMenuOpen(isMenuOpen);
   };
+
+  const handleOpenModal = () => {
+    openModal();
+  }
 
   return (
     <div>
@@ -58,7 +63,7 @@ export default function CollapseMenu() {
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
 
-                    <a href="/login">Login</a>
+                    <a onClick={handleOpenModal}>Login</a>
                   </li>
                 </>
               )}

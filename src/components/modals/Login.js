@@ -40,7 +40,7 @@ export default function LoginModal({ isOpen, closeModal }) {
     <>
       {/* Modal */}
 
-      <div className="absolute z-10 flex flex-col items-center justify-start text-white h-screen w-screen bg-black bg-opacity-80 backdrop-blur-sm">
+      <div className="absolute z-10 flex flex-col items-center justify-start text-white h-full w-screen bg-black bg-opacity-80 backdrop-blur-sm">
         {modalMode ? (
           <SignUpModal
             isOpen={isOpen}

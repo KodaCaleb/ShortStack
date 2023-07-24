@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Profile from "./pages/Profile";
-import Account from "./pages/Account";
+// import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import Upload from "./pages/Upload";
 import NotFound from "./pages/NotFound";

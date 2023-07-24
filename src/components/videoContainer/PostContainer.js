@@ -29,7 +29,7 @@ async function getUserData(userId) {
 export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
+  // const [isFollowing, setIsFollowing] = useState(false); // variables for follow buttons
 
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
   
@@ -122,33 +122,34 @@ export default function PostContainer({ videoData }) {
 // post comments for video
   }
 
-  const followUser= async () => {
-    //Logic for following user
-    if(!isFollowing) {
-      try {
-        const CurrentUserUid = ''; //pull current user id
-        const UserToFollowUid = videoData.userId; //based off video data containing the uid
+    // Logic for follow button?//
+//   const followUser= async () => {
+//     //Logic for following user
+//     if(!isFollowing) {
+//       try {
+//         const CurrentUserUid = ''; //pull current user id
+//         const UserToFollowUid = videoData.userId; //based off video data containing the uid
 
-         // Add document in "following" subcollection of the current user.
-      const followingRef = doc(firestore, 'Users', currentUserUid, 'following', userToFollowUid);
-      await setDoc(followingRef, {});
+//          // Add document in "following" subcollection of the current user.
+//       const followingRef = doc(firestore, 'Users', currentUserUid, 'following', userToFollowUid);
+//       await setDoc(followingRef, {});
 
-         // Add document in "followers" subcollection of the user being followed.
-         const followersRef = doc(firestore, 'Users', userToFollowUid, 'followers', currentUserUid);
-         await setDoc(followersRef, {});
-         setIsFollowing(true); // Update the state to indicate that the user is now being followed.
-        } catch (error) {
-          console.error('Error following the user:', error);
-        }
-      }
-    };
-  setIsFollowing(true);
-};
+//          // Add document in "followers" subcollection of the user being followed.
+//          const followersRef = doc(firestore, 'Users', userToFollowUid, 'followers', currentUserUid);
+//          await setDoc(followersRef, {});
+//          setIsFollowing(true); // Update the state to indicate that the user is now being followed.
+//         } catch (error) {
+//           console.error('Error following the user:', error);
+//         }
+//       }
+//     };
+//   setIsFollowing(true);
+// };
 
-const unfollowUser = async () => {
-  //Logic for unfollowing user
-  setIsFollowing(false);
-}
+// const unfollowUser = async () => {
+//   //Logic for unfollowing user
+//   setIsFollowing(false);
+// };
 
 
   return (
@@ -205,18 +206,19 @@ const unfollowUser = async () => {
             style={{ color:"tan"}} 
             size={28}
             onClick={() => {
-              followUser();
+             ;
               console.log("User clicked the RiUserFollowLine icon"); 
               }}
               />  
-            {/* ) : (  */}
+              {/* UNFOLLOW BUTTON */}
+            {/* ) : ( 
               <RiUserUnfollowFill
             className="m-4 hover:cursor-pointer"
             style={{ color: "tan" }}
             size={28}
             onClick={() => {
-              unfollowUser(); }}
-              />  
+            }}
+              />   */}
           </div>
          </div>
          {showCommentSection && (
@@ -230,7 +232,4 @@ const unfollowUser = async () => {
       </div>
     </div>
   );
-}
-
-
-
+ }

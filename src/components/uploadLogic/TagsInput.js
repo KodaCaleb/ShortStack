@@ -17,23 +17,24 @@ function TagsInput({ value = [], onChange }) {
     <div className="flex flex-col justify-center items-start space-y-4">
       <div className="flex flex-wrap space-x-2">
         {value.map((tag, index) => (
-          <button 
+          <button
             key={tag}
-            className="inline-flex items-center bg-white text-black rounded-lg p-2 whitespace-nowrap"
+            className="inline-flex items-center bg-white  text-black rounded-lg p-2 mt-4 whitespace-nowrap"
             onClick={() => removeTag(index)}
           >
             <span>{tag}</span>
-            <span>x</span>
+            <span className="pl-2">x</span>
           </button>
         ))}
       </div>
       <div className="flex space-x-2 w-full">
         <input
+          placeholder="react, javascript, css"
           className="flex-grow rounded-lg p-2"
           value={tag}
           onChange={(e) => setTag(e.target.value)}
         />
-        <button 
+        <button
           className="bg-yellow-500 rounded-lg p-2"
           type="button"
           onClick={addTag}
@@ -43,7 +44,6 @@ function TagsInput({ value = [], onChange }) {
       </div>
     </div>
   );
-  
 }
 
 export default TagsInput;

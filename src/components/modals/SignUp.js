@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
+
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Firestore DB
   const [firstName, setFirstName] = useState("");

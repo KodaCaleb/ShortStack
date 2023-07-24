@@ -6,13 +6,14 @@ import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 
 function Navbar() {
   const { isLoggedIn } = useContext(AuthContext);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => {
-    setModalOpen(true);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setIsModalOpen(false);
   };
 
   return (
@@ -46,7 +47,7 @@ function Navbar() {
         >
           <div className="absolute inset-x-0 bottom-0 h-0 border-yellow-600 border border-opacity-25 "></div>
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
-          <CollapseMenu />
+          <CollapseMenu openModal={openModal} />
           <h1
             className="
           text-white 
@@ -66,10 +67,9 @@ function Navbar() {
         my-4
         md:my-0
         flex 
-      items-center
+        items-center
         mx-auto
-        relative
-        "
+        relative"
         >
           <input
             className="bg-yellow-600"
@@ -77,21 +77,25 @@ function Navbar() {
             placeholder="Search Tutorials"
           />
 
-          <div className="search h-8 w-8
-            bg-yellow-400"></div>
+          <div 
+            className="
+          search h-8 w-8
+          bg-yellow-400"
+          >
+          </div>
         </div> */}
 
         {/* <div className="flex sm:justify-end sm:items-center"> */}
-          <div className= "flex items-center"></div>
+        <div className="flex items-center"></div>
         <div className="container relative bottom-1 right-24">
-    <input
-      className="bg-yellow-600"
-      type="text"
-      placeholder="Search Tutorials"
-    />
-    <div className="search h-4 w-6 bg-yellow-400"></div>
-  </div>
-          <div className="absolute top-5 right-6 mr-1">
+          <input
+            className="bg-yellow-600"
+            type="text"
+            placeholder="Search Tutorials"
+          />
+          <div className="search h-4 w-6 bg-yellow-400"></div>
+        </div>
+        <div className="absolute top-5 right-6 mr-1">
           {isLoggedIn ? (
             <LoginLogout />
           ) : (
@@ -117,7 +121,7 @@ function Navbar() {
               Login
             </button>
           )}
-          </div>
+        </div>
         {/* </div> */}
       </nav>
       <LoginModal isOpen={isModalOpen} closeModal={closeModal} />

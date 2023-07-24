@@ -57,6 +57,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL: photoURL,
         });
 
+        const message = ("User account created successfully!")
+        alert(message)
         console.log("User profile updated successfully with displayName and photoURL.");
       } else {
 
@@ -66,6 +68,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           phoneNumber: phoneNumber,
         });
 
+        const message = ("User account created successfully!")
+        alert(message)
         console.log("User profile updated successfully with displayName and phoneNumber.");
       };
 
@@ -76,11 +80,14 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         bio,
       };
       addUserToFirestore(uid, userInfo);
-    }
 
-    catch (error) {
+
+    } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+
+      const warning = (errorMessage)
+      alert(warning)
       console.error("Error creating user:", errorCode, errorMessage);
     };
   };
@@ -100,6 +107,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     } catch (error) {
       console.error("Error adding user data to Firestore:", error);
     }
+
+    // Close modal after successful account creation
+    closeModal();
   };
   return (
     <>
@@ -149,6 +159,24 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             </div>
           </div>
 
+
+          {/* Email */}
+          <label
+            className="block mb-2 text-sm font-bold text-yellow-300"
+            htmlFor="emailField"
+          >
+            {" "}
+            Email
+          </label>
+          <input
+            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
           {/* Username */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
@@ -164,23 +192,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
-
-          {/* Email */}
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="emailField"
-          >
-            {" "}
-            Email
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
           {/* Password */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
@@ -237,9 +248,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               className="block mb-2 text-sm font-bold text-yellow-300"
               htmlFor="photo"
             >
-              <span> Photo</span>
             </label>
-            <div>
+            <div className="flex justify-center">
               <input
                 type="file"
                 accept="image/*"
@@ -247,7 +257,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 style={{ display: "none" }}
               />
               <button
-                className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-300"
+                className="bg-yellow-400 h-12 w-44 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800
+                ease-in-out duration-500"
                 onClick={() =>
                   document.querySelector('input[type="file"]').click()
                 }
@@ -270,7 +281,11 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button
-              className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold  text-blue-100 hover:bg-yellow-300"
+              className="flex items-center justify-center h-12 px-6 w-64 mt-8 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+              hover:rounded-3xl
+              hover:border-2 
+              hover:border-amber-700
+              hover:w-80 ease-in-out duration-300"
               type="submit"
               onClick={handleCreateAccount}
             >

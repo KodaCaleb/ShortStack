@@ -7,8 +7,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(null);
     const [user, setUser] = useState(null);
-    // const [emailVerified, setEmailVerified] = useState(null); <--- stretch goal for email confirmation
-    
+    const [loading, setLoading] = useState(true); // new loading state
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // If user is signed in then...
@@ -24,19 +24,15 @@ export const AuthProvider = ({ children }) => {
                 // Conditional rules for a User that is logged out
                 setIsLoggedIn(false);
                 setUser(null);
-                
             }
+            setLoading(false); // set loading to false in both cases
         });
 
         return () => unsubscribe();
     }, []);
 
-    // if (!user) {
-    //     return // Default render to home page
-    // }
-
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser}}>
+        <AuthContext.Provider value={{ loading, isLoggedIn, setIsLoggedIn, user, setUser }}>
             {children}
         </AuthContext.Provider>
     );

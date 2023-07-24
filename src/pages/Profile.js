@@ -6,6 +6,7 @@ import { firestore } from "../firebase"
 import { doc } from "firebase/firestore"
 import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 import AccountModal from './Account';
+import { RiUserFollowLine } from 'react-icons/ri'
 
 // import AccountModal from './Account';
 export default function UserProfileHeading() {
@@ -200,6 +201,7 @@ export default function UserProfileHeading() {
            hover:border-2 
            hover:border-amber-700"
               >
+                  <RiUserFollowLine className="mr-2" />
               Follow Me!
             </button>
             </div>

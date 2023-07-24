@@ -12,6 +12,7 @@ import {
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
 import AuthContext from "../../utils/AuthContext";
+import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -28,6 +29,7 @@ async function getUserData(userId) {
 export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
   
@@ -120,6 +122,7 @@ export default function PostContainer({ videoData }) {
 // post comments for video
   }
 
+
   return (
     <div className="flex justify-center flex-row snap start">
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
@@ -168,6 +171,24 @@ export default function PostContainer({ videoData }) {
             />
             <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} />
+
+            {/* {isFollowing ? ()} */}
+            <RiUserFollowLine className= "m-4 hover:cursor-pointer" 
+            style={{ color:"tan"}} 
+            size={28}
+            onClick={() => {
+              followUser();
+              console.log("User clicked the RiUserFollowLine icon"); 
+              }}
+              />  
+            {/* ) : (  */}
+              <RiUserUnfollowFill
+            className="m-4 hover:cursor-pointer"
+            style={{ color: "tan" }}
+            size={28}
+            onClick={() => {
+              unfollowUser(); }}
+              />  
           </div>
          </div>
          {showCommentSection && (

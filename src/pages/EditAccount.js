@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useRef, useEffect, useContext } from "react";
 import { firestore, auth } from "../firebase";
-import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, setDoc, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from "react-icons/fa";
 
@@ -61,6 +61,29 @@ export default function EditAccount() {
       return error;
     }
   };
+
+  async function handleDeleteUserClick() {
+    if (user && user.uid) {
+      // Display the confirm dialog to the user
+      const confirmDelete = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone.");
+
+      // If the user clicks OK in the confirm dialog, proceed with deletion
+      if (confirmDelete) {
+      try {
+        // Delete the user document
+        const userDocRef = doc(firestore, "Users", user.uid);
+        await deleteDoc(userDocRef);
+        console.log(`User document with ID ${user.uid} deleted successfully.`);
+
+      } catch (error) {
+        // Handle any errors that occurred during deletion
+        console.error("Error deleting user data:", error);
+        // You can also show an error message to the user if desired.
+      }
+    }
+  }
+}
 
   return (
     <>
@@ -158,7 +181,8 @@ export default function EditAccount() {
             </button>
           </div>
           <div className="flex mt-6 justify-center text-xs">
-            <a href="#" className="text-blue-499 hover:text-yellow-300">
+            <a href="#" className="text-blue-499 hover:text-yellow-300"
+            onClick={handleDeleteUserClick}>
               Delete Account
             </a>
           </div>

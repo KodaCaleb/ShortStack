@@ -1,9 +1,10 @@
 import unclickedLogo from "../../assets/unclickedStack.svg";
 import clickedLogo from "../../assets/clickedStack.svg";
+import AuthContext from "../../utils/AuthContext";
+import HomeLink from "../../utils/HomeLink";
 import { HandleLogout } from "../../utils/LoginLogout";
 import NavBar from "../header/NavBar";
 import { useState, useContext } from "react";
-import AuthContext from "../../utils/AuthContext";
 
 export default function CollapseMenu({openModal}) {
   const { isLoggedIn } = useContext(AuthContext);
@@ -30,6 +31,7 @@ export default function CollapseMenu({openModal}) {
             />
           <ul className="drop top-12 list-none absolute left-0 z-10">
             <div className="relative p-2 ">
+              <HomeLink />
               {isLoggedIn ? (
                 <>
                   <li className="text-white text-center block p-0 align-middle rounded-lg mt-3">

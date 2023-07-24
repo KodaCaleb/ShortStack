@@ -71,7 +71,6 @@ export default function UserProfileHeading() {
   };
 
   return (
-  return (
     <>
       <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
         <div className="flex h-100 flex-col items-center">

@@ -59,7 +59,7 @@ function Navbar() {
           </h1>
         </div>
 
-        <div
+        {/* <div
           className="
         container 
         h-14
@@ -76,16 +76,22 @@ function Navbar() {
             type="text"
             placeholder="Search Tutorials"
           />
-          <div
-            className="search h-4 w-8
-            bg-yellow-400"
-          ></div>
-        </div>
 
-        <div
-          className="flex sm:justify-end sm:items-center md:pr-4
-       "
-        >
+          <div className="search h-8 w-8
+            bg-yellow-400"></div>
+        </div> */}
+
+        {/* <div className="flex sm:justify-end sm:items-center"> */}
+          <div className= "flex items-center"></div>
+        <div className="container relative bottom-1 right-24">
+    <input
+      className="bg-yellow-600"
+      type="text"
+      placeholder="Search Tutorials"
+    />
+    <div className="search h-4 w-6 bg-yellow-400"></div>
+  </div>
+          <div className="absolute top-5 right-6 mr-1">
           {isLoggedIn ? (
             <LoginLogout />
           ) : (
@@ -111,7 +117,8 @@ function Navbar() {
               Login
             </button>
           )}
-        </div>
+          </div>
+        {/* </div> */}
       </nav>
       <LoginModal isOpen={isModalOpen} closeModal={closeModal} />
     </header>

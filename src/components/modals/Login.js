@@ -57,7 +57,7 @@ export default function LoginModal({ isOpen, closeModal }) {
           />
 
           <div className="flex justify-center p-4">
-            <LoginLogout email={loginInfo.email} password={loginInfo.password} />
+            <LoginLogout email={loginInfo.email} password={loginInfo.password} closeModal={closeModal}/>
           </div>
           <div className="flex mt-6 justify-center text-xs">
             <a href="#" className="text-blue-499 hover:text-yellow-300">

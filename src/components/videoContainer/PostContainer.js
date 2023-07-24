@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import Video from "./Video";
+import CommentSection from "./CommentSection";
 import { firestore } from "../../firebase";
 import {
   doc,
@@ -113,6 +114,12 @@ export default function PostContainer({ videoData }) {
     }
   }
 
+  const [showCommentSection, setShowCommentSection] = useState(false);
+  async function handleCommentBtnClick() {
+// fetch comments for video 
+// post comments for video
+  }
+
   return (
     <div className="flex justify-center flex-row snap start">
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
@@ -152,14 +159,25 @@ export default function PostContainer({ videoData }) {
           />
         )}
             <BiCommentDetail
-              className="m-4"
+              className="m-4 hover:cursor-pointer"
               style={{ color: "tan" }}
               size={28}
+              onClick={() => {
+                setShowCommentSection(!showCommentSection);
+              }}
             />
             <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} />
           </div>
-        </div>
+         </div>
+         {showCommentSection && (
+          <>
+          <CommentSection/>
+          {/* fetch comments related to the video post and map them to display in this  section. */}
+          {/* Add code here to display the list of comments */}
+          {/* Add code here to display the form to submit a comment */}
+          </>
+         )}
       </div>
     </div>
   );

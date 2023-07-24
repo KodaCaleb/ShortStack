@@ -49,6 +49,7 @@ export default function UserProfileHeading() {
       setLoadingUser(false);
     }
   }, [user, uid, loading]);
+  
 
   const openModal = () => {
     setModalOpen(true);

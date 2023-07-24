@@ -5,13 +5,11 @@ import Syrup from "../../assets/syrup.gif";
 import AuthContext from "../../utils/AuthContext";
 
 export default function LoginModal({ isOpen, closeModal }) {
-
   const [modalMode, setModalMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [isIncorrectPassword, setIsIncorrectPassword] = useState(false);
-  
 
   const handleLoginError = () => {
     setIsIncorrectPassword(true);
@@ -23,12 +21,12 @@ export default function LoginModal({ isOpen, closeModal }) {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
@@ -40,7 +38,6 @@ export default function LoginModal({ isOpen, closeModal }) {
     email,
     password,
   };
-  
 
   return (
     <>
@@ -79,16 +76,21 @@ export default function LoginModal({ isOpen, closeModal }) {
               Password
             </label>
             <input
-              className="flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+              className={`flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2 ${
+                isIncorrectPassword ? "border-red-500 border-2" : ""
+              }`}
               type="password"
               value={password}
               onChange={(e) => {
-                setIsIncorrectPassword(false)
-                setPassword(e.target.value)
+                setIsIncorrectPassword(false);
+                setPassword(e.target.value);
               }}
             />
             <div className="h-20">
-              <img className=" bottom-4 z-0 relative w-64 h-24" src={Syrup}></img>
+              <img
+                className=" bottom-4 z-0 relative w-64 h-24"
+                src={Syrup}
+              ></img>
             </div>
             <div className="flex flex-col items-center ">
               <LoginLogout
@@ -119,7 +121,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             </button>
           </form>
         )}
-      </div >
+      </div>
     </>
   );
 }

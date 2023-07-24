@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../utils/AuthContext';
 import PostContainer from '../components/videoContainer/PostContainer';
 import { firestore } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import AccountModal from './Account';
 // import AccountModal from './Account';
 
@@ -17,6 +17,7 @@ export default function UserProfileHeading() {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [loadingUser, setLoadingUser] = useState(true)
+  const [userContentData, setUserContentData] = useState([]);
 
   useEffect(() => {
     // Wait for the user context to be available
@@ -30,7 +31,17 @@ export default function UserProfileHeading() {
           const userData = userDocSnapshot.data()
 
           setBio(userData.bio || "")
-          console.log(bio)
+
+          // Fetch data from the subcollection "userContent"
+          const userContentRef = collection(userDocRef, "userContent");
+          const userContentSnapshot = await getDocs(userContentRef);
+
+          // process the user content data
+          const userContentDataArray = userContentSnapshot.docs.map((doc) => doc.data());
+            setUserContentData(userContentDataArray);
+
+            userContentData.map((data) => (console.log(data.vidRef)))
+
         }
       } catch (error){
         console.log("Error fetching data from firestore:", error)
@@ -61,8 +72,7 @@ export default function UserProfileHeading() {
 
   return (
     <>
-      <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}
-      >
+      <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
         <div className="flex h-100 flex-col items-center">
           <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
             <div className="self-start rounded-full relative flex items-center justify-center px-4 max-w-[150px] max-h-[150px] border border-white bg-yellow-400">
@@ -76,10 +86,10 @@ export default function UserProfileHeading() {
             <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
               {/* stack of username and bio */}
               <div className="username-floating relative text-white">
-              <span className="text-5xl text-amber-300">{username}</span>
+                <span className="text-5xl text-amber-300">{username}</span>
               </div>
               <div className="bio-floating relative p-1 text-white">
-              <span>{bio}</span>
+                <span>{bio}</span>
               </div>
               <button
                 type="button"
@@ -92,20 +102,9 @@ export default function UserProfileHeading() {
               <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
             </div>
           </div>
-
-          {/* </div> */}
-          <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
-
-          <div className="w-3/4 grid grid-cols-3">
-            <PostContainer />
-          <PostContainer />
-          <PostContainer />
-          <PostContainer />
-          <PostContainer />
-          <PostContainer />
-          </div>
         </div>
+  
       </div>
     </>
   );
-};
+}

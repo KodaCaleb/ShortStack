@@ -1,63 +1,51 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../utils/AuthContext';
-import PostContainer from '../components/videoContainer/PostContainer';
 import { firestore } from '../firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import AccountModal from './Account';
-// import AccountModal from './Account';
 
 export default function UserProfileHeading() {
+  const [bio, setBio] = useState("");
+  const [userContentData, setUserContentData] = useState([]);
+  const [username, setUsername] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [loadingUser, setLoadingUser] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);
 
-  const { user } = useContext(AuthContext); // This is the global user id reference
-
-  // intialize state variables for user
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [loadingUser, setLoadingUser] = useState(true)
-  const [userContentData, setUserContentData] = useState([]);
+  const { user } = useContext(AuthContext); // Destructure user from the context
 
   useEffect(() => {
     // Wait for the user context to be available
     if (user) {
-    //  const { uid, displayName, email, photoURL, emailVerified } = user;
-    const getUserData = async () => {
-      try {
-        const userDocRef = doc(firestore, "Users", user.uid)
-        const userDocSnapshot = await getDoc(userDocRef)
-        if (userDocSnapshot.exists()){
-          const userData = userDocSnapshot.data()
+      const getUserData = async () => {
+        try {
+          const userDocRef = doc(firestore, "Users", user.uid)
+          const userDocSnapshot = await getDoc(userDocRef)
+          if (userDocSnapshot.exists()){
+            const userData = userDocSnapshot.data()
+            setBio(userData.bio || "")
 
-          setBio(userData.bio || "")
+            // Fetch data from the subcollection "userContent"
+            const userContentRef = collection(userDocRef, "userContent");
+            const userContentSnapshot = await getDocs(userContentRef);
 
-          // Fetch data from the subcollection "userContent"
-          const userContentRef = collection(userDocRef, "userContent");
-          const userContentSnapshot = await getDocs(userContentRef);
-
-          // process the user content data
-          const userContentDataArray = userContentSnapshot.docs.map((doc) => doc.data());
+            // process the user content data
+            const userContentDataArray = userContentSnapshot.docs.map((doc) => doc.data());
             setUserContentData(userContentDataArray);
-
-            userContentData.map((data) => (console.log(data.vidRef)))
-
+            console.log("LOOK HERE",userContentData)
+          }
+        } catch (error){
+          console.log("Error fetching data from firestore:", error)
         }
-      } catch (error){
-        console.log("Error fetching data from firestore:", error)
-      }
-    };
+      };
 
-    getUserData()
+      getUserData()
 
       setUsername(user.displayName || "")
       setPhoto(user.photoURL || process.env.PUBLIC_URL + '/pancakeholder.img.png')
       setLoadingUser(false);
     }
-    return () => {
-      // Cleanup code (if needed)
-    };
-  
   }, [user]);
 
   const openModal = () => {
@@ -79,7 +67,6 @@ export default function UserProfileHeading() {
               <img
                 src={photo}
                 alt="Profile"
-                onError={() => setPhoto(process.env.PUBLIC_URL + '/pancakeholder.img.png')}
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -102,8 +89,21 @@ export default function UserProfileHeading() {
               <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
             </div>
           </div>
+
+          {/* Add this section for displaying user content */}
+          {loadingUser ? (
+            <div>Loading...</div> // Add a loading state
+          ) : (
+            userContentData.map((content, index) => (
+              <div key={index}>
+                {/* Replace 'title' and 'description' with the actual property names in your userContentData objects */}
+                <h2>{content.title}</h2> 
+                <p>{content.description}</p> 
+                {/* ... other content properties ... */}
+              </div>
+            ))
+          )}
         </div>
-  
       </div>
     </>
   );

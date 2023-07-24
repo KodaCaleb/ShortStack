@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
+import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Firestore DB
@@ -19,12 +20,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(process.env.PUBLIC_URL + '/pancakeholder.img.png');
 
-  // Event handler to select an image file
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setProfilePhoto(file);
-  };
-
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
@@ -33,7 +28,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       alert("Please fill in all required fields");
       return;
     }
-    
 
     try {
       // Creates a new user in the Firebase authenticator
@@ -244,31 +238,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               onChange={(e) => setBio(e.target.value)}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="block mb-2 text-sm font-bold text-yellow-300"
-              htmlFor="photo"
-            >
-            </label>
-            <div className="flex justify-center">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-              <button
-                className="bg-yellow-400 h-12 w-44 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800
-                ease-in-out duration-500"
-                onClick={() =>
-                  document.querySelector('input[type="file"]').click()
-                }
-              >
-                {" "}
-                Upload Photo
-              </button>
-            </div>
-          </div>
+          <UploadPhoto />
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <a

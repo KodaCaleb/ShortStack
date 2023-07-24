@@ -60,6 +60,7 @@ export default function CollapseMenu({openModal}) {
                     <a href="/">Explore</a>
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+
                     <a onClick={handleOpenModal}>Login</a>
                   </li>
                 </>

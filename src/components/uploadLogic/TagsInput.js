@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-export default function TagsInput({ value = [], onChange }) {
-  const [tag, setTag] = useState("");
+function TagsInput({ value = [], onChange }) {
+  const [tag, setTag] = useState('');
 
   const removeTag = (indexToRemove) => {
     onChange(value.filter((_, index) => index !== indexToRemove));
@@ -10,7 +10,7 @@ export default function TagsInput({ value = [], onChange }) {
   const addTag = (event) => {
     event.preventDefault();
     onChange([...value, tag]);
-    setTag("");
+    setTag('');
   };
 
   return (
@@ -20,10 +20,10 @@ export default function TagsInput({ value = [], onChange }) {
           {tag} x
         </button>
       ))}
-      <form onSubmit={addTag}>
-        <input value={tag} onChange={(e) => setTag(e.target.value)} />
-        <button type="submit">Add tag</button>
-      </form>
+      <input value={tag} onChange={(e) => setTag(e.target.value)} />
+      <button type="button" onClick={addTag}>Add tag</button>
     </div>
   );
 }
+
+export default TagsInput;

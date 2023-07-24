@@ -1,14 +1,69 @@
-import React from 'react';
-// import Syrup from "../../assets/syrup.gif";
+import React from "react";
+import { useState, useRef, useEffect, useContext } from "react";
+import { firestore, auth } from "../firebase";
+import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
+import AuthContext from "../utils/AuthContext";
+import { FaPencilAlt } from "react-icons/fa";
 
+export default function EditAccount() {
+  const { user } = useContext(AuthContext);
+  console.log("Login status:", user);
 
-export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
-  if (!isOpen) {
-    return null
-  }
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [bio, setBio] = useState("");
+
+  //   storing the updated input values
+  const [updatedFirstName, setUpdatedFirstName] = useState("");
+  const [updatedLastName, setUpdatedLastName] = useState("");
+  const [updatedBio, setUpdatedBio] = useState("");
+
+  //Authenticated User's info displayed in account form when signed in
+  useEffect(() => {
+    if (user) {
+      const getUserData = async () => {
+        try {
+          //Get firestore user data with id
+          const userDocRef = doc(firestore, "Users", user.uid);
+
+          //Get the snapshot of the document
+          const userDocSnapshot = await getDoc(userDocRef);
+
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+
+            setFirstName(userData.firstName || "");
+            setLastName(userData.lastName || "");
+            setBio(userData.bio || "");
+          }
+        } catch (error) {
+          return error;
+        }
+      };
+      getUserData();
+    }
+  }, [user]);
+
+  // Event handler for updating account information
+  const handleEditAccount = async (e) => {
+    e.preventDefault();
+    try {
+      const userDocRef = doc(firestore, "Users", user.uid);
+
+      //object with new update user
+      const updatedData = {
+        firstName: updatedFirstName,
+        lastName: updatedLastName,
+        bio: updatedBio,
+      };
+      await setDoc(userDocRef, updatedData, { merge: true });
+    } catch (error) {
+      return error;
+    }
+  };
+
   return (
     <>
-
       {/* <div className="flex flex-col items-center justify-center text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> View Account Info</h3> */}
       <form
@@ -30,6 +85,8 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
                 id="firstName"
                 type="text"
                 placeholder="First Name"
+                value={updatedFirstName || firstName}
+                onChange={(e) => setUpdatedFirstName(e.target.value)}
               />
             </div>
             <div className="md:ml-2">
@@ -44,6 +101,8 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
                 id="lastName"
                 type="text"
                 placeholder="Last Name"
+                value={updatedLastName || lastName}
+                onChange={(e) => setUpdatedLastName(e.target.value)}
               />
             </div>
           </div>
@@ -56,7 +115,9 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="text" placeholder="Email"
+            type="text"
+            placeholder="Email"
+            value={user?.email}
           />
           <label
             className="block mb-2 text-sm font-bold text-gray-700"
@@ -67,39 +128,42 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="password" placeholder="password"
+            type="password"
+            placeholder="password"
           />
           <label
             className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="phoneNumberField"
           >
             {" "}
-            Phone Number
+            Bio
           </label>
           <input
             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="text" placeholder="phoneNumber"
+            type="text"
+            placeholder="bio"
+            value={updatedBio || bio}
+            onChange={(e) => setUpdatedBio(e.target.value)}
           />
           <div className="flex items-center justify-center">
-            <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300 
+            <button
+              className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300
            hover:rounded-3xl
-           hover:border-2 
+           hover:border-2
            hover:border-amber-700
            hover:w-80 ease-in-out duration-300"
-              onClick={closeModal}>
+              onClick={handleEditAccount}
+            >
               Save Changes
             </button>
           </div>
           <div className="flex mt-6 justify-center text-xs">
-            <a href="#" className="text-blue-499 hover:text-yellow-300" onClick={toggleModalMode}>
+            <a href="#" className="text-blue-499 hover:text-yellow-300">
               Delete Account
             </a>
           </div>
-          <button className=" absolute top-2 right-2 px-2 py-2" onClick={closeModal}>
-            X
-          </button>
         </div>
       </form>
     </>
   );
-};
+}

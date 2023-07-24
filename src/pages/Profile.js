@@ -18,8 +18,8 @@ export default function UserProfileHeading() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);  
   
-  const { isLoggedIn, user } = useContext(AuthContext); // This is the global user id reference
-  const { uid, displayName, email, photoURL, emailVerified } = user;
+  // const { isLoggedIn, user } = useContext(AuthContext); // This is the global user id reference
+  // const { uid, displayName, email, photoURL, emailVerified } = user;
   
   const openModal = () => {
     console.log("modal should open");
@@ -89,6 +89,7 @@ export default function UserProfileHeading() {
 
   const handleUsernameClick = () => {
     setIsUsernameEditable(!isUsernameEditable);
+    // setShowImage(false);
   };
 
   const handleBioMouseEnter = () => {
@@ -105,7 +106,7 @@ export default function UserProfileHeading() {
 
   return ( 
     <>
-    <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
+    <div className={`main-containe${isBlurBackground ? ' blur-background' : ''}`}>
       <div className="flex h-100 flex-col items-center">
         <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
           <div
@@ -136,8 +137,8 @@ export default function UserProfileHeading() {
                   className="w-full h-full object-cover rounded-full"
                 />
                 {isImageHovered && (
-                  <div className="absolute top-2 right-2">
-                    <FaPencilAlt className="text-xl text-white" />
+                  <div className="absolute bottom-1 right-1">
+                    <FaPencilAlt className="text-xl text-white opacity-70 hover:opacity-100 cursor-pointer" />
                   </div>
                 )}
               </>
@@ -146,7 +147,7 @@ export default function UserProfileHeading() {
           <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
             {/* stack of username and bio */}
             <div
-              className="relative p-1 my-4 border border-white text-white"
+              className="username-floating relative text-white"
               onMouseEnter={handleUsernameMouseEnter}
               onMouseLeave={handleUsernameMouseLeave}
               onClick={handleUsernameClick}
@@ -156,20 +157,21 @@ export default function UserProfileHeading() {
                   type="text"
                   defaultValue={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  className = "text-3xl text-stone-200  bg-transparent outline-gray-700 focus:ring-2-gray-800 rounded "
                 />
               ) : (
                 <>
-                  <span className="text-xl">{username}</span>
+                  <span className="text-5xl text-amber-300">{username}</span>
                   {isUsernameHovered && (
-                    <div className="absolute top-2 right-2">
-                      <FaPencilAlt className="text-xl text-white" />
+                    <div className=" top-2 right-1">
+                      <FaPencilAlt className="text-xl text-white opacity-70 hover:opacity-100 cursor-pointer" />
                     </div>
                   )}
                 </>
               )}
             </div>
             <div
-              className="relative p-1 border border-white text-white"
+              className="bio-floating relative p-1 text-white"
               onMouseEnter={handleBioMouseEnter}
               onMouseLeave={handleBioMouseLeave}
               onClick={handleBioClick}
@@ -179,13 +181,14 @@ export default function UserProfileHeading() {
                   type="text"
                   defaultValue={bioInfo}
                   onChange={(e) => setBioInfo(e.target.value)}
+                  className = "text-2xl text-stone-200  bg-transparent outline-gray-700 focus:ring-2-gray-800 rounded "
                 />
               ) : (
                 <>
                   {bioInfo}
                   {isBioHovered && (
-                    <div className="absolute top-2 right-2">
-                      <FaPencilAlt className="text-xl text-white" />
+                    <div className=" top-2 right-2">
+                      <FaPencilAlt className="text-xl text-white opacity-70 hover:opacity-100 cursor-pointer" />
                     </div>
                   )}
                 </>
@@ -193,7 +196,7 @@ export default function UserProfileHeading() {
             </div>
             <button
           type="button"
-          className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4"
+          className="focus:outline-none text-black bg-amber-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4"
           data-modal-target="authentication-modal"
           onClick={openModal}
         >

@@ -42,7 +42,7 @@ export default function LoginLogout(props) {
     }
 
     return (
-        <div>
+        <div className="relative z-20">
             {isLoggedIn ? (
                 <button
                     type="button"
@@ -54,7 +54,11 @@ export default function LoginLogout(props) {
             ) : (
                 <button
                     type="button"
-                    className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+                    className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  text-sm px-6 h-10  focus:border-white dark:focus:ring-yellow-900 
+                     w-40
+                    hover:border-amber-700
+                    hover:rounded-3xl
+                     hover:w-52 ease-in-out duration-300"
                     data-modal-target="authentication-modal"
                     onClick={HandleLogin}>
                     Login

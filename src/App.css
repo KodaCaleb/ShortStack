@@ -191,31 +191,32 @@ body {
   cursor: pointer;
 }
 
+/* magnifying glass stick */
 .container .search::before {
   content: "";
   position: absolute;
   margin: auto;
-  top: 22px;
+  top: 16px;
   right: 0;
   bottom: 0;
-  left: 22px;
+  left: 16px;
   width: 12px;
-  height: 2px;
+  height: 3px;
   background: black;
   transform: rotate(45deg);
   transition: all 0.5s;
 }
-
+/* magnifying glass circle */
 .container .search::after {
   content: "";
   position: absolute;
   margin: auto;
-  top: -5px;
+  top: -3px;
   right: 0;
   bottom: 0;
-  left: -5px;
-  width: 25px;
-  height: 25px;
+  left: -4px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   border: 3px solid black;
   transition: all 0.5s;
@@ -235,7 +236,6 @@ body {
   color: white;
   padding: 0 80px 0 20px;
   border-radius: 30px;
-  box-shadow: 0 0 25px 0 rgb(165, 126, 42), 0 20px 25px 0 rgba(0, 0, 0, 0.2);
   transition: all 1s;
   opacity: 0;
   z-index: 5;
@@ -254,7 +254,7 @@ body {
 }
 
 .container input:focus ~ .search {
-  right: -290px;
+  right: -250px;
   background: #151515a5;
   z-index: 6;
 }
@@ -281,7 +281,6 @@ body {
   font-weight: bolder;
 }
 
-
 .video-container:hover .video-progress {
   opacity: 1;
 }
@@ -297,12 +296,11 @@ body {
 }
 
 .video-progress::-webkit-progress-value {
-  background: #FACC15;
+  background: #facc15;
   border-radius: 20px;
 }
 
 .video-progress::-moz-progress-bar {
-  background: #FACC15;
+  background: #facc15;
   border-radius: 20px;
 }
- 

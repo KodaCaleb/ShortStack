@@ -63,33 +63,24 @@ export default function EditAccount() {
     }
   };
 
-  async function handleDeleteUserClick() {
-    if (user && user.uid) {
-      // Display the confirm dialog to the user
-      const confirmDelete = window.confirm(
-      "Are you sure you want to delete your account? This action cannot be undone.");
+  // Function to handle the "Delete Account" button click
+async function handleDeleteAccount() {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-      // If the user clicks OK in the confirm dialog, proceed with deletion
-      if (confirmDelete) {
-      try {
-        // Delete the user document
-        const userDocRef = doc(firestore, "Users", user.uid);
-        await deleteDoc(userDocRef);
-        console.log(`User document with ID ${user.uid} deleted successfully.`);
+    if (user) {
+      // Delete the user from Firebase Authentication
+      await deleteUser(user);
 
-         // Step 2: Delete the user from Firebase Authentication
-         const auth = getAuth();
-         await deleteUser(auth.currentUser);
-         console.log("User deleted from Firebase Authentication successfully.");
-
-      } catch (error) {
-        // Handle any errors that occurred during deletion
-        console.error("Error deleting user data:", error);
-        // You can also show an error message to the user if desired.
-      }
+      // Extension automatically deletes the associated data based on the configured paths.
     }
-  }
+  } catch (error) {
+    console.error("Error deleting user account:", error);
+    // Handle any errors that occurred during the deletion process
+  };
 }
+  
 
   return (
     <>
@@ -188,7 +179,7 @@ export default function EditAccount() {
           </div>
           <div className="flex mt-6 justify-center text-xs">
             <a href="#" className="text-blue-499 hover:text-yellow-300"
-            onClick={handleDeleteUserClick}>
+            onClick={handleDeleteAccount}>
               Delete Account
             </a>
           </div>

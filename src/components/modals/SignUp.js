@@ -247,7 +247,11 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               />
               <button
                 className="bg-yellow-400 h-12 w-44 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800
-                ease-in-out duration-500"
+                ease-in-out duration-500
+                hover:rounded-3xl
+                hover:border-2 
+                hover:border-amber-700
+                hover:w-80 ease-in-out duration-300"
                 onClick={() =>
                   document.querySelector('input[type="file"]').click()
                 }

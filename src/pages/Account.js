@@ -1,4 +1,5 @@
 import React from 'react';
+// import Syrup from "../../assets/syrup.gif";
 
 
 export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
@@ -15,7 +16,7 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
           action=""
         >
           <div className="flex flex-col items-center justify-center text-yellow-500 ">
-        <h3 className="pt-4 text-2xl text-center"> View Account Info</h3>
+        <h3 className="p-2 my-3 text-2xl text-center"> View Account Info</h3>
           <div className="mb-4 md:flex md:justify-between">
             <div className="mb-4 md:mr-2 md:mb-0">
               <label
@@ -85,7 +86,12 @@ export default function AccountModal({ isOpen, closeModal, toggleModalMode }) {
             </a>
           </div>
           <div className="flex items-center justify-center">
-          <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300" onClick={closeModal}>
+          <button className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300 
+           hover:rounded-3xl
+           hover:border-2 
+           hover:border-amber-700
+           hover:w-80 ease-in-out duration-300"
+           onClick={closeModal}>
             Save Changes
           </button>
           </div>

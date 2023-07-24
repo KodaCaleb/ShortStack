@@ -10,10 +10,10 @@ export const HandleLogout = async () => {
     await signOut(auth)
     .then(() => {
         alert("You have been signed out successfully.");
-    })
-    .catch((error) => {
         //should reload page after signout button is pressed
         window.location.reload();
+    })
+    .catch((error) => {
         console.log(error);
     });
 };
@@ -34,13 +34,19 @@ export default function LoginLogout(props) {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user, ": is now logged in!");
+                props.closeModal();
                 
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+
+                if (errorCode === "auth/wrong-password") {
+                    props.onLoginError();
+                } else {
+                    alert(errorMessage);
+                }
             })
-            props.closeModal();
     }
 
     return (

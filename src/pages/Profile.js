@@ -194,6 +194,15 @@ export default function UserProfileHeading() {
                   </>
                 )}
               </div>
+              <div className="flex items-center justify-start">
+            <button className="flex items-center justify-center h-8 px-12 w-50 bg-yellow-500 mt-4 rounded font-semibold text-sm text-black-100 hover:bg-yellow-300 
+           hover:rounded-3xl
+           hover:border-2 
+           hover:border-amber-700"
+              >
+              Follow Me!
+            </button>
+            </div>
               <button
                 type="button"
                 className="focus:outline-none text-black bg-amber-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4

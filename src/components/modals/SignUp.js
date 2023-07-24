@@ -5,7 +5,6 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
-
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Firestore DB
   const [firstName, setFirstName] = useState("");
@@ -102,7 +101,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       console.error("Error adding user data to Firestore:", error);
     }
   };
-
   return (
     <>
       {/* Modal */}
@@ -234,7 +232,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               onChange={(e) => setBio(e.target.value)}
             />
           </div>
-
           <div className="mb-4">
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
@@ -270,7 +267,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Back to Login
             </a>
           </div>
-
           {/* Submit Form Button */}
           <div className="flex items-center justify-center">
             <button

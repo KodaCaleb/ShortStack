@@ -127,7 +127,7 @@ export default function PostContainer({ videoData }) {
       //Logic for following user
       if(!isFollowing) {
         try {
-          const currentUserUid = ''; //pull current user id
+          const currentUserUid = 'uid'; //pull current user id
           const userToFollowUid = videoData.userId; //based off video data containing the uid
 
            // Add document in "following" subcollection of the current user.
@@ -149,9 +149,9 @@ export default function PostContainer({ videoData }) {
     if(isFollowing){
       try {
         const currentUserUid = uid; //current users
-        const userToFollowUid = videoDate.userId;
+        const userToFollowUid = videoData.userId; //uses video data's user id
 
-        const followingRef = doc(firestore, 'Users', currentUserUid, 'following', UserToFollowUid);
+        const followingRef = doc(firestore, 'Users', currentUserUid, 'following', userToFollowUid); //deletes document in the following sub collection
         await deleteDoc(followingRef);
 
         const followersRef = doc(firestore, 'User', userToFollowUid, 'followers', currentUserUid);
@@ -159,7 +159,6 @@ export default function PostContainer({ videoData }) {
         setIsFollowing(false); //updates to user that is now being unfollowed
       } catch (error) {
         console.error('error unfollowing the user:', error);
-      }
       }
     }
   };
@@ -214,25 +213,26 @@ export default function PostContainer({ videoData }) {
             <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} />
 
-            {/* {isFollowing ? ()} */}
-            <RiUserFollowLine className="m-4 hover:cursor-pointer"
+              {isFollowing ? (
+            <RiUserFollowLine 
+              className="m-4 hover:cursor-pointer"
               style={{ color: "tan" }}
               size={28}
               onClick={() => {
-                ;
+                followUser(); //call the follow user function
                 console.log("User clicked the RiUserFollowLine icon");
               }}
             />
-            {/* UNFOLLOW BUTTON */}
-            {/* ) : ( 
+            ) : ( 
               <RiUserUnfollowFill
             className="m-4 hover:cursor-pointer"
             style={{ color: "tan" }}
             size={28}
             onClick={() => {
+              unfollowUser(); //call the unfollower user function
             }}
-              />   */}
-          </div>
+            />
+            )}
         </div>
         {showCommentSection && (
           <>
@@ -243,6 +243,7 @@ export default function PostContainer({ videoData }) {
           </>
         )}
       </div>
+    </div>
     </div>
   );
 }

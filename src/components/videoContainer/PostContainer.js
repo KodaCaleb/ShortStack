@@ -122,6 +122,34 @@ export default function PostContainer({ videoData }) {
 // post comments for video
   }
 
+  const followUser= async () => {
+    //Logic for following user
+    if(!isFollowing) {
+      try {
+        const CurrentUserUid = ''; //pull current user id
+        const UserToFollowUid = videoData.userId; //based off video data containing the uid
+
+         // Add document in "following" subcollection of the current user.
+      const followingRef = doc(firestore, 'Users', currentUserUid, 'following', userToFollowUid);
+      await setDoc(followingRef, {});
+
+         // Add document in "followers" subcollection of the user being followed.
+         const followersRef = doc(firestore, 'Users', userToFollowUid, 'followers', currentUserUid);
+         await setDoc(followersRef, {});
+         setIsFollowing(true); // Update the state to indicate that the user is now being followed.
+        } catch (error) {
+          console.error('Error following the user:', error);
+        }
+      }
+    };
+  setIsFollowing(true);
+};
+
+const unfollowUser = async () => {
+  //Logic for unfollowing user
+  setIsFollowing(false);
+}
+
 
   return (
     <div className="flex justify-center flex-row snap start">

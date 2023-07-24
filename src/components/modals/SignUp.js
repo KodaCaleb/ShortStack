@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
+import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Firestore DB
@@ -20,10 +21,10 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [profilePhoto, setProfilePhoto] = useState(process.env.PUBLIC_URL + '/pancakeholder.img.png');
 
   // Event handler to select an image file
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setProfilePhoto(file);
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setProfilePhoto(file);
+  // };
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
@@ -244,7 +245,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               onChange={(e) => setBio(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+          <UploadPhoto />
+          {/* <div className="mb-4">
             <label
               className="block mb-2 text-sm font-bold text-yellow-300"
               htmlFor="photo"
@@ -268,7 +270,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 Upload Photo
               </button>
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <a

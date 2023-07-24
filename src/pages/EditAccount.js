@@ -4,6 +4,7 @@ import { firestore, auth } from "../firebase";
 import { collection, setDoc, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from "react-icons/fa";
+import { getAuth, deleteUser } from "firebase/auth";
 
 export default function EditAccount() {
   const { user } = useContext(AuthContext);
@@ -75,6 +76,11 @@ export default function EditAccount() {
         const userDocRef = doc(firestore, "Users", user.uid);
         await deleteDoc(userDocRef);
         console.log(`User document with ID ${user.uid} deleted successfully.`);
+
+         // Step 2: Delete the user from Firebase Authentication
+         const auth = getAuth();
+         await deleteUser(auth.currentUser);
+         console.log("User deleted from Firebase Authentication successfully.");
 
       } catch (error) {
         // Handle any errors that occurred during deletion

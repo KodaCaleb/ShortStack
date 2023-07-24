@@ -3,8 +3,10 @@ import AuthContext from "../utils/AuthContext"; // import AuthContext method als
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
+import TagsInput from "../components/uploadLogic/TagsInput";
 
 export default function VideoInput(props) {
+  const [tags, setTags] = useState([]);
   const { width, height } = props;
 
   // console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
@@ -24,6 +26,7 @@ export default function VideoInput(props) {
     const url = URL.createObjectURL(file);
     setFile(file);
     setSource(url);
+
   };
 
   const handleUpload = async (event) => {
@@ -47,6 +50,7 @@ export default function VideoInput(props) {
           const videoData = {
             title,
             description,
+            tags,
             vidRef: downloadURL,
             userId: uid,
             likes: 0,
@@ -93,6 +97,7 @@ export default function VideoInput(props) {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
       />
+      <TagsInput value={tags} onChange={setTags} />
       {!source && <button className="justify-center h-12 px-6  w-full bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400" onClick={handleChoose}>Select File</button>}
       {source && (
         <video

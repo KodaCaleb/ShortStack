@@ -55,6 +55,7 @@ export default function CollapseMenu() {
                     <a href="/">Explore</a>
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+
                     <a href="/login">Login</a>
                   </li>
                 </>

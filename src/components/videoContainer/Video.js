@@ -75,6 +75,7 @@ export default function Video({ videoData }) {
           className="object-fill rounded w-auto h-auto"
           ref={videoRef}
           onClick={onVideoPress}
+          // preload="metadata"
           loop
           onTimeUpdate={handleTimeUpdate}
           hidden={isLoading}

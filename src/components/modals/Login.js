@@ -5,7 +5,7 @@ import Syrup from "../../assets/syrup.gif";
 import AuthContext from "../../utils/AuthContext";
 
 export default function LoginModal({ isOpen, closeModal }) {
- 
+
   const [modalMode, setModalMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,16 +68,15 @@ export default function LoginModal({ isOpen, closeModal }) {
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className="h-20">
-            <img className=" bottom-4 z-0 relative w-64 h-24" src={Syrup}></img>
+              <img className=" bottom-4 z-0 relative w-64 h-24" src={Syrup}></img>
             </div>
             <div className="flex flex-col items-center ">
               <LoginLogout
                 email={loginInfo.email}
                 password={loginInfo.password}
+                closeModal={closeModal}
               />
-             
             </div>
-
             <div className="flex mt-6 justify-center text-xs">
               <a href="#" className="text-blue-499 hover:text-yellow-300">
                 Forgot Password
@@ -99,7 +98,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             </button>
           </form>
         )}
-      </div>
+      </div >
     </>
   );
 }

@@ -13,11 +13,14 @@ export default function UserProfileHeading() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);
 
-  const { user } = useContext(AuthContext); // Destructure user from the context
+  const { user, loading } = useContext(AuthContext); // Destructure user from the context
 
+  const uid = user ? user.uid : null; // Get the uid from the user object
+
+  
   useEffect(() => {
     // Wait for the user context to be available
-    if (user) {
+    if (user && uid && !loading) {
       const getUserData = async () => {
         try {
           const userDocRef = doc(firestore, "Users", user.uid)
@@ -33,7 +36,6 @@ export default function UserProfileHeading() {
             // process the user content data
             const userContentDataArray = userContentSnapshot.docs.map((doc) => doc.data());
             setUserContentData(userContentDataArray);
-            console.log("LOOK HERE",userContentData)
           }
         } catch (error){
           console.log("Error fetching data from firestore:", error)
@@ -46,7 +48,9 @@ export default function UserProfileHeading() {
       setPhoto(user.photoURL || process.env.PUBLIC_URL + '/pancakeholder.img.png')
       setLoadingUser(false);
     }
-  }, [user]);
+  }, [user, uid, loading]);
+
+  console.log(userContentData)
 
   const openModal = () => {
     setModalOpen(true);

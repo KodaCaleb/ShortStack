@@ -30,6 +30,7 @@ export default function UserProfileHeading() {
           const userData = userDocSnapshot.data()
 
           setBio(userData.bio || "")
+          console.log(bio)
         }
       } catch (error){
         console.log("Error fetching data from firestore:", error)
@@ -60,10 +61,7 @@ export default function UserProfileHeading() {
 
   return (
     <>
-      <div
-        className={`main-container${
-          isBlurBackground ? ' blur-background' : ''
-        }`}
+      <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}
       >
         <div className="flex h-100 flex-col items-center">
           <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
@@ -77,15 +75,15 @@ export default function UserProfileHeading() {
             </div>
             <div className="flex flex-col justify-start px-4 md:pl-4 w-full">
               {/* stack of username and bio */}
-              <div className="relative p-1 my-4 border border-white text-white">
-                <span className="text-xl">{username}</span>
+              <div className="username-floating relative text-white">
+              <span className="text-5xl text-amber-300">{username}</span>
               </div>
-              <div className="relative p-1 border border-white text-white">
-              <span className="text-xl">{bio}</span>
+              <div className="bio-floating relative p-1 text-white">
+              <span>{bio}</span>
               </div>
               <button
                 type="button"
-                className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4"
+                className="focus:outline-none text-black bg-amber-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4 hover:rounded-3xl"
                 data-modal-target="authentication-modal"
                 onClick={openModal}
               >
@@ -96,18 +94,18 @@ export default function UserProfileHeading() {
           </div>
 
           {/* </div> */}
-          {/* <AccountModal isOpen={isModalOpen} closeModal={closeModal} /> */}
+          <AccountModal isOpen={isModalOpen} closeModal={closeModal} />
 
           <div className="w-3/4 grid grid-cols-3">
-            {/* <PostContainer />
+            <PostContainer />
           <PostContainer />
           <PostContainer />
           <PostContainer />
           <PostContainer />
-          <PostContainer /> */}
+          <PostContainer />
           </div>
         </div>
       </div>
     </>
   );
-}
+};

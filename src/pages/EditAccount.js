@@ -1,13 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { firestore, updatePassword } from "../firebase";
-import {
-  collection,
-  setDoc,
-  getDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
 import { updateEmail } from "firebase/auth";
 import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from "react-icons/fa";
@@ -16,18 +10,23 @@ export default function EditAccount() {
   const { user, userData } = useContext(AuthContext);
 
   //   storing the updated input values
-  const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
-  const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
+  const [isEmailUpdated, setIsEmailUpdated] = useState(false);
+  const [updatedFirstName, setUpdatedFirstName] = useState(
+    userData?.firstName || ""
+  );
+  const [updatedLastName, setUpdatedLastName] = useState(
+    userData?.lastName || ""
+  );
   const [updatedBio, setUpdatedBio] = useState(userData?.bio || "");
   const [updatedEmail, setUpdatedEmail] = useState(user?.email || "");
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
   useEffect(() => {
-    setUpdatedFirstName(userData?.firstName || "")
-    setUpdatedLastName(userData?.lastName || "")
-    setUpdatedBio(userData?.bio || "")
+    setUpdatedFirstName(userData?.firstName || "");
+    setUpdatedLastName(userData?.lastName || "");
+    setUpdatedBio(userData?.bio || "");
     setUpdatedEmail(user?.email || "");
-  }, [userData, user])
-
+  }, [userData, user]);
 
   // Event handler for updating account information
   const handleEditAccount = async (e) => {
@@ -43,9 +42,13 @@ export default function EditAccount() {
       };
       await setDoc(userDocRef, updatedData, { merge: true });
 
-      if (setUpdatedEmail) {
+      if (isEmailUpdated) {
         await handleUpdateEmail(updatedEmail);
       }
+
+      //Showing user if successful update
+      setIsUpdateSuccess(true);
+      setTimeout(() => setIsUpdateSuccess(false), 3000);
     } catch (error) {
       return error;
     }
@@ -72,9 +75,7 @@ export default function EditAccount() {
           <h3 className="p-2 my-3 text-2xl text-center"> View Account Info</h3>
           <div className="mb-4 md:flex md:justify-between">
             <div className="mb-4 md:mr-2 md:mb-0">
-              <label
-                className="block mb-2 text-sm font-bold text-gray-700"
-              >
+              <label className="block mb-2 text-sm font-bold text-gray-700">
                 First Name
               </label>
               <input
@@ -155,6 +156,11 @@ export default function EditAccount() {
               Save Changes
             </button>
           </div>
+          {isUpdateSuccess && (
+            <div className="flex items-center justify-center mt-4 text-green-500">
+              Account updated successfully!
+            </div>
+          )}
           <div className="flex mt-6 justify-center text-xs">
             <a href="#" className="text-blue-499 hover:text-yellow-300">
               Delete Account

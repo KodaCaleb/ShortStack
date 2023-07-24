@@ -250,13 +250,14 @@ body {
 }
 
 .container input:focus {
-  width: 300px;
+  width: 380px;
   opacity: 1;
   cursor: text;
 }
 
 .container input:focus ~ .search {
-  right: -250px;
+  left: 290px;
+/*   right: -250px; */
   background: #151515a5;
   z-index: 6;
 }

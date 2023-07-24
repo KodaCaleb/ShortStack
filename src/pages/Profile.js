@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import AuthContext from '../utils/AuthContext';
-import { firestore } from '../firebase';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import AccountModal from './Account';
+import React, { useState, useEffect, useContext } from "react";
+import AuthContext from "../utils/AuthContext";
+import { firestore } from "../firebase";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import AccountModal from "./Account";
+import Video from "../components/videoContainer/Video";
 
 export default function UserProfileHeading() {
   const [bio, setBio] = useState("");
@@ -13,44 +14,41 @@ export default function UserProfileHeading() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);
 
-  const { user, loading } = useContext(AuthContext); // Destructure user from the context
+  const { user, loading } = useContext(AuthContext);
 
-  const uid = user ? user.uid : null; // Get the uid from the user object
+  const uid = user ? user.uid : null;
 
-  
   useEffect(() => {
-    // Wait for the user context to be available
     if (user && uid && !loading) {
       const getUserData = async () => {
         try {
-          const userDocRef = doc(firestore, "Users", user.uid)
-          const userDocSnapshot = await getDoc(userDocRef)
-          if (userDocSnapshot.exists()){
-            const userData = userDocSnapshot.data()
-            setBio(userData.bio || "")
+          const userDocRef = doc(firestore, "Users", uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            setBio(userData.bio || "");
 
-            // Fetch data from the subcollection "userContent"
             const userContentRef = collection(userDocRef, "userContent");
             const userContentSnapshot = await getDocs(userContentRef);
 
-            // process the user content data
-            const userContentDataArray = userContentSnapshot.docs.map((doc) => doc.data());
+            const userContentDataArray = userContentSnapshot.docs.map(
+              (doc) => ({ id: doc.id, ...doc.data() })
+            );
             setUserContentData(userContentDataArray);
           }
-        } catch (error){
-          console.log("Error fetching data from firestore:", error)
+        } catch (error) {
+          console.log("Error fetching data from firestore:", error);
         }
       };
 
-      getUserData()
-
-      setUsername(user.displayName || "")
-      setPhoto(user.photoURL || process.env.PUBLIC_URL + '/pancakeholder.img.png')
+      getUserData();
+      setUsername(user.displayName || "");
+      setPhoto(
+        user.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png"
+      );
       setLoadingUser(false);
     }
   }, [user, uid, loading]);
-
-  console.log(userContentData)
 
   const openModal = () => {
     setModalOpen(true);
@@ -64,9 +62,14 @@ export default function UserProfileHeading() {
 
   return (
     <>
-      <div className={`main-container${isBlurBackground ? ' blur-background' : ''}`}>
+      <div
+        className={`main-container${
+          isBlurBackground ? " blur-background" : ""
+        }`}
+      >
         <div className="flex h-100 flex-col items-center">
           <div className="flex justify-center md:flex-row mx-4 md:w-1/2 m-20">
+            {/* ...Your existing JSX... */}
             <div className="self-start rounded-full relative flex items-center justify-center px-4 max-w-[150px] max-h-[150px] border border-white bg-yellow-400">
               <img
                 src={photo}
@@ -94,18 +97,15 @@ export default function UserProfileHeading() {
             </div>
           </div>
 
-          {/* Add this section for displaying user content */}
           {loadingUser ? (
-            <div>Loading...</div> // Add a loading state
-          ) : (
-            userContentData.map((content, index) => (
-              <div key={index}>
-                {/* Replace 'title' and 'description' with the actual property names in your userContentData objects */}
-                <h2>{content.title}</h2> 
-                <p>{content.description}</p> 
-                {/* ... other content properties ... */}
-              </div>
-            ))
+            <div>Loading...</div>
+          ) : (            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+          {userContentData.map((content, index) => (
+            <div className="flex flex-row p-20 justify-center">
+              <Video key={index} videoData={content} fullSize={true} />
+            </div>
+          ))}
+        </div>
           )}
         </div>
       </div>

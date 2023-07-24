@@ -57,6 +57,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL: photoURL,
         });
 
+        const message = ("User account created successfully!")
+        alert(message)
         console.log("User profile updated successfully with displayName and photoURL.");
       } else {
 
@@ -66,6 +68,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           phoneNumber: phoneNumber,
         });
 
+        const message = ("User account created successfully!")
+        alert(message)
         console.log("User profile updated successfully with displayName and phoneNumber.");
       };
 
@@ -76,11 +80,14 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         bio,
       };
       addUserToFirestore(uid, userInfo);
-    }
 
-    catch (error) {
+
+    } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+
+      const warning = (errorMessage)
+      alert(warning)
       console.error("Error creating user:", errorCode, errorMessage);
     };
   };
@@ -98,6 +105,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     } catch (error) {
       console.error("Error adding user data to Firestore:", error);
     }
+
+    // Close modal after successful account creation
+    closeModal();
   };
 
   return (
@@ -148,6 +158,24 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             </div>
           </div>
 
+
+          {/* Email */}
+          <label
+            className="block mb-2 text-sm font-bold text-yellow-300"
+            htmlFor="emailField"
+          >
+            {" "}
+            Email
+          </label>
+          <input
+            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
           {/* Username */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"
@@ -163,23 +191,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
-
-          {/* Email */}
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="emailField"
-          >
-            {" "}
-            Email
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
           {/* Password */}
           <label
             className="block mb-2 text-sm font-bold text-yellow-300"

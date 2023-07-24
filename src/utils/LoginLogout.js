@@ -2,6 +2,7 @@ import { signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useContext } from "react";
 import AuthContext from "../utils/AuthContext"; // Import the AuthContext
+import { closeModal } from "../components/modals/Login";
 
 
 export const HandleLogout = async () => {
@@ -31,11 +32,13 @@ export default function LoginLogout(props) {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user, ": is now logged in!");
+                
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
             })
+            props.closeModal();
     }
 
     return (

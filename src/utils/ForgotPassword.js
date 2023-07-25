@@ -1,12 +1,13 @@
 // ForgotPassword.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {getAuth, sendPasswordResetEmail } from "firebase/auth"
 
 const ForgotPassword = ({ email }) => {
   const [message, setMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
     try {
         const auth = getAuth();
       await sendPasswordResetEmail(auth, email);
@@ -18,10 +19,18 @@ const ForgotPassword = ({ email }) => {
         setIsProcessing(false);
     }
   };
+
+  useEffect(() => {
+    if (message) {
+    window.alert(message);
+        setMessage("");
+    }
+  }, [message]);
+
   return (
     <div>
-      <button onClick={handleResetPassword}>Forgot Password</button>
-      {message && <p>{message}</p>}
+      <button onClick={(e)=>{handleResetPassword(e)}}>Forgot Password</button>
+      {/* {message && window.alert(message)} */}
     </div>
   );
 }

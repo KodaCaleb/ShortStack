@@ -96,6 +96,7 @@ export default function VideoInput(props) {
         accept="video/*"
       />
       <input
+        className="inline-flex items-center bg-white  text-black rounded-lg p-2 mt-4 whitespace-nowrap mt-3"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}

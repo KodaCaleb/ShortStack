@@ -7,7 +7,7 @@ import Video from "../components/videoContainer/Video";
 import { RiUserFollowLine } from 'react-icons/ri'
 
 export default function UserProfileHeading() {
-  const [bio, setBio] = useState("");
+  const [devRole, setDevRole] = useState("");
   const [userContentData, setUserContentData] = useState([]);
   const [username, setUsername] = useState("");
   const [photo, setPhoto] = useState("");
@@ -27,7 +27,7 @@ export default function UserProfileHeading() {
           const userDocSnapshot = await getDoc(userDocRef);
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
-            setBio(userData.bio || "");
+            setDevRole(userData.devRole || "");
 
             const userContentRef = collection(userDocRef, "userContent");
             const userContentSnapshot = await getDocs(userContentRef);
@@ -84,7 +84,7 @@ export default function UserProfileHeading() {
                 <span className="text-5xl text-amber-300">{username}</span>
               </div>
               <div className="bio-floating relative p-1 text-white">
-                <span>{bio}</span>
+                <span>{devRole}</span>
               </div>
               <div className="justify-start">
                 <button

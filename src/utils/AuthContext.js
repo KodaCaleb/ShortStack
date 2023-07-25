@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Authenticate the users login status
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       // If user is signed in then...
       if (user) {
         // Conditional rules for a user that is logged in
@@ -39,30 +39,33 @@ export const AuthProvider = ({ children }) => {
 
         // Method to grab users data from firestore DB
         const docRef = doc(firestore, "Users", user.uid);
-        const docSnap = getDoc(docRef);
-        docSnap
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              const userData = snapshot.data();
+        try {
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
 
-              // List global props for firestore DB
-              const { firstName, lastName, bio } = userData;
-              setUserData({ firstName, lastName, bio });
-              console.log("Document data:", snapshot.data());
-            } else {
-              console.log("No data exists");
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching document:", error);
-          });
+            // List global props for firestore DB
+            const { firstName, lastName, bio } = userData;
+            setUserData({ firstName, lastName, bio });
+            console.log("Document data:", docSnap.data());
+          } else {
+            console.log("No data exists");
+          }
+        } catch (error) {
+          console.error("Error fetching document:", error);
+        }
+
+        // Set loading to false only after all async tasks have completed.
+        setLoading(false);
       } else {
         // Conditional rules for a User that is logged out
         setIsLoggedIn(false);
         setUser(null);
         setUserData(null);
+
+        // Set loading to false only after all async tasks have completed.
+        setLoading(false);
       }
-      setLoading(false); // set loading to false in both cases
     });
 
     return () => unsubscribe();

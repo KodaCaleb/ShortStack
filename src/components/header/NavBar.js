@@ -95,7 +95,7 @@ function Navbar() {
           />
           <div className="search h-4 w-6 bg-yellow-400"></div>
         </div>
-        <div className="absolute top-5 right-6 mr-1">
+        <div className="login-button absolute top-5 right-6 mr-1">
           {isLoggedIn ? (
             <LoginLogout />
           ) : (
@@ -121,7 +121,7 @@ function Navbar() {
               Login
             </button>
           )}
-        </div>
+          </div>
         {/* </div> */}
       </nav>
       <LoginModal isOpen={isModalOpen} closeModal={closeModal} />

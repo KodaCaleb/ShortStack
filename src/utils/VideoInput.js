@@ -1,7 +1,7 @@
-import React, { useState, useRef, useContext } from "react"; // import the useContext method
+import React, { useState, useRef, useEffect, useContext } from "react"; // import the useContext method
 import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
 import TagsInput from "../components/uploadLogic/TagsInput";
 
@@ -10,7 +10,14 @@ export default function VideoInput(props) {
   const { width, height } = props;
 
   // console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
-  const { uid } = useContext(AuthContext); // This is the global user id reference
+  const { user, loading } = useContext(AuthContext)
+  const uid = user && !loading ? user.uid : null // This is the global user id reference
+
+  useEffect(() => {
+    if (user && uid && !loading) {
+      console.log("UID in VideoInput:", uid); // Log the value of uid
+    }
+  }, [user, loading, uid]);
   
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
@@ -31,13 +38,16 @@ export default function VideoInput(props) {
 
   const handleUpload = async (event) => {
     event.preventDefault();
-    if (!file || uploading) return;
-
+    if (!file || uploading || uploading) {
+      console.log("missing data. User ID:", uid);
+      return
+    }
+  
     const storageRef = ref(storage, file.name);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+  
     setUploading(true);
-
+  
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -55,10 +65,13 @@ export default function VideoInput(props) {
             userId: uid,
             likes: 0,
           };
-
+  
+          // Generate a document reference ID beforehand
+          const docRef = doc(collection(firestore, "videos"));
+  
           try {
-            await addDoc(collection(firestore, "videos"), videoData);
-            await addDoc(collection(firestore, `Users/${uid}/userContent`), videoData)
+            await setDoc(doc(firestore, "videos", docRef.id), videoData);
+            await setDoc(doc(firestore, `Users/${uid}/userContent`, docRef.id), videoData);
           } catch (error) {
             console.log("Error adding document", error);
           }

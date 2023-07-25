@@ -57,18 +57,21 @@ export default function PostContainer({ videoData }) {
     if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
       const userRef = doc(firestore, "Users", userId);
+      const userContentRef = doc(firestore, `Users/${userId}/userContent`, videoId);
   
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         const userDoc = await transaction.get(userRef);
+        const userContentDoc = await transaction.get(userContentRef);
   
-        if (!videoDoc.exists() || !userDoc.exists()) {
-          throw "Video or User does not exist!";
+        if (!videoDoc.exists() || !userDoc.exists() || !userContentDoc.exists()) {
+          throw "Video, User or User content does not exist!";
         }
   
-        // Update the likes count in video document
+        // Update the likes count in video document and user content document
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
+        transaction.update(userContentRef, { likes: newLikesCount });
   
         // Add the video to the user's 'likedVideos' subcollection
         const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
@@ -87,18 +90,21 @@ export default function PostContainer({ videoData }) {
     if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
       const userRef = doc(firestore, "Users", userId);
+      const userContentRef = doc(firestore, `Users/${userId}/userContent`, videoId);
   
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         const userDoc = await transaction.get(userRef);
+        const userContentDoc = await transaction.get(userContentRef);
   
-        if (!videoDoc.exists() || !userDoc.exists()) {
-          throw "Video or User does not exist!";
+        if (!videoDoc.exists() || !userDoc.exists() || !userContentDoc.exists()) {
+          throw "Video, User or User content does not exist!";
         }
   
-        // Update the likes count in video document
+        // Update the likes count in video document and user content document
         const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0);
         transaction.update(videoRef, { likes: newLikesCount });
+        transaction.update(userContentRef, { likes: newLikesCount });
   
         // Remove the video from the user's 'likedVideos' subcollection
         const userLikedVideoRef = doc(userRef, "likedVideos", videoId);

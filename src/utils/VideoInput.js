@@ -86,9 +86,9 @@ export default function VideoInput(props) {
   };
 
   return (
-    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-black">
-      <h3 className=" bg-yellow-950 rounded-2xl p-4 mt-5 text-center italic">720x1280 resolution or higher 
-      <br></br>Up to 5 minutes 
+    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-zinc-200 bg-opacity-20">
+      <h3 className=" bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-4  text-center italic pb-8">720x1280 resolution or higher 
+      <br></br>Up to 5 minutes in length
       <br></br>Less than 2 GB</h3>
       <input
         ref={inputRef}
@@ -98,6 +98,7 @@ export default function VideoInput(props) {
         accept="video/*"
       />
       <input
+      className="bg-black border rounded-md m-4 px-3 py-2"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -105,13 +106,25 @@ export default function VideoInput(props) {
         required
       />
       <input
+      className="bg-black border rounded-md m-4 px-3 py-2"
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
       />
       <TagsInput value={tags} onChange={setTags} />
-      {!source && <button className="justify-center h-12 px-6  w-full bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400" onClick={handleChoose}>Select File</button>}
+      {!source && <button className="
+      justify-center 
+      h-12 px-6  
+      w-full 
+      bg-yellow-500 
+      mt-8 rounded 
+      font-semibold 
+      text-sm 
+      text-black 
+      hover:bg-yellow-400
+      " 
+      onClick={handleChoose}>Select File</button>}
       {source && (
         <video
           className="block m-0 text-white rounded"
@@ -121,7 +134,7 @@ export default function VideoInput(props) {
           src={source}
         />
       )}
-      <div className="min-h-fit leading-10 text-center w-full text-white">{source || "Nothing selected"}</div>
+      <div className="min-h-fit leading-10 text-center w-full text-white text-opacity-40">{source || "Nothing selected"}</div>
       <button type="submit" disabled={uploading} className="justify-center h-12 px-6  w-full bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400">Upload</button>
     </form>
   );

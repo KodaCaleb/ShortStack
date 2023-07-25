@@ -36,12 +36,6 @@ export default function CollapseMenu({ openModal }) {
               <HomeLink />
               {isLoggedIn ? (
                 <>
-                  <li className="text-white text-center block p-0 align-middle rounded-lg mt-3">
-                    <a href="/">Following</a>
-                  </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
-                    <a href="/">Explore</a>
-                  </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
                     <a href="/favorites">Favorites</a>
                   </li>
@@ -60,11 +54,7 @@ export default function CollapseMenu({ openModal }) {
                 </>
               ) : (
                 <>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
-                    <a href="/">Explore</a>
-                  </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-
                     <a onClick={handleOpenModal}>Login</a>
                   </li>
                 </>

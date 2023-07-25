@@ -242,13 +242,13 @@ export default function PostContainer({ videoData }) {
                 }}
               />
             )}
-            <BiCommentDetail
+            {/* <BiCommentDetail
               className="m-4 hover:cursor-pointer"
               style={{ color: "tan" }}
               size={28}
               onClick={handleCommentBtnClick}
-            />
-            <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
+            /> */}
+            {/* <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} />
 
             {isFollowing ? (
@@ -260,8 +260,8 @@ export default function PostContainer({ videoData }) {
                   followUser(); //call the follow user function
                   console.log("User clicked the RiUserFollowLine icon");
                 }}
-              />
-            ) : (
+              /> */}
+            {/* ) : (
               <RiUserUnfollowFill
                 className="m-4 hover:cursor-pointer"
                 style={{ color: "tan" }}
@@ -271,7 +271,7 @@ export default function PostContainer({ videoData }) {
                   console.log("user clicked unfollow button");
                 }}
               />
-            )}
+            )} */}
           </div>
           <Video videoData={videoData} />
           {showCommentSection && (

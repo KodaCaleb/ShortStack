@@ -28,17 +28,18 @@ function TagsInput({ value = [], onChange }) {
           </button>
         ))}
       </div>
-      <div className="flex space-x-2 w-full">
+      <div className="flex flex-row items-center space-x-2 w-full">
         <input
+        
           placeholder="react, javascript, css"
-          className="flex-grow rounded-lg p-2"
+          className="bg-black border  flex-grow rounded-md m-4 px-3 py-2"
           value={tag}
 
           onChange={(e) => setTag(e.target.value)}
         />
         <button
-          className="bg-yellow-500 rounded-lg p-2"
-          type="submit"
+          className="bg-yellow-500 rounded-lg p-2 h-1/2"
+          type="button"
           onClick={addTag}
         >
           Add tag

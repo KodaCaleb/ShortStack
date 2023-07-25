@@ -190,7 +190,7 @@ body {
 
   @media (max-width: 820px) {
     right: auto;
-    left: 50%;
+    left: 80%;
     transform: translateX(-120%);
     bottom: 10px;
     width: 40px;
@@ -255,7 +255,7 @@ body {
 
   @media (max-width: 820px) {
     /* right: auto; */
-    left: 20%;
+    left: 40%;
     transform: translateX(-50%);
     bottom: 10px;
     width: 40px;
@@ -478,4 +478,10 @@ ul {
    width: 390px;
  }
 
+}
+
+@media (max-width: 912px) {
+  .login-button {
+    display: none;
+  }
 }

@@ -326,3 +326,9 @@ body {
   background: #facc15;
   border-radius: 20px;
 }
+
+@media (max-width: 1160px) {
+  .login-button {
+    display: none;
+  }
+}

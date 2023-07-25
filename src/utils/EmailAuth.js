@@ -1,7 +1,9 @@
 import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 
-const actionCodeSettings = {
-    url: 'https://www.example.com/finishSignUp?cartId=1234',
+
+
+export const actionCodeSettings = {
+    url: './signup',
     handleCodeInApp: true,
     dynamicLinkdomain: 'example.page.link'
 };
@@ -19,11 +21,13 @@ sendSignInLinkToEmail(auth, email, actionCodeSettings)
     const errorMessage = error.message;
   });
 
-  if(signInWithEmailLink(auth, window.location.href)) {
+  if(isSignInWithEmailLink(auth, window.location.href)) {
     let email = window.localStorage.getItem('emailForSignIn');
     if (!email){
         email = window.prompt('Please provide your email confirmation!');
     }
-    // signInWithEmailLink(auth, email, window.location.href)
-        
+    signInWithEmailLink(auth, email, window.location.href)
+        .then((result) => {
+            window.localStorage.removeItem('emailForSignIn');
+        });
   }

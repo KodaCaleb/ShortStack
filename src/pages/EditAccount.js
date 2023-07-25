@@ -65,6 +65,22 @@ export default function EditAccount() {
     }
   };
 
+  // getAuth()
+  // .updateUser(user.uid, {
+  //   email: '',
+  //   phoneNumber: '',
+  //   emailVerified: true,
+  //   password: 'newPassword',
+  //   disabled: true,
+  // })
+  // .then((userRecord) => {
+  //   // See the UserRecord reference doc for the contents of userRecord.
+  //   console.log('Successfully updated user', userRecord.toJSON());
+  // })
+  // .catch((error) => {
+  //   console.log('Error updating user:', error);
+  // });
+
   // Get the delete account function from the custom hook
   const handleDeleteAccount = useDeleteAccount();
 

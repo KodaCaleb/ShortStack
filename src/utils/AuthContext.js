@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }) => {
             const userData = docSnap.data();
 
             // List global props for firestore DB
-            const { firstName, lastName, bio } = userData;
-            setUserData({ firstName, lastName, bio });
+            const { firstName, lastName, devRole } = userData;
+            setUserData({ firstName, lastName, devRole });
             console.log("Document data:", docSnap.data());
           } else {
             console.log("No data exists");

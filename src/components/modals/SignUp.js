@@ -70,7 +70,16 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
-
+        
+        // Add additional user information to Firestore DB
+        const userInfo = {
+          firstName,
+          lastName,
+          devRole,
+          photoURL,
+        };
+        addUserToFirestore(uid, userInfo);
+        
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
           displayName: displayName,
@@ -84,14 +93,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           phoneNumber: phoneNumber,
         });
       }
-
-      // Add additional user information to Firestore DB
-      const userInfo = {
-        firstName,
-        lastName,
-        devRole,
-      };
-      addUserToFirestore(uid, userInfo);
+      
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

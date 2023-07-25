@@ -24,7 +24,7 @@ export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
-
+  const [userPhoto, setUserPhoto] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png")
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
   const uid = user ? user.uid : null; // Get the uid from the user object
@@ -195,8 +195,8 @@ export default function PostContainer({ videoData }) {
         {userData && (
           <div className="username flex p-5 text-amber-200 text-xl">
             <img
-              className=" rounded-full h-24"
-              src="https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg"
+              className=" rounded-full h-24 bg-yellow-500"
+              src={userPhoto}
             />
             <div className="pl-4">
               <p>

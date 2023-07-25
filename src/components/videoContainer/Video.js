@@ -3,7 +3,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 import { MoonLoader } from "react-spinners";
 
-export default function Video({ videoData, fullSize, deleteVideo, showDeleteButton }) {
+export default function Video({ videoData, fullSize }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0); // State for tracking video progress
   const [volume, setVolume] = useState(1);
@@ -66,14 +66,8 @@ export default function Video({ videoData, fullSize, deleteVideo, showDeleteButt
     }
   };
 
-  const onDeleteClick = () => {
-    deleteVideo(videoData.id);
-  };
-
   return (
-
     <div className={containerClass}>
-      {showDeleteButton && <button className="bg-white" onClick={onDeleteClick}>Delete</button>}
       <div className="video-container relative">
         {isLoading && (
           <div className=" top-0 right-0 bottom-0 left-0 flex items-center justify-center">

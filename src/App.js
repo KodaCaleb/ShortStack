@@ -16,6 +16,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/favorites/:displayName" element={<FavoritesProfile />} />
           <Route path="/account" element={<EditAccount />} />
           <Route path="/upload" element={<Upload />} />
         </Route>

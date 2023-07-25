@@ -1,51 +1,72 @@
-import React from "react";
 import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
+// import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
+  const [selectedFile, setSelectedFile] = useState(null);
+
   // Firestore DB
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [bio, setBio] = useState("");
+  const [devRole, setDevRole] = useState("Enter your role as a developer here!");
 
   // Authenticator DB
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState(process.env.PUBLIC_URL + '/pancakeholder.img.png');
+  const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
 
-  // Event handler to select an image file
-  const handleImageChange = (e) => {
+  const handleButtonClick = () => {
+    document.querySelector('input[type="file"]').click();
+  };
+
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setProfilePhoto(file);
+    setSelectedFile(file);
+    setPhotoData(file);
+
+    console.log(file);
   };
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !bio || !displayName || !email || !password || !phoneNumber) {
+    if (
+      !firstName ||
+      !lastName ||
+      !displayName ||
+      !email ||
+      !password ||
+      !phoneNumber
+    ) {
       alert("Please fill in all required fields");
       return;
     }
 
     try {
       // Creates a new user in the Firebase authenticator
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
-      const uid = user.uid
+      const uid = user.uid;
       console.log(user);
 
-      if (profilePhoto) {
-
+      if (photoData) {
         // Upload the user's profile photo to Firebase Storage
-        const photoRef = ref(storage, `profilePictures/${user.uid}/${profilePhoto.name}`);
-        await uploadBytes(photoRef, profilePhoto);
+        const photoRef = ref(
+          storage,
+          `profilePictures/${user.uid}/${photoData.name}`
+        );
+        await uploadBytes(photoRef, photoData);
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
@@ -57,32 +78,40 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL: photoURL,
         });
 
-        console.log("User profile updated successfully with displayName and photoURL.");
+        const message = "User account created successfully!";
+        alert(message);
+        console.log(
+          "User profile updated successfully with displayName and photoURL."
+        );
       } else {
-
         // Update the user's displayName, phoneNumber
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
         });
 
-        console.log("User profile updated successfully with displayName and phoneNumber.");
-      };
+        const message = "User account created successfully!";
+        alert(message);
+        console.log(
+          "User profile updated successfully with displayName and phoneNumber."
+        );
+      }
 
       // Add additional user information to Firestore DB
       const userInfo = {
         firstName,
         lastName,
-        bio,
+        devRole,
       };
       addUserToFirestore(uid, userInfo);
-    }
-
-    catch (error) {
+    } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+
+      const warning = errorMessage;
+      alert(warning);
       console.error("Error creating user:", errorCode, errorMessage);
-    };
+    }
   };
 
   // Sending user input to create account and profile document
@@ -91,27 +120,30 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       // Reference the "Users" collection in Firestore
       const usersCollection = collection(firestore, "Users");
 
+      const userDocRef = doc(usersCollection, uid);
+
       // Add the user data to Firestore using the uid as the document ID
-      await addDoc(usersCollection, { ...userInfo, uid });
+      await setDoc(userDocRef, userInfo);
 
       console.log("User data added to Firestore successfully.");
     } catch (error) {
       console.error("Error adding user data to Firestore:", error);
     }
-  };
 
+    // Close modal after successful account creation
+    closeModal();
+  };
   return (
     <>
       {/* Modal */}
-      <div className="flex flex-col items-center justify-center text-yellow-500 ">
+      <div className="flex flex-col items-center justify-start text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> Create an Account!</h3>
         <form
-          className="relative flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
+          className="relative flex flex-col  bg-black text-white rounded shadow-lg p-12 pb-4 mt-6 border border-white"
           action=""
         >
           <div className="mb-4 md:flex md:justify-between">
             <div className="mb-4 md:mr-2 md:mb-0">
-
               {/* First Name */}
               <label
                 className="block mb-2 text-sm font-bold text-yellow-300"
@@ -129,7 +161,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               />
             </div>
             <div className="md:ml-2">
-
               {/* Last Name */}
               <label
                 className="block mb-2 text-sm font-bold text-yellow-300"
@@ -148,116 +179,118 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             </div>
           </div>
 
-          {/* Username */}
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="username"
-          >
-            Username
-          </label>
-          <input
-            className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="username"
-            type="text"
-            placeholder="Username"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-          />
-
           {/* Email */}
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="emailField"
-          >
-            {" "}
-            Email
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          {/* Password */}
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="passwordField"
-          >
-            {" "}
-            Password
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          {/* Phone Number */}
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="phoneNumberField"
-          >
-            {" "}
-            Phone Number
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            type="tel"
-            id="phoneNumberField"
-            name="phoneNumber"
-            placeholder="Phone Number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-
-          {/* Bio */}
-          <div className="mb-4">
-            <label
-              className="block mb-2 text-sm font-bold text-yellow-300"
-              htmlFor="bio"
-            >
-              Bio
-            </label>
-            <input
-              className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="bio"
-              type="text"
-              placeholder="Bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block mb-2 text-sm font-bold text-yellow-300"
-              htmlFor="photo"
-            >
-            </label>
-            <div className="flex justify-center">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-              <button
-                className="bg-yellow-400 h-12 w-44 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800
-                ease-in-out duration-500"
-                onClick={() =>
-                  document.querySelector('input[type="file"]').click()
-                }
+          <div className="flex w-full flex-row">
+            <div className="pr-4">
+              <label
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="emailField"
               >
                 {" "}
-                Upload Photo
-              </button>
+                Email
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="pl-4">
+              <label
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="phoneNumberField"
+              >
+                {" "}
+                Phone Number
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                type="tel"
+                id="phoneNumberField"
+                name="phoneNumber"
+                placeholder="Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
             </div>
           </div>
 
+          {/* Username */}
+          <div className="w-full flex flex-row">
+            <div className="pr-4">
+              <label
+                className="flex mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="username"
+              >
+                Username
+              </label>
+              <input
+                className="w-full  px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                id="username"
+                type="text"
+                placeholder="Username"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </div>
+            {/* Password */}
+            <div className="pl-4 ">
+              <label
+                className=" mb-2 text-sm font-bold flex text-yellow-300"
+                htmlFor="passwordField"
+              >
+                {" "}
+                Password
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* Phone Number */}
+
+          {/* Bio */}
+          <div className="flex w-full mt-4 items-center flex-col">
+            <button
+              className="bg-yellow-400 h-12 w-52 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800 ease-in-out duration-500"
+              type="button"
+              onClick={handleButtonClick}
+            >
+              Upload Photo
+            </button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            {selectedFile && (
+              <>
+                <p className='text-sm'>File Selected:</p>
+                <p>{selectedFile.name}</p>
+              </>
+            )}
+            <div className="flex items-center p-4 justify-center">
+              <button
+                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+              hover:rounded-3xl
+              hover:border-2 
+              hover:border-amber-700
+              hover: ease-in-out duration-300"
+                type="submit"
+                onClick={handleCreateAccount}
+              >
+                Create
+              </button>
+            </div>
+          </div>
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <a
@@ -268,22 +301,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               Back to Login
             </a>
           </div>
-
           {/* Submit Form Button */}
-          <div className="flex items-center justify-center">
-            <button
-              className="flex items-center justify-center h-12 px-6 w-64 mt-8 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
-              hover:rounded-3xl
-              hover:border-2 
-              hover:border-amber-700
-              hover:w-80 ease-in-out duration-300"
-              type="submit"
-              onClick={handleCreateAccount}
-            >
-              Create
-            </button>
-          </div>
-
           {/* Exit out of modal button */}
           <button
             className=" absolute top-2 right-2 px-2 py-2"
@@ -296,4 +314,3 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     </>
   );
 }
-

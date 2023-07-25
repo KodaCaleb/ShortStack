@@ -3,10 +3,14 @@ import LoginLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
+import SearchVideosByTags from "../../utils/SearchBarTags";
+import SearchContext from "../../utils/SearchContext";
 
 function Navbar() {
   const { isLoggedIn } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { setMatchingVideos } = useContext(SearchContext);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -14,6 +18,27 @@ function Navbar() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  //Search bar state
+  const [searchTag, setSearchTag] = useState("");
+  // const [matchingVideos, setMatchingVideos] = useState([]);
+
+  // handle Search bar function
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      if (searchTag.trim() !== "") {
+        const videos = await SearchVideosByTags(searchTag);
+        console.log("Matching Videos:", videos);
+        setMatchingVideos(videos);
+        console.log(videos);
+      } else {
+        setMatchingVideos([]);
+      }
+    } catch (error) {
+      console.error("error searching videos", error);
+    }
   };
 
   return (
@@ -91,9 +116,15 @@ function Navbar() {
           <input
             className="bg-yellow-600"
             type="text"
+            value={searchTag}
+            onChange={(e) => setSearchTag(e.target.value)}
+            onSubmit={handleSearch}
             placeholder="Search Tutorials"
           />
-          <div className="search h-4 w-6 bg-yellow-400"></div>
+          <div
+            className="search h-4 w-6 bg-yellow-400"
+            onClick={handleSearch}
+          ></div>
         </div>
         <div className="login-button absolute top-5 right-6 mr-1">
           {isLoggedIn ? (

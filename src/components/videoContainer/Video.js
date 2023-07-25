@@ -72,7 +72,6 @@ export default function Video({ videoData, fullSize, deleteVideo, showDeleteButt
 
   return (
     <div className={containerClass}>
-          {showDeleteButton && <button className="bg-white" onClick={onDeleteClick}>Delete</button>}
       <div className="video-container relative">
         {isLoading && (
           <div className=" top-0 right-0 bottom-0 left-0 flex items-center justify-center">
@@ -104,6 +103,7 @@ export default function Video({ videoData, fullSize, deleteVideo, showDeleteButt
           className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200"
         />
       </div>
+      {showDeleteButton && <button className="bg-yellow-500 rounded-md border border-black px-2 py-1" onClick={onDeleteClick}>Delete Video</button>}
     </div>
   );
 }

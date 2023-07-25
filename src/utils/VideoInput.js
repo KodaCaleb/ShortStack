@@ -97,7 +97,7 @@ export default function VideoInput(props) {
         accept="video/*"
       />
       <input
-      className="bg-black border rounded-md m-4 px-3 py-2"
+      className="bg-black text-white border rounded-md m-4 px-3 py-2"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}

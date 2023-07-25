@@ -65,7 +65,9 @@ export default function VideoUpload() {
         placeholder="Title"
         required
       />
-      <button type="submit" disabled={uploading}>
+      <button 
+        type="button" 
+        disabled={uploading}>
         Upload
       </button>
     </form>

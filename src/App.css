@@ -307,23 +307,3 @@ body {
   background: #facc15;
   border-radius: 20px;
 }
-
-
-.commenterImage {
-  width:30px;
-  margin-right:5px;
-  height:100%;
-  float:left;
-}
-.commenterImage img {
-  width:100%;
-  border-radius:50%;
-}
-.commentText p {
-  margin:0;
-}
-.sub-text {
-  color:#aaa;
-  font-family:verdana;
-  font-size:11px;
-}

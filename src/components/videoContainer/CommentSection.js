@@ -26,43 +26,43 @@ export default function CommentSection( { handleClose} ) {
         <div className=" p-3 border-t-2 border-dotted border-slate-500 ">
           <ul className="commentList p-0 list-none overflow-auto max-h-80 h-full">
             <li className="m-0 mt-3">
-              <div className="table-cell commenterImage">
-                <img src="http://placekitten.com/50/50" />
+              <div className="table-cell w-7 mr-1.5 h-full float-left">
+                <img className="w-full rounded-full" src="http://placekitten.com/50/50" />
               </div>
-              <div className="table-cell commentText">
-                <p className="">Hello this is a test comment.</p>{" "}
-                <span className="date sub-text">on March 5th, 2014</span>
+              <div className="table-cell">
+                <p className="m-0">Hello this is a test comment.</p>{" "}
+                <span className="date italic text-xs text-slate-400">on March 5th, 2014</span>
               </div>
             </li>
             <li className="m-0 mt-3">
-              <div className="table-cell commenterImage">
-                <img src="http://placekitten.com/45/45" />
+              <div className="table-cell w-7 mr-1.5 h-full float-left">
+                <img className="w-full rounded-full" src="http://placekitten.com/45/45" />
               </div>
-              <div className="table-cell commentText">
-                <p className="">
+              <div className="table-cell">
+                <p className="m-0">
                   Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
                 </p>{" "}
-                <span className="date sub-text">on March 5th, 2014</span>
+                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
               </div>
             </li>
             <li className="m-0 mt-3">
-              <div className="table-cell commenterImage">
-                <img src="http://placekitten.com/40/40" />
+              <div className="table-cell w-7 mr-1.5 h-full float-left">
+                <img className="w-full rounded-full" src="http://placekitten.com/40/40" />
               </div>
-              <div className="table-cell commentText">
-                <p className="">Hello this is a test comment.</p>{" "}
-                <span className="date sub-text">on March 5th, 2014</span>
+              <div className="table-cell">
+                <p className="m-0">Hello this is a test comment.</p>{" "}
+                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
               </div>
             </li>
             <li className="m-0 mt-3">
-              <div className="table-cell commenterImage">
-                <img src="http://placekitten.com/45/45" />
+              <div className="table-cell w-7 mr-1.5 h-full float-left">
+                <img className="w-full rounded-full" src="http://placekitten.com/45/45" />
               </div>
-              <div className=" table-cell commentText">
-                <p className="">
+              <div className=" table-cell">
+                <p className="m-0">
                   Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
                 </p>{" "}
-                <span className="date sub-text">on March 5th, 2014</span>
+                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
               </div>
             </li>
           </ul>

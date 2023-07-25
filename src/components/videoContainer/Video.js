@@ -3,7 +3,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 import { MoonLoader } from "react-spinners";
 
-export default function Video({ videoData }) {
+export default function Video({ videoData, fullSize }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0); // State for tracking video progress
   const [volume, setVolume] = useState(1);
@@ -11,6 +11,9 @@ export default function Video({ videoData }) {
 
   const videoRef = useRef(null);
   const progressRef = useRef(null); // Ref for the progress bar
+
+  const videoClass = fullSize ? "object-fill rounded w-full h-full" : "object-fill rounded w-auto h-auto";
+  const containerClass = fullSize ? "w-full h-full videoContainer" : "w-1/4 mb-4 h-full mt-4 videoContainer";
 
   useEffect(() => {
     const filepath = videoData.vidRef.replace(
@@ -64,7 +67,7 @@ export default function Video({ videoData }) {
   };
 
   return (
-    <div className="w-1/3 mb-4 h-full mt-4 videoContainer">
+    <div className={containerClass}>
       <div className="video-container relative">
         {isLoading && (
           <div className=" top-0 right-0 bottom-0 left-0 flex items-center justify-center">
@@ -72,9 +75,10 @@ export default function Video({ videoData }) {
           </div>
         )}
         <video
-          className="object-fill rounded w-auto h-auto"
+          className={videoClass}
           ref={videoRef}
           onClick={onVideoPress}
+          // preload="metadata"
           loop
           onTimeUpdate={handleTimeUpdate}
           hidden={isLoading}

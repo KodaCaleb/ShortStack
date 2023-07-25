@@ -1,44 +1,68 @@
-import React from "react";
 import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
-import UploadPhoto from "../../utils/UploadPhoto";
+import { MoonLoader } from "react-spinners";
+// import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   // Firestore DB
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [bio, setBio] = useState("");
+  const [devRole, setDevRole] = useState("Enter your role as a developer here!");
 
   // Authenticator DB
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState(
-    process.env.PUBLIC_URL + "/pancakeholder.img.png"
-  );
+  const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [message, setMessage] = useState("");
+
+  const handleButtonClick = () => {
+    document.querySelector('input[type="file"]').click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setPhotoData(file);
+  };
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (
       !firstName ||
       !lastName ||
-      !bio ||
       !displayName ||
       !email ||
       !password ||
       !phoneNumber
     ) {
       alert("Please fill in all required fields");
+      setIsLoading(false);
       return;
     }
 
+
+    // check for password reqs
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$&])[A-Za-z\d!@$&]{8,20}$/;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must have at least one upper/lowercase letter, one number, and one of the following symbols: !, @, $, &. It should be 6 to 20 characters long."
+      );
+      setIsLoading(false);
+      return;
+    }
+    
     try {
       // Creates a new user in the Firebase authenticator
       const userCredential = await createUserWithEmailAndPassword(
@@ -48,76 +72,70 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       );
       const user = userCredential.user;
       const uid = user.uid;
-      console.log(user);
 
-      if (profilePhoto) {
+      if (photoData) {
         // Upload the user's profile photo to Firebase Storage
         const photoRef = ref(
           storage,
-          `profilePictures/${user.uid}/${profilePhoto.name}`
+          `profilePictures/${user.uid}/${photoData.name}`
         );
-        await uploadBytes(photoRef, profilePhoto);
+        await uploadBytes(photoRef, photoData);
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
-
+        
+        // Add additional user information to Firestore DB
+        const userInfo = {
+          firstName,
+          lastName,
+          devRole,
+          photoURL,
+        };
+        addUserToFirestore(uid, userInfo);
+        console.log(userInfo);
+        console.log("this is what i am looking for")
+        
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
           photoURL: photoURL,
         });
-
-        const message = "User account created successfully!";
-        alert(message);
-        console.log(
-          "User profile updated successfully with displayName and photoURL."
-        );
       } else {
         // Update the user's displayName, phoneNumber
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
         });
-
-        const message = "User account created successfully!";
-        alert(message);
-        console.log(
-          "User profile updated successfully with displayName and phoneNumber."
-        );
       }
+      
+      //sends email verification
+      await sendEmailVerification(user);
 
-      // Add additional user information to Firestore DB
-      const userInfo = {
-        firstName,
-        lastName,
-        bio,
-      };
-      addUserToFirestore(uid, userInfo);
+      setMessage("Account created successfully. Please check your email for verification.");
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      const warning = errorMessage;
+      const warning = { errorCode, errorMessage };
       alert(warning);
-      console.error("Error creating user:", errorCode, errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   // Sending user input to create account and profile document
   const addUserToFirestore = async (uid, userInfo) => {
     try {
       // Reference the "Users" collection in Firestore
       const usersCollection = collection(firestore, "Users");
-
       const userDocRef = doc(usersCollection, uid);
 
       // Add the user data to Firestore using the uid as the document ID
       await setDoc(userDocRef, userInfo);
-
-      console.log("User data added to Firestore successfully.");
     } catch (error) {
-      console.error("Error adding user data to Firestore:", error);
+      alert("Error adding user data to Firestore:", error);
     }
 
     // Close modal after successful account creation
@@ -125,6 +143,11 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   };
   return (
     <>
+      {isLoading && (
+        <div className=" z-index-25 flex items-center justify-center">
+          <MoonLoader color="#E0A712" loading={isLoading} size={80} />
+        </div>
+      )}
       {/* Modal */}
       <div className="flex flex-col items-center justify-start text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> Create an Account!</h3>
@@ -172,41 +195,41 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Email */}
           <div className="flex w-full flex-row">
             <div className="pr-4">
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="emailField"
-          >
-            {" "}
-            Email
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+              <label
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="emailField"
+              >
+                {" "}
+                Email
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="pl-4">
+              <label
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="phoneNumberField"
+              >
+                {" "}
+                Phone Number
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                type="tel"
+                id="phoneNumberField"
+                name="phoneNumber"
+                placeholder="Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="pl-4">
-            <label
-              className="block mb-2 text-sm font-bold text-yellow-300"
-              htmlFor="phoneNumberField"
-            >
-              {" "}
-              Phone Number
-            </label>
-            <input
-              className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              type="tel"
-              id="phoneNumberField"
-              name="phoneNumber"
-              placeholder="Phone Number"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            </div>
-            </div>
 
           {/* Username */}
           <div className="w-full flex flex-row">
@@ -247,20 +270,38 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Phone Number */}
 
           {/* Bio */}
-          <div className="flex w-full mt-4 justify-between flex-col">
-          <UploadPhoto />
-          <div className="flex items-center p-4 justify-center">
+          <div className="flex w-full mt-4 items-center flex-col">
             <button
-              className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+              className="bg-yellow-400 h-12 w-52 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800 ease-in-out duration-500"
+              type="button"
+              onClick={handleButtonClick}
+            >
+              Upload Photo
+            </button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            {selectedFile && (
+              <>
+                <p className='text-sm'>File Selected:</p>
+                <p>{selectedFile.name}</p>
+              </>
+            )}
+            <div className="flex items-center p-4 justify-center">
+              <button
+                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900
               hover:rounded-3xl
-              hover:border-2 
+              hover:border-2
               hover:border-amber-700
               hover: ease-in-out duration-300"
-              type="submit"
-              onClick={handleCreateAccount}
-            >
-              Create
-            </button>
+                type="submit"
+                onClick={handleCreateAccount}
+              >
+                Create
+              </button>
             </div>
           </div>
           <div className="flex flex-row mt-6 justify-center items-center text-xs">

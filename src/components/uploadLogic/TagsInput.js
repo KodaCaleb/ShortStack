@@ -19,6 +19,7 @@ function TagsInput({ value = [], onChange }) {
         {value.map((tag, index) => (
           <button
             key={tag}
+            type="button"
             className="inline-flex items-center bg-white  text-black rounded-lg p-2 mt-4 whitespace-nowrap"
             onClick={() => removeTag(index)}
           >
@@ -32,11 +33,12 @@ function TagsInput({ value = [], onChange }) {
           placeholder="react, javascript, css"
           className="flex-grow rounded-lg p-2"
           value={tag}
+
           onChange={(e) => setTag(e.target.value)}
         />
         <button
           className="bg-yellow-500 rounded-lg p-2"
-          type="button"
+          type="submit"
           onClick={addTag}
         >
           Add tag

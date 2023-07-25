@@ -123,7 +123,7 @@ function Navbar() {
             onClick={handleSearch}
           ></div>
         </div>
-        <div className="absolute top-5 right-6 mr-1">
+        <div className="login-button absolute top-5 right-6 mr-1">
           {isLoggedIn ? (
             <LoginLogout />
           ) : (
@@ -149,7 +149,7 @@ function Navbar() {
               Login
             </button>
           )}
-        </div>
+          </div>
         {/* </div> */}
       </nav>
       <LoginModal isOpen={isModalOpen} closeModal={closeModal} />

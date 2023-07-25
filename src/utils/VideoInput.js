@@ -1,7 +1,7 @@
-import React, { useState, useRef, useContext } from "react"; // import the useContext method
+import React, { useState, useRef, useEffect, useContext } from "react"; // import the useContext method
 import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
 import TagsInput from "../components/uploadLogic/TagsInput";
 
@@ -10,12 +10,18 @@ export default function VideoInput(props) {
   const { width, height } = props;
 
   // console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
-  const { uid } = useContext(AuthContext); // This is the global user id reference
+  const { user, loading } = useContext(AuthContext)
+  const uid = user && !loading ? user.uid : null // This is the global user id reference
+
+  useEffect(() => {
+    if (user && uid && !loading) {
+      console.log("UID in VideoInput:", uid); // Log the value of uid
+    }
+  }, [user, loading, uid]);
   
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
 
 
@@ -31,13 +37,16 @@ export default function VideoInput(props) {
 
   const handleUpload = async (event) => {
     event.preventDefault();
-    if (!file || uploading) return;
-
+    if (!file || uploading || uploading) {
+      console.log("missing data. User ID:", uid);
+      return
+    }
+  
     const storageRef = ref(storage, file.name);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+  
     setUploading(true);
-
+  
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -49,16 +58,18 @@ export default function VideoInput(props) {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           const videoData = {
             title,
-            description,
             tags,
             vidRef: downloadURL,
             userId: uid,
             likes: 0,
           };
-
+  
+          // Generate a document reference ID beforehand
+          const docRef = doc(collection(firestore, "videos"));
+  
           try {
-            await addDoc(collection(firestore, "videos"), videoData);
-            await addDoc(collection(firestore, `Users/${uid}/userContent`), videoData)
+            await setDoc(doc(firestore, "videos", docRef.id), videoData);
+            await setDoc(doc(firestore, `Users/${uid}/userContent`, docRef.id), videoData);
           } catch (error) {
             console.log("Error adding document", error);
           }
@@ -73,10 +84,11 @@ export default function VideoInput(props) {
   };
 
   return (
-    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-black">
-      <h3 className=" bg-yellow-950 rounded-2xl p-4 mt-5 text-center italic">720x1280 resolution or higher 
+    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-5 border-yellow-400 rounded-3xl justify-center bg-black">
+      <h2 className=" bg-yellow-900 rounded-2xl p-1 text-center italic">720x1280 resolution or higher 
       <br></br>Up to 5 minutes 
-      <br></br>Less than 2 GB</h3>
+      <br></br>Less than 2 GB
+      <br></br>Disclaimer: Files that do not adhere to these guidelines may be subject to removal without prior notice.</h2>
       <input
         ref={inputRef}
         className="hidden"
@@ -85,17 +97,12 @@ export default function VideoInput(props) {
         accept="video/*"
       />
       <input
+        className="inline-flex items-center bg-white  text-black rounded-lg p-2 mt-4 whitespace-nowrap mt-3"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
         required
-      />
-      <input
-        type="text"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
       />
       <TagsInput value={tags} onChange={setTags} />
       {!source && <button className="justify-center h-12 px-6  w-full bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400" onClick={handleChoose}>Select File</button>}

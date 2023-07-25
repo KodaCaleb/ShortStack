@@ -6,7 +6,6 @@ import { storage, firestore } from "../../firebase";
 export default function VideoUpload() {
   const [file, setFile] = useState(null);
   const { title, setTitle } = useState("");
-  const { description, setDescription } = useState("");
   const { uploading, setUploading } = useState(false);
 
   const handleFileChange = (e) => {
@@ -37,7 +36,6 @@ export default function VideoUpload() {
           // once file is uploaded, add document to firestore
           const videoData = {
             title,
-            description,
             vidRef: downloadURL,
           };
 
@@ -66,12 +64,6 @@ export default function VideoUpload() {
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
         required
-      />
-      <input
-        type="text"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
       />
       <button type="submit" disabled={uploading}>
         Upload

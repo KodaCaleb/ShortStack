@@ -14,9 +14,9 @@ const UploadButton = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col p-4 items-center">
             <button
-                className="bg-yellow-400 h-12 w-44 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800 ease-in-out duration-500"
+                className="bg-yellow-400 h-12 w-52 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800 ease-in-out duration-500"
                 type="button"
                 onClick={handleButtonClick}
             >
@@ -29,7 +29,7 @@ const UploadButton = () => {
                 style={{ display: 'none' }}
             />
             {selectedFileName && (
-                <p>File Selected: {selectedFileName}</p>
+                <p className='text-sm'>File Selected: {selectedFileName}</p>
             )}
         </div>
     );

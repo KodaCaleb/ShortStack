@@ -1,20 +1,34 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import LoginLogout from "../../utils/LoginLogout";
 import SignUpModal from "./SignUp";
 import Syrup from "../../assets/syrup.gif";
 import AuthContext from "../../utils/AuthContext";
 
 export default function LoginModal({ isOpen, closeModal }) {
-
   const [modalMode, setModalMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { isLoggedIn, userInfo } = useContext(AuthContext); // This is the global user id reference
+  const [isIncorrectPassword, setIsIncorrectPassword] = useState(false);
+
+  const handleLoginError = () => {
+    setIsIncorrectPassword(true);
+  };
 
   const toggleSignUpMode = () => {
     setModalMode(!modalMode);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
 
   if (!isOpen) {
     return null;
@@ -29,7 +43,7 @@ export default function LoginModal({ isOpen, closeModal }) {
     <>
       {/* Modal */}
 
-      <div className="absolute z-10 flex flex-col items-center justify-center text-white h-screen w-screen bg-black bg-opacity-80 backdrop-blur-sm">
+      <div className="absolute z-10 flex flex-col items-center justify-start text-white h-full w-screen bg-black bg-opacity-80 backdrop-blur-sm">
         {modalMode ? (
           <SignUpModal
             isOpen={isOpen}
@@ -62,19 +76,28 @@ export default function LoginModal({ isOpen, closeModal }) {
               Password
             </label>
             <input
-              className="flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+              className={`flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2 ${
+                isIncorrectPassword ? "border-red-500 border-2" : ""
+              }`}
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setIsIncorrectPassword(false);
+                setPassword(e.target.value);
+              }}
             />
             <div className="h-20">
-              <img className=" bottom-4 z-0 relative w-64 h-24" src={Syrup}></img>
+              <img
+                className=" bottom-4 z-0 relative w-64 h-24"
+                src={Syrup}
+              ></img>
             </div>
             <div className="flex flex-col items-center ">
               <LoginLogout
                 email={loginInfo.email}
                 password={loginInfo.password}
                 closeModal={closeModal}
+                onLoginError={handleLoginError}
               />
             </div>
             <div className="flex mt-6 justify-center text-xs">
@@ -98,7 +121,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             </button>
           </form>
         )}
-      </div >
+      </div>
     </>
   );
 }

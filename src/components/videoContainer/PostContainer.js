@@ -2,13 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Video from "./Video";
 import CommentSection from "./CommentSection";
 import { firestore } from "../../firebase";
-import {
-  doc,
-  getDoc,
-  runTransaction,
-  setDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { doc, getDoc, runTransaction, setDoc, collection, addDoc, deleteDoc,} from "firebase/firestore";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
 import AuthContext from "../../utils/AuthContext";
@@ -60,59 +54,66 @@ export default function PostContainer({ videoData }) {
   }, [videoData, uid, loading]);
 
   async function likeVideo(videoId, userId) {
-    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+    if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
-      const likeRef = doc(videoRef, "likes", userId);
-
-      if ((await getDoc(likeRef)).exists()) {
-        console.log("User has already liked this video.");
-        return;
-      }
-
-      await setDoc(likeRef, {});
-
-      // Add video reference to the user's liked videos subcollection
       const userRef = doc(firestore, "Users", userId);
-      const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
-      await setDoc(userLikedVideoRef, {});
-
+  
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
-        if (!videoDoc.exists()) {
-          throw "Document does not exist!";
+        const userDoc = await transaction.get(userRef);
+  
+        if (!videoDoc.exists() || !userDoc.exists()) {
+          throw "Video or User does not exist!";
         }
-
+  
+        // Update the likes count in video document
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
+  
+        // Add the video to the user's 'likedVideos' subcollection
+        const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
+        await setDoc(userLikedVideoRef, { ...videoDoc.data(), id: videoId }); // Add the video data
+  
+        // Add the user to the video's 'likes' subcollection
+        const videoLikeRef = doc(videoRef, "likes", userId);
+        await setDoc(videoLikeRef, { userId: userId });
       });
-
-      setUserHasLiked(true); // set userHasLiked to true after a successful like action
+  
+      setUserHasLiked(true);
     }
   }
-
+  
   async function unlikeVideo(videoId, userId) {
-    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+    if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
-      const likeRef = doc(videoRef, "likes", userId);
-
-      await deleteDoc(likeRef); // Remove the user's like from the Firestore
-
-      // Remove video reference from the user's liked videos subcollection
       const userRef = doc(firestore, "Users", userId);
-      const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
-      await deleteDoc(userLikedVideoRef);
-
+  
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
-        if (!videoDoc.exists()) {
-          throw "Document does not exist!";
+        const userDoc = await transaction.get(userRef);
+  
+        if (!videoDoc.exists() || !userDoc.exists()) {
+          throw "Video or User does not exist!";
         }
-
-        const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
+  
+        // Update the likes count in video document
+        const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0);
         transaction.update(videoRef, { likes: newLikesCount });
+  
+        // Remove the video from the user's 'likedVideos' subcollection
+        const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
+        if ((await getDoc(userLikedVideoRef)).exists()) {
+          await deleteDoc(userLikedVideoRef);
+        }
+  
+        // Remove the user from the video's 'likes' subcollection
+        const videoLikeRef = doc(videoRef, "likes", userId);
+        if ((await getDoc(videoLikeRef)).exists()) {
+          await deleteDoc(videoLikeRef);
+        }
       });
-
-      setUserHasLiked(false); // set userHasLiked to false after a successful unlike action
+  
+      setUserHasLiked(false);
     }
   }
 

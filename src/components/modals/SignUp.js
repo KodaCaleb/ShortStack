@@ -31,8 +31,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     const file = e.target.files[0];
     setSelectedFile(file);
     setPhotoData(file);
-
-    console.log(file);
   };
 
   // Event handlers for users entering data
@@ -61,7 +59,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       );
       const user = userCredential.user;
       const uid = user.uid;
-      console.log(user);
 
       if (photoData) {
         // Upload the user's profile photo to Firebase Storage
@@ -80,12 +77,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           phoneNumber: phoneNumber,
           photoURL: photoURL,
         });
-
-        const message = "User account created successfully!";
-        alert(message);
-        console.log(
-          "User profile updated successfully with displayName and photoURL."
-        );
       } else {
         // Update the user's displayName, phoneNumber
         await updateProfile(user, {
@@ -105,7 +96,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      const warning = {errorCode, errorMessage};
+      const warning = { errorCode, errorMessage };
       alert(warning);
     }
   };
@@ -115,15 +106,12 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     try {
       // Reference the "Users" collection in Firestore
       const usersCollection = collection(firestore, "Users");
-
       const userDocRef = doc(usersCollection, uid);
 
       // Add the user data to Firestore using the uid as the document ID
       await setDoc(userDocRef, userInfo);
-
-      console.log("User data added to Firestore successfully.");
     } catch (error) {
-      console.error("Error adding user data to Firestore:", error);
+      alert("Error adding user data to Firestore:", error);
     }
 
     // Close modal after successful account creation
@@ -132,10 +120,10 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   return (
     <>
       {isLoading && (
-          <div className=" z-index-25 flex items-center justify-center">
-            <MoonLoader color="#e0a712" loading={isLoading} size={80} />
-          </div>
-        )}
+        <div className=" z-index-25 flex items-center justify-center">
+          <MoonLoader color="#e0a712" loading={isLoading} size={80} />
+        </div>
+      )}
       {/* Modal */}
       <div className="flex flex-col items-center justify-start text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> Create an Account!</h3>

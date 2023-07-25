@@ -52,6 +52,17 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       return;
     }
 
+
+    // check for password reqs
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$&])[A-Za-z\d!@$&]{8,20}$/;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must have at least one upper/lowercase letter, one number, and one of the following symbols: !, @, $, &. It should be 6 to 20 characters long."
+      );
+      setIsLoading(false);
+      return;
+    }
+    
     try {
       // Creates a new user in the Firebase authenticator
       const userCredential = await createUserWithEmailAndPassword(

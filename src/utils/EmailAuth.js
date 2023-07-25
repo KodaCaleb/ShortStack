@@ -47,7 +47,7 @@ const ForgotPassword = ({ email }) => {
       setMessage("Password reset email sent. Please check your inbox.");
     } catch (error) {
       setMessage("Error sending password reset email. Please try again.");
-      console.error(error);
+      console.log(error);
     } finally {
         setIsProcessing(false);
     }

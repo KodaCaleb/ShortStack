@@ -205,7 +205,7 @@ export default function PostContainer({ videoData }) {
             {/* </Link> */}
             <div className="pl-4">
               <p>
-                <span className="sm:text-2xl md:text-3xl lg:text-4xl">{userData.firstName}</span> |{" "}
+                <span className="sm:text-xl md:text-2xl lg:text-3xl">{userData.firstName}</span> |{" "}
                 <span className="font-light text-sm md:text-2xl">{userData.devRole}</span>
               </p>
               <p className="pt-2 text-sm md:text-2xl">{videoData.title}</p>
@@ -213,7 +213,7 @@ export default function PostContainer({ videoData }) {
           </div>
         )}
         <hr className="mt-2 mb-2" />
-        <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll">
+        <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
 
           <div className="flex flex-col">
 

@@ -270,16 +270,15 @@ export default function PostContainer({ videoData }) {
           </div>
           <Video videoData={videoData} />
           {showCommentSection && (
-            <>
-              <CommentSection handleClose={handleCloseCommentSection} />
-              {/* fetch comments related to the video post and map them to display in this  section. */}
-              {/* Add code here to display the list of comments */}
-              {/* Add code here to display the form to submit a comment */}
+          <>
+            <CommentSection handleClose={handleCloseCommentSection} />
+            {/* fetch comments related to the video post and map them to display in this section. */}
+            {/* Add code here to display the list of comments */}
+            {/* Add code here to display the form to submit a comment */}
             </>
           )}
         </div>
       </div>
-    </div>
     </div>
   );
 }

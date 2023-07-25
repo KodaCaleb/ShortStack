@@ -5,7 +5,7 @@ import { updateEmail } from "firebase/auth";
 import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from "react-icons/fa";
 import { getAuth, deleteUser } from "firebase/auth";
-import { useDeleteAccount } from "../utils/UseDeleteAccount"
+import { useDeleteAccount } from "../utils/UserDeleteAccount"
 import { useNavigate } from "react-router-dom";
 
 export default function EditAccount() {

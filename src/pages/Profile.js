@@ -4,6 +4,7 @@ import { firestore } from "../firebase";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import AccountModal from "./Account";
 import Video from "../components/videoContainer/Video";
+import {RiUserFollowLine } from 'react-icons/ri'
 
 export default function UserProfileHeading() {
   const [bio, setBio] = useState("");
@@ -86,6 +87,15 @@ export default function UserProfileHeading() {
               <div className="bio-floating relative p-1 text-white">
                 <span>{bio}</span>
               </div>
+              <div className="justify-start">
+              <button
+  className="flex items-center justify-center h-8 px-12 w-50 bg-yellow-500 mt-2 rounded font-semibold text-sm text-black-100 hover:bg-yellow-300 hover:rounded-3xl hover:border-2 hover:border-amber-700"
+>
+  <RiUserFollowLine className="mr-2" />
+  Follow Me!
+</button>
+</div>
+
               <button
                 type="button"
                 className="focus:outline-none text-black bg-amber-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900 my-4 hover:rounded-3xl"

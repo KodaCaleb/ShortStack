@@ -99,7 +99,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
-          photoURL: photoURL,
         });
       } else {
         // Update the user's displayName, phoneNumber
@@ -123,8 +122,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       setIsLoading(false);
     }
   };
-
-
+  
   // Sending user input to create account and profile document
   const addUserToFirestore = async (uid, userInfo) => {
     try {

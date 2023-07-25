@@ -3,10 +3,10 @@ import { firestore, updatePassword } from "../firebase";
 import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
 import { updateEmail } from "firebase/auth";
 import AuthContext from "../utils/AuthContext";
-import { FaPencilAlt } from "react-icons/fa";
 import { getAuth, deleteUser } from "firebase/auth";
 import { useDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
+import ForgotPassword from "../utils/ForgotPassword";
 
 export default function EditAccount() {
   const { user, userData } = useContext(AuthContext);
@@ -16,14 +16,11 @@ export default function EditAccount() {
 
   //   storing the updated input values
   const [isEmailUpdated, setIsEmailUpdated] = useState(false);
-  const [updatedFirstName, setUpdatedFirstName] = useState(
-    userData?.firstName || ""
-  );
-  const [updatedLastName, setUpdatedLastName] = useState(
-    userData?.lastName || ""
-  );
+  const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
+  const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
   const [updatedEmail, setUpdatedEmail] = useState(user?.email || "");
+  const [updatedUsername, setUpdatedUsername] = useState(user?.userName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
   useEffect(() => {
@@ -31,6 +28,7 @@ export default function EditAccount() {
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
     setUpdatedEmail(user?.email || "");
+    setUpdatedUsername(user?.userName || "");
   }, [userData, user]);
 
   // Event handler for updating account information
@@ -69,10 +67,10 @@ export default function EditAccount() {
   };
 
   // Get the delete account function from the custom hook
-  const handleDeleteAccount = useDeleteAccount();
+ 
 
   const handleExit = () => {
-    navigate('/')
+    navigate('/profile')
   }
 
   return (
@@ -89,7 +87,7 @@ export default function EditAccount() {
               Account Information
             </h3>
 
-            {/* FirstName and LastName input boxes */}
+            {/* FirstName */}
             <div className="mb-4 md:flex md:justify-between">
               <div className="mb-4 md:mr-2 md:mb-0">
                 <label className="block mb-2 text-sm font-bold text-gray-700">
@@ -104,6 +102,8 @@ export default function EditAccount() {
                   onChange={(e) => setUpdatedFirstName(e.target.value)}
                 />
               </div>
+
+              {/* LastName */}
               <div className="md:ml-2">
                 <label
                   className="block mb-2 text-sm font-bold text-gray-700"
@@ -122,7 +122,36 @@ export default function EditAccount() {
               </div>
             </div>
 
-            {/* Email, password, devRole */}
+            {/* Username */}
+            <div className="mb-4 md:flex md:justify-between">
+              <div className="mb-4 md:mr-2 md:mb-0">
+                <label className="block mb-2 text-sm font-bold text-gray-700"
+                  htmlFor="lastName"
+                >
+                  Username
+                </label>
+                <input
+                  className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  id="lastName"
+                  type="text"
+                  placeholder="Username"
+                  value={updatedUsername || ""}
+                  onChange={(e) => setUpdatedLastName(e.target.value)}
+                />
+                {/* Password */}
+                <label className="block mb-2 text-sm font-bold text-gray-700"
+                  htmlFor="password"
+                >
+                  Password
+                  <div className="hover:text-yellow-500">
+                    <ForgotPassword />
+                  </div>
+                </label>
+              </div>
+            </div>
+
+
+            {/* Email */}
             <div className=" flex flex-col items-start">
               <label
                 className="mb-2 text-sm font-bold text-gray-700"
@@ -138,24 +167,15 @@ export default function EditAccount() {
                 value={updatedEmail || user?.email || ""}
                 onChange={(e) => setUpdatedEmail(e.target.value)}
               />
-              <label
-                className="mb-2 text-sm font-bold text-gray-700"
-                htmlFor="passwordField"
-              >
-                {" "}
-                Password
-              </label>
-              <input
-                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                type="password"
-                placeholder="password"
-              />
+
+
+              {/* Developer Role  */}
               <label
                 className="block mb-2 text-sm font-bold text-gray-700"
                 htmlFor="phoneNumberField"
               >
                 {" "}
-                Dev Role
+                Developer Role
               </label>
               <input
                 className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -170,10 +190,10 @@ export default function EditAccount() {
             <div className="flex items-center justify-center">
               <button
                 className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300
-           hover:rounded-3xl
-           hover:border-2
-           hover:border-amber-700
-           hover:w-80 ease-in-out duration-300"
+                  hover:rounded-3xl
+                  hover:border-2
+                  hover:border-amber-700
+                  hover:w-80 ease-in-out duration-300"
                 onClick={handleEditAccount}
               >
                 Save Changes

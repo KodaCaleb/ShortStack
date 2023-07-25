@@ -2,7 +2,7 @@ import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 import { MoonLoader } from "react-spinners";
 // import UploadPhoto from "../../utils/UploadPhoto";
@@ -22,6 +22,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [message, setMessage] = useState("");
 
   const handleButtonClick = () => {
     document.querySelector('input[type="file"]').click();
@@ -36,7 +37,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
 
     if (
       !firstName ||
@@ -47,6 +48,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       !phoneNumber
     ) {
       alert("Please fill in all required fields");
+      setIsLoading(false);
       return;
     }
 
@@ -79,6 +81,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL,
         };
         addUserToFirestore(uid, userInfo);
+        console.log(userInfo);
+        console.log("this is what i am looking for")
         
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
@@ -94,14 +98,21 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         });
       }
       
+      //sends email verification
+      await sendEmailVerification(user);
+
+      setMessage("Account created successfully. Please check your email for verification.");
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
 
       const warning = { errorCode, errorMessage };
       alert(warning);
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   // Sending user input to create account and profile document
   const addUserToFirestore = async (uid, userInfo) => {

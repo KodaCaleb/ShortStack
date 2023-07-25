@@ -70,7 +70,14 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
-
+        // Add additional user information to Firestore DB
+        const userInfo = {
+          firstName,
+          lastName,
+          devRole,
+          photoURL,
+        };
+        addUserToFirestore(uid, userInfo);
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
           displayName: displayName,
@@ -84,14 +91,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           phoneNumber: phoneNumber,
         });
       }
-
-      // Add additional user information to Firestore DB
-      const userInfo = {
-        firstName,
-        lastName,
-        devRole,
-      };
-      addUserToFirestore(uid, userInfo);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -121,7 +120,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     <>
       {isLoading && (
         <div className=" z-index-25 flex items-center justify-center">
-          <MoonLoader color="#e0a712" loading={isLoading} size={80} />
+          <MoonLoader color="#E0A712" loading={isLoading} size={80} />
         </div>
       )}
       {/* Modal */}
@@ -268,9 +267,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             )}
             <div className="flex items-center p-4 justify-center">
               <button
-                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900
               hover:rounded-3xl
-              hover:border-2 
+              hover:border-2
               hover:border-amber-700
               hover: ease-in-out duration-300"
                 type="submit"

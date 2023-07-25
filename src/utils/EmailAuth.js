@@ -36,11 +36,9 @@
 import React, { useState } from "react";
 import {getAuth, sendPasswordResetEmail } from "firebase/auth"
 
-
-
 const ForgotPassword = ({ email }) => {
-//   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleResetPassword = async () => {
     try {
@@ -50,19 +48,14 @@ const ForgotPassword = ({ email }) => {
     } catch (error) {
       setMessage("Error sending password reset email. Please try again.");
       console.error(error);
+    } finally {
+        setIsProcessing(false);
     }
   };
   return (
     <div>
-      
-      {/* <input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      /> */}
       <button onClick={handleResetPassword}>Forgot Password</button>
-      <p>{message}</p>
+      {message && <p>{message}</p>}
     </div>
   );
 }

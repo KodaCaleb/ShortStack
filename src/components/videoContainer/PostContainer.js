@@ -242,16 +242,16 @@ export default function PostContainer({ videoData }) {
                 }}
               />
             )}
-            <BiCommentDetail
+            {/* <BiCommentDetail
               className="m-4 hover:cursor-pointer md:text-4xl"
               style={{ color: "tan" }}
               // size={{ fontSize: "4vw" }}
-              onClick={handleCommentBtnClick}
-            />
+              onClick={handleCommentBtnClick} */}
+            {/* /> */}
             {/* <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} /> */}
 
-            {isFollowing ? (
+            {/* {isFollowing ? (
               <RiUserFollowLine
                 className="m-4 hover:cursor-pointer md:text-4xl"
                 style={{ color: "tan" }}
@@ -271,17 +271,17 @@ export default function PostContainer({ videoData }) {
                   console.log("user clicked unfollow button");
                 }}
               />
-            )}
+            )} */}
           </div>
           <Video videoData={videoData} className="w-full min-w-[400px]"/>
-          {showCommentSection && (
+          {/* {showCommentSection && ( */}
           <>
-            <CommentSection handleClose={handleCloseCommentSection} />
+            {/* <CommentSection handleClose={handleCloseCommentSection} /> */}
             {/* fetch comments related to the video post and map them to display in this section. */}
             {/* Add code here to display the list of comments */}
             {/* Add code here to display the form to submit a comment */}
             </>
-          )}
+          {/* )} */}
         </div>
       </div>
     </div>

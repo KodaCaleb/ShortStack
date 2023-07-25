@@ -3,20 +3,22 @@ import { auth } from "../firebase";
 import { useContext } from "react";
 import AuthContext from "../utils/AuthContext"; // Import the AuthContext
 import { closeModal } from "../components/modals/Login";
+import { useNavigate } from "react-router-dom";
 
-export const HandleLogout = async () => {
-  // Firebase method to sign the user out
-  await signOut(auth)
-    .then(() => {
-      alert("You have been signed out successfully.");
-      //should reload page after signout button is pressed
-      window.location.reload();
-    })
-    .catch((error) => { });
+export const HandleLogout = async (navigate) => {
+  try {
+    // Firebase method to sign the user out
+    await signOut(auth);
+    // Redirect to the homepage after sign-out
+    navigate("/");
+  } catch (error) {
+    prompt(error);
+  }
 };
 
 export default function LoginLogout(props) {
   const { isLoggedIn } = useContext(AuthContext);
+  useNavigate();
 
   // Firebase authenticator to log in a user
   const HandleLogin = async () => {

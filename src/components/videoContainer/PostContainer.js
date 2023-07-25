@@ -4,10 +4,13 @@ import CommentSection from "./CommentSection";
 import Video from "./Video";
 import { storage, firestore } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
-import { doc, getDoc, runTransaction, setDoc, collection, addDoc, deleteDoc,} from "firebase/firestore";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { doc, getDoc, runTransaction, 
+        setDoc, collection, addDoc, deleteDoc,
+      } from "firebase/firestore";
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -209,10 +212,13 @@ export default function PostContainer({ videoData }) {
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
         {userData && (
           <div className="username flex p-5 text-amber-200 text-xl">
+            <Link to={`/profile/${userId}`}>
             <img
               className=" rounded-full h-24 bg-yellow-500"
               src={photoURL}
+              at={`Profile of User ${userId}`}
             />
+            </Link>
             <div className="pl-4">
               <p>
                 <span className="text-3xl">{userData.firstName}</span> |{" "}

@@ -1,4 +1,4 @@
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 
 const actionCodeSettings = {
     url: 'https://www.example.com/finishSignUp?cartId=1234',
@@ -18,3 +18,12 @@ sendSignInLinkToEmail(auth, email, actionCodeSettings)
     const errorCode = error.code;
     const errorMessage = error.message;
   });
+
+  if(signInWithEmailLink(auth, window.location.href)) {
+    let email = window.localStorage.getItem('emailForSignIn');
+    if (!email){
+        email = window.prompt('Please provide your email confirmation!');
+    }
+    // signInWithEmailLink(auth, email, window.location.href)
+        
+  }

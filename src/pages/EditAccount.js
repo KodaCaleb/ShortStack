@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 export default function EditAccount() {
   const { user, userData } = useContext(AuthContext);
 
+  //For redirecting user when they exit out
+  const navigate = useNavigate();
+
   //   storing the updated input values
   const [isEmailUpdated, setIsEmailUpdated] = useState(false);
   const [updatedFirstName, setUpdatedFirstName] = useState(
@@ -67,6 +70,10 @@ export default function EditAccount() {
 
   // Get the delete account function from the custom hook
   const handleDeleteAccount = useDeleteAccount();
+
+  const handleExit = () => {
+    navigate('/')
+  }
 
   return (
     <>
@@ -187,7 +194,7 @@ export default function EditAccount() {
               </a>
             </div>
           </div>
-          <button className="absolute top-2 right-2 px-2 py-2">X</button>
+          <button className="absolute top-2 right-2 px-2 py-2" onClick={handleExit}>X</button>
         </form>
       </div>
     </>

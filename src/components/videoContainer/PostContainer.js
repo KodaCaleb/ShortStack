@@ -209,22 +209,22 @@ export default function PostContainer({ videoData }) {
 
   return (
     <div className="flex justify-center flex-row snap start">
-      <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
+      <div className=" h-full rounded-3xl p-5 w-full md:w-3/4 bg-black bg-opacity-40">
         {userData && (
-          <div className="username flex p-5 text-amber-200 text-xl">
+          <div className="username flex flex-row p-5 text-amber-200 text-xl">
             <Link to={`/profile/${userData}`}>
             <img
-              className=" rounded-full h-24 bg-yellow-500"
+              className=" rounded-full h-24 w-28 md:h-32 md:w-36 bg-yellow-500"
               src={photoURL}
               at={`Profile of User ${userData}`}
             />
             </Link>
             <div className="pl-4">
               <p>
-                <span className="text-3xl">{userData.firstName}</span> |{" "}
-                <span className="font-light">{userData.bio}</span>
+                <span className="sm:text-2xl md:text-3xl lg:text-4xl">{userData.firstName}</span> |{" "}
+                <span className="font-light text-sm md:text-2xl">{userData.devRole}</span>
               </p>
-              <p className="pt-2">{videoData.title}</p>
+              <p className="pt-2 text-sm md:text-2xl">{videoData.title}</p>
             </div>
           </div>
         )}
@@ -235,9 +235,9 @@ export default function PostContainer({ videoData }) {
 
             {userHasLiked ? (
               <AiFillHeart
-                className="m-4 hover:cursor-pointer"
+                className="m-4 hover:cursor-pointer sm:text-3xl md:text-4xl"
                 style={{ color: "tan" }}
-                size={28}
+                // size={{ fontSize: "4vw" }}
                 onClick={() => {
                   console.log('videoData.id:', videoData.id); // debugging logs
                   console.log('uid:', uid);
@@ -247,9 +247,9 @@ export default function PostContainer({ videoData }) {
               />
             ) : (
               <AiOutlineHeart
-                className="m-4 hover:cursor-pointer"
+                className="m-4 hover:cursor-pointer md:text-4xl"
                 style={{ color: "tan" }}
-                size={28}
+                // size={{ fontSize: "4vw" }}
                 onClick={() => {
                   console.log('videoData.id:', videoData.id); // debugging logs
                   console.log('uid:', uid);
@@ -259,19 +259,19 @@ export default function PostContainer({ videoData }) {
               />
             )}
             <BiCommentDetail
-              className="m-4 hover:cursor-pointer"
+              className="m-4 hover:cursor-pointer md:text-4xl"
               style={{ color: "tan" }}
-              size={28}
+              // size={{ fontSize: "4vw" }}
               onClick={handleCommentBtnClick}
             />
-            <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
-            <BiShare className="m-4" style={{ color: "tan" }} size={28} />
+            {/* <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
+            <BiShare className="m-4" style={{ color: "tan" }} size={28} /> */}
 
             {isFollowing ? (
               <RiUserFollowLine
-                className="m-4 hover:cursor-pointer"
+                className="m-4 hover:cursor-pointer md:text-4xl"
                 style={{ color: "tan" }}
-                size={28}
+                // size={{ fontSize: "4vw" }}
                 onClick={() => {
                   followUser(); //call the follow user function
                   console.log("User clicked the RiUserFollowLine icon");
@@ -281,7 +281,7 @@ export default function PostContainer({ videoData }) {
               <RiUserUnfollowFill
                 className="m-4 hover:cursor-pointer"
                 style={{ color: "tan" }}
-                size={28}
+                size={{ fontSize: "4vw" }}
                 onClick={() => {
                   unfollowUser(); //call the unfollower user function
                   console.log("user clicked unfollow button");
@@ -289,7 +289,7 @@ export default function PostContainer({ videoData }) {
               />
             )}
           </div>
-          <Video videoData={videoData} />
+          <Video videoData={videoData} className="w-full min-w-[400px]"/>
           {showCommentSection && (
           <>
             <CommentSection handleClose={handleCloseCommentSection} />

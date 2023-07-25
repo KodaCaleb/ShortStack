@@ -67,7 +67,6 @@ export default function Video({ videoData, fullSize }) {
   };
 
   return (
-
     <div className={containerClass}>
       <div className="video-container relative">
         {isLoading && (

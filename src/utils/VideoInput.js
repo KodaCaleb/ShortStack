@@ -22,7 +22,6 @@ export default function VideoInput(props) {
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
 
 
@@ -59,7 +58,6 @@ export default function VideoInput(props) {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           const videoData = {
             title,
-            description,
             tags,
             vidRef: downloadURL,
             userId: uid,
@@ -86,10 +84,11 @@ export default function VideoInput(props) {
   };
 
   return (
-    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-black">
-      <h3 className=" bg-yellow-950 rounded-2xl p-4 mt-5 text-center italic">720x1280 resolution or higher 
+    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-5 border-yellow-400 rounded-3xl justify-center bg-black">
+      <h2 className=" bg-yellow-900 rounded-2xl p-1 text-center italic">720x1280 resolution or higher 
       <br></br>Up to 5 minutes 
-      <br></br>Less than 2 GB</h3>
+      <br></br>Less than 2 GB
+      <br></br>Disclaimer: Files that do not adhere to these guidelines may be subject to removal without prior notice.</h2>
       <input
         ref={inputRef}
         className="hidden"
@@ -98,17 +97,12 @@ export default function VideoInput(props) {
         accept="video/*"
       />
       <input
+        className="inline-flex items-center bg-white  text-black rounded-lg p-2 mt-4 whitespace-nowrap mt-3"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
         required
-      />
-      <input
-        type="text"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
       />
       <TagsInput value={tags} onChange={setTags} />
       {!source && <button className="justify-center h-12 px-6  w-full bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400" onClick={handleChoose}>Select File</button>}

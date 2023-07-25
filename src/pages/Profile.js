@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { firestore } from "../firebase";
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import AccountModal from "./Account";
 import Video from "../components/videoContainer/Video";
 import { RiUserFollowLine } from 'react-icons/ri'
@@ -27,6 +27,9 @@ export default function UserProfileHeading() {
           const userDocSnapshot = await getDoc(userDocRef);
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
+
+            console.log("userData:", userData);
+
             setDevRole(userData.devRole || "");
 
             const userContentRef = collection(userDocRef, "userContent");
@@ -60,6 +63,20 @@ export default function UserProfileHeading() {
   const closeModal = () => {
     setModalOpen(false);
     setBlurBackground(false);
+  };
+
+  const deleteVideo = async (videoId) => {
+    try {
+      const videoDocRef = doc(firestore, "Users", uid, "userContent", videoId);
+      await deleteDoc(videoDocRef);
+
+      const mainVideoDocRef = doc(firestore, "videos", videoId);
+      await deleteDoc(mainVideoDocRef);
+
+      setUserContentData((prev) => prev.filter(video => video.id !== videoId));
+    } catch (error) {
+      console.log("Error deleting video:", error);
+    }
   };
 
   return (
@@ -101,8 +118,8 @@ export default function UserProfileHeading() {
             <div>Loading...</div>
           ) : (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {userContentData.map((content, index) => (
-              <div className="flex flex-row p-20 justify-center">
-                <Video key={index} videoData={content} fullSize={true} />
+              <div key={index}  className="flex flex-row p-20 justify-center">
+                <Video videoData={content} fullSize={true} deleteVideo={deleteVideo} showDeleteButton={true}  />
               </div>
             ))}
           </div>

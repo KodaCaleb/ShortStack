@@ -1,26 +1,37 @@
-import React from "react";
 import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
-import UploadPhoto from "../../utils/UploadPhoto";
+// import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
+  const [selectedFile, setSelectedFile] = useState(null);
+
   // Firestore DB
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [bio, setBio] = useState("");
+  const [devRole, setDevRole] = useState("Enter your role as a developer here!");
 
   // Authenticator DB
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState(
-    process.env.PUBLIC_URL + "/pancakeholder.img.png"
-  );
+  const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+
+  const handleButtonClick = () => {
+    document.querySelector('input[type="file"]').click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setPhotoData(file);
+
+    console.log(file);
+  };
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
@@ -29,7 +40,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     if (
       !firstName ||
       !lastName ||
-      !bio ||
       !displayName ||
       !email ||
       !password ||
@@ -50,13 +60,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       const uid = user.uid;
       console.log(user);
 
-      if (profilePhoto) {
+      if (photoData) {
         // Upload the user's profile photo to Firebase Storage
         const photoRef = ref(
           storage,
-          `profilePictures/${user.uid}/${profilePhoto.name}`
+          `profilePictures/${user.uid}/${photoData.name}`
         );
-        await uploadBytes(photoRef, profilePhoto);
+        await uploadBytes(photoRef, photoData);
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
@@ -91,7 +101,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       const userInfo = {
         firstName,
         lastName,
-        bio,
+        devRole,
       };
       addUserToFirestore(uid, userInfo);
     } catch (error) {
@@ -172,41 +182,41 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Email */}
           <div className="flex w-full flex-row">
             <div className="pr-4">
-          <label
-            className="block mb-2 text-sm font-bold text-yellow-300"
-            htmlFor="emailField"
-          >
-            {" "}
-            Email
-          </label>
-          <input
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+              <label
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="emailField"
+              >
+                {" "}
+                Email
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="pl-4">
+              <label
+                className="block mb-2 text-sm font-bold text-yellow-300"
+                htmlFor="phoneNumberField"
+              >
+                {" "}
+                Phone Number
+              </label>
+              <input
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                type="tel"
+                id="phoneNumberField"
+                name="phoneNumber"
+                placeholder="Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="pl-4">
-            <label
-              className="block mb-2 text-sm font-bold text-yellow-300"
-              htmlFor="phoneNumberField"
-            >
-              {" "}
-              Phone Number
-            </label>
-            <input
-              className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              type="tel"
-              id="phoneNumberField"
-              name="phoneNumber"
-              placeholder="Phone Number"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            </div>
-            </div>
 
           {/* Username */}
           <div className="w-full flex flex-row">
@@ -247,20 +257,38 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           {/* Phone Number */}
 
           {/* Bio */}
-          <div className="flex w-full mt-4 justify-between flex-col">
-          <UploadPhoto />
-          <div className="flex items-center p-4 justify-center">
+          <div className="flex w-full mt-4 items-center flex-col">
             <button
-              className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+              className="bg-yellow-400 h-12 w-52 text-sm text-black px-3 py-2 rounded-lg hover:rounded-3xl hover:bg-yellow-500 focus:ring-1 focus:ring-yellow-800 ease-in-out duration-500"
+              type="button"
+              onClick={handleButtonClick}
+            >
+              Upload Photo
+            </button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            {selectedFile && (
+              <>
+                <p className='text-sm'>File Selected:</p>
+                <p>{selectedFile.name}</p>
+              </>
+            )}
+            <div className="flex items-center p-4 justify-center">
+              <button
+                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
               hover:rounded-3xl
               hover:border-2 
               hover:border-amber-700
               hover: ease-in-out duration-300"
-              type="submit"
-              onClick={handleCreateAccount}
-            >
-              Create
-            </button>
+                type="submit"
+                onClick={handleCreateAccount}
+              >
+                Create
+              </button>
             </div>
           </div>
           <div className="flex flex-row mt-6 justify-center items-center text-xs">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 import { MoonLoader } from "react-spinners";
 // import UploadPhoto from "../../utils/UploadPhoto";
@@ -22,6 +22,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [message, setMessage] = useState("");
 
   const handleButtonClick = () => {
     document.querySelector('input[type="file"]').click();
@@ -36,7 +37,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
 
     if (
       !firstName ||
@@ -47,9 +48,21 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       !phoneNumber
     ) {
       alert("Please fill in all required fields");
+      setIsLoading(false);
       return;
     }
 
+
+    // check for password reqs
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$&])[A-Za-z\d!@$&]{8,20}$/;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must have at least one upper/lowercase letter, one number, and one of the following symbols: !, @, $, &. It should be 6 to 20 characters long."
+      );
+      setIsLoading(false);
+      return;
+    }
+    
     try {
       // Creates a new user in the Firebase authenticator
       const userCredential = await createUserWithEmailAndPassword(
@@ -79,6 +92,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL,
         };
         addUserToFirestore(uid, userInfo);
+        console.log(userInfo);
+        console.log("this is what i am looking for")
         
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
@@ -94,14 +109,21 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         });
       }
       
+      //sends email verification
+      await sendEmailVerification(user);
+
+      setMessage("Account created successfully. Please check your email for verification.");
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
 
       const warning = { errorCode, errorMessage };
       alert(warning);
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   // Sending user input to create account and profile document
   const addUserToFirestore = async (uid, userInfo) => {
@@ -123,7 +145,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     <>
       {isLoading && (
         <div className=" z-index-25 flex items-center justify-center">
-          <MoonLoader color="#e0a712" loading={isLoading} size={80} />
+          <MoonLoader color="#E0A712" loading={isLoading} size={80} />
         </div>
       )}
       {/* Modal */}
@@ -270,9 +292,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             )}
             <div className="flex items-center p-4 justify-center">
               <button
-                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900
               hover:rounded-3xl
-              hover:border-2 
+              hover:border-2
               hover:border-amber-700
               hover: ease-in-out duration-300"
                 type="submit"

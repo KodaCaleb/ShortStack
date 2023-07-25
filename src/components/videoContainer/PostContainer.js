@@ -115,10 +115,15 @@ export default function PostContainer({ videoData }) {
   }
 
   const [showCommentSection, setShowCommentSection] = useState(false);
-  async function handleCommentBtnClick() {
-// fetch comments for video 
-// post comments for video
-  }
+  
+  const handleCloseCommentSection = () => {
+    setShowCommentSection(false);
+  };
+
+  const handleCommentBtnClick = () => {
+    setShowCommentSection(!showCommentSection);
+  };
+  
 
   return (
     <div className="flex justify-center flex-row snap start">
@@ -162,22 +167,23 @@ export default function PostContainer({ videoData }) {
               className="m-4 hover:cursor-pointer"
               style={{ color: "tan" }}
               size={28}
-              onClick={() => {
-                setShowCommentSection(!showCommentSection);
-              }}
+      
+                onClick={handleCommentBtnClick}
+            
             />
             <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} />
           </div>
-         </div>
-         {showCommentSection && (
+          {showCommentSection && (
           <>
-          <CommentSection/>
+          <CommentSection handleClose={handleCloseCommentSection} />
           {/* fetch comments related to the video post and map them to display in this  section. */}
           {/* Add code here to display the list of comments */}
           {/* Add code here to display the form to submit a comment */}
           </>
          )}
+         </div>
+      
       </div>
     </div>
   );

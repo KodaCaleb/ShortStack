@@ -16,6 +16,7 @@ export const HandleLogout = async (navigate) => {
   }
 };
 
+
 export default function LoginLogout(props) {
   const { isLoggedIn } = useContext(AuthContext);
   useNavigate();

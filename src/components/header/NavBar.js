@@ -9,7 +9,6 @@ function Navbar() {
   const { isLoggedIn } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -19,31 +18,25 @@ function Navbar() {
   };
 
   //Search bar state
-  const[searchTag, setSearchTag] = useState("");
-  const [matchingVideos, setMatchingVideos] = useState([])
-
-
-
+  const [searchTag, setSearchTag] = useState("");
+  const [matchingVideos, setMatchingVideos] = useState([]);
 
   // handle Search bar function
   const handleSearch = async (e) => {
     e.preventDefault();
-    try{
-      if(searchTag.trim() !== ""){
+    try {
+      if (searchTag.trim() !== "") {
         const videos = await SearchVideosByTags(searchTag);
         console.log("Matching Videos:", videos);
         setMatchingVideos(videos);
-        console.log(videos)
-      }else{
+        console.log(videos);
+      } else {
         setMatchingVideos([]);
       }
-   
-    }catch(error){
-      console.error("error searching videos", error)
+    } catch (error) {
+      console.error("error searching videos", error);
     }
-}
-
-
+  };
 
   return (
     <header className="w-full">
@@ -125,7 +118,10 @@ function Navbar() {
             onSubmit={handleSearch}
             placeholder="Search Tutorials"
           />
-          <div className="search h-4 w-6 bg-yellow-400" onClick={handleSearch}></div>
+          <div
+            className="search h-4 w-6 bg-yellow-400"
+            onClick={handleSearch}
+          ></div>
         </div>
         <div className="absolute top-5 right-6 mr-1">
           {isLoggedIn ? (

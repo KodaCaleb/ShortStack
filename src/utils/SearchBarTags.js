@@ -13,9 +13,8 @@ export default async function SearchVideosByTags(searchTag) {
     const querySnapshot = await getDocs(searchedVideos);
 
     // Process the query result
-   const matchingVideos = querySnapshot.docs.map((doc) => doc.data())
-        return matchingVideos
-
+    const matchingVideos = querySnapshot.docs.map((doc) => doc.data());
+    return matchingVideos;
   } catch (error) {
     console.error("Error searching videos", error);
     return [];

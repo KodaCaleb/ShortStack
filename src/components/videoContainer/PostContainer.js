@@ -212,11 +212,11 @@ export default function PostContainer({ videoData }) {
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
         {userData && (
           <div className="username flex p-5 text-amber-200 text-xl">
-            <Link to={`/profile/${userId}`}>
+            <Link to={`/profile/${userData}`}>
             <img
               className=" rounded-full h-24 bg-yellow-500"
               src={photoURL}
-              at={`Profile of User ${userId}`}
+              at={`Profile of User ${userData}`}
             />
             </Link>
             <div className="pl-4">

@@ -131,7 +131,7 @@ export default function PostContainer({ videoData }) {
           const userToFollowUid = videoData.userId; //based off video data containing the uid
 
            // Add document in "following" subcollection of the current user.
-        const followingRef = doc(firestore, 'Users', currentUserUid, 'following', userToFollowUid);
+        const followingRef = doc(firestore, 'Users', currentUserUid).collection('following',).doc (userToFollowUid);
         await setDoc(followingRef, {});
 
            // Add document in "followers" subcollection of the user being followed.
@@ -151,10 +151,10 @@ export default function PostContainer({ videoData }) {
         const currentUserUid = uid; //current users
         const userToFollowUid = videoData.userId; //uses video data's user id
 
-        const followingRef = doc(firestore, 'Users', currentUserUid, 'following', userToFollowUid); //deletes document in the following sub collection
+        const followingRef = doc(firestore, 'Users', currentUserUid).collection('following').doc(userToFollowUid); //deletes document in the following sub collection
         await deleteDoc(followingRef);
 
-        const followersRef = doc(firestore, 'User', userToFollowUid, 'followers', currentUserUid);
+        const followersRef = doc(firestore, 'User', userToFollowUid).collection('followers').doc(currentUserUid);
         await deleteDoc(followersRef);
         setIsFollowing(false); //updates to user that is now being unfollowed
       } catch (error) {
@@ -230,6 +230,7 @@ export default function PostContainer({ videoData }) {
             size={28}
             onClick={() => {
               unfollowUser(); //call the unfollower user function
+              console.log("user clicked unfollow button")
             }}
             />
             )}

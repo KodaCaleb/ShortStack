@@ -19,14 +19,14 @@ export default function EditAccount() {
   const [updatedLastName, setUpdatedLastName] = useState(
     userData?.lastName || ""
   );
-  const [updatedBio, setUpdatedBio] = useState(userData?.bio || "");
+  const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
   const [updatedEmail, setUpdatedEmail] = useState(user?.email || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
   useEffect(() => {
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
-    setUpdatedBio(userData?.bio || "");
+    setUpdatedDevRole(userData?.devRole || "");
     setUpdatedEmail(user?.email || "");
   }, [userData, user]);
 
@@ -40,7 +40,7 @@ export default function EditAccount() {
       const updatedData = {
         firstName: updatedFirstName,
         lastName: updatedLastName,
-        bio: updatedBio,
+        devRole: updatedDevRole,
       };
       await setDoc(userDocRef, updatedData, { merge: true });
 
@@ -154,8 +154,8 @@ export default function EditAccount() {
                 className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 type="text"
                 placeholder="Dev Role"
-                value={updatedBio || ""}
-                onChange={(e) => setUpdatedBio(e.target.value)}
+                value={updatedDevRole || ""}
+                onChange={(e) => setUpdatedDevRole(e.target.value)}
               />
             </div>
 

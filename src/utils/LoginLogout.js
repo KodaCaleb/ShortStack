@@ -9,18 +9,16 @@ export const HandleLogout = async (navigate) => {
   try {
     // Firebase method to sign the user out
     await signOut(auth);
-    alert("You have been signed out successfully.");
+    // Redirect to the homepage after sign-out
+    navigate("/");
   } catch (error) {
-    // Handle any sign-out errors here
-    console.error("Error signing out:", error);
+    prompt(error);
   }
-  // Navigate the user to the homepage after successful logout
-  navigate("/");
 };
-
 
 export default function LoginLogout(props) {
   const { isLoggedIn } = useContext(AuthContext);
+  useNavigate();
 
   // Firebase authenticator to log in a user
   const HandleLogin = async () => {

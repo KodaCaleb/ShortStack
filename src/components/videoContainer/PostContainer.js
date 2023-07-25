@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
+import AuthContext from "../../utils/AuthContext";
 import Video from "./Video";
 import CommentSection from "./CommentSection";
 import { firestore } from "../../firebase";
-import { doc, getDoc, runTransaction, setDoc, collection, addDoc, deleteDoc,} from "firebase/firestore";
+import { doc, getDoc, getDocs, runTransaction, setDoc, collection, addDoc, deleteDoc,} from "firebase/firestore";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
-import AuthContext from "../../utils/AuthContext";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 
 async function getUserData(userId) {
@@ -28,6 +28,8 @@ export default function PostContainer({ videoData }) {
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
   const uid = user ? user.uid : null; // Get the uid from the user object
+
+  const [comments, setComments] = useState([]); // State variable to hold comments data
 
   useEffect(() => {
     if (videoData.userId) {
@@ -127,6 +129,24 @@ export default function PostContainer({ videoData }) {
 
   const [showCommentSection, setShowCommentSection] = useState(false);
 
+  useEffect(() => {
+    // Fetch comments related to the video when the component mounts
+    const fetchComments = async () => {
+      if (videoData.id) {
+        const videoRef = doc(firestore, "videos", videoData.id);
+
+        const commentsCollectionRef = collection(videoRef, "comments");
+        
+
+        const commentsSnapshot = await getDocs(commentsCollectionRef);
+        const commentsData = commentsSnapshot.docs.map((doc) => doc.data());
+        console.log("Comments Ref", commentsData);
+        setComments(commentsData);
+      }
+    };
+
+    fetchComments();
+  }, [videoData]);
 
   const handleCloseCommentSection = () => {
     setShowCommentSection(false);
@@ -271,7 +291,7 @@ export default function PostContainer({ videoData }) {
           <Video videoData={videoData} />
           {showCommentSection && (
           <>
-            <CommentSection handleClose={handleCloseCommentSection} />
+            <CommentSection comments={comments} handleClose={handleCloseCommentSection} />
             {/* fetch comments related to the video post and map them to display in this section. */}
             {/* Add code here to display the list of comments */}
             {/* Add code here to display the form to submit a comment */}

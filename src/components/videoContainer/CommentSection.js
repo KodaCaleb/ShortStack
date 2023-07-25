@@ -1,7 +1,10 @@
 import { React, useState } from "react";
+import PostContainer from "./PostContainer";
+import { firestore } from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 
-export default function CommentSection( { handleClose} ) {
+export default function CommentSection( { comments, handleClose} ) {
   const handleCloseCommentSection = () => {
     handleClose();
   };
@@ -18,11 +21,6 @@ export default function CommentSection( { handleClose} ) {
           </button>
         </div>
 
-        <div className="p-3 border-t-2 border-dotted border-slate-500">
-          <p className=" mb-0">
-            User's description of the video can go here.
-          </p>
-        </div>
         <div className=" p-3 border-t-2 border-dotted border-slate-500 ">
           <ul className="commentList p-0 list-none overflow-auto max-h-80 h-full">
             <li className="m-0 mt-3">
@@ -31,41 +29,17 @@ export default function CommentSection( { handleClose} ) {
               </div>
               <div className="table-cell">
                 <p className="m-0">Hello this is a test comment.</p>{" "}
-                <span className="date italic text-xs text-slate-400">on March 5th, 2014</span>
-              </div>
-            </li>
-            <li className="m-0 mt-3">
-              <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/45/45" />
-              </div>
-              <div className="table-cell">
-                <p className="m-0">
-                  Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
-                </p>{" "}
-                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
-              </div>
-            </li>
-            <li className="m-0 mt-3">
-              <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/40/40" />
-              </div>
-              <div className="table-cell">
-                <p className="m-0">Hello this is a test comment.</p>{" "}
-                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
-              </div>
-            </li>
-            <li className="m-0 mt-3">
-              <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/45/45" />
-              </div>
-              <div className=" table-cell">
-                <p className="m-0">
-                  Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
-                </p>{" "}
-                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
               </div>
             </li>
           </ul>
+        </div>
+              <div className="text-white border-4 h-12">
+                    {comments.map((comment, index) => (
+                      <div key={index}>
+                        <p>{comments.text}</p>
+                      </div>
+                    ))}
+                  </div>
 
           <form className="form-inline" role="form">
             <div className="w-full flex justify-between mt-8 p-2">
@@ -79,7 +53,7 @@ export default function CommentSection( { handleClose} ) {
             </div>
           </form>
 
-        </div>
+   
       </div>
     </>
   );

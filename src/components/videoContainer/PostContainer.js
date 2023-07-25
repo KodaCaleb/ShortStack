@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import Video from "./Video";
+import AuthContext from "../../utils/AuthContext";
 import CommentSection from "./CommentSection";
-import { firestore } from "../../firebase";
+import Video from "./Video";
+import { storage, firestore } from "../../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 import { doc, getDoc, runTransaction, setDoc, collection, addDoc, deleteDoc,} from "firebase/firestore";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
-import AuthContext from "../../utils/AuthContext";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 
 async function getUserData(userId) {
@@ -24,17 +25,31 @@ export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
-  const [userPhoto, setUserPhoto] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png")
+  const [photoURL, setPhotoURL] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png")
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
   const uid = user ? user.uid : null; // Get the uid from the user object
 
   useEffect(() => {
     if (videoData.userId) {
-      getUserData(videoData.userId).then(setUserData);
+      getUserData(videoData.userId)
+      .then(setUserData);
     }
   }, [videoData]);
-
+  
+  useEffect(() => {
+    if(userData && userData.photoURL) {
+      const photoStorageRef = ref(storage, userData.photoURL);
+      getDownloadURL(photoStorageRef)
+      .then((url) =>{
+        setPhotoURL(url)
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    };
+  }, [userData]);
+  
   useEffect(() => {
     const checkIfLiked = async () => {
       if (videoData.id && uid && !loading) {
@@ -196,7 +211,7 @@ export default function PostContainer({ videoData }) {
           <div className="username flex p-5 text-amber-200 text-xl">
             <img
               className=" rounded-full h-24 bg-yellow-500"
-              src={userPhoto}
+              src={photoURL}
             />
             <div className="pl-4">
               <p>

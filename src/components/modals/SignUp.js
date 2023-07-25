@@ -2,12 +2,14 @@ import { useState } from "react";
 import { firestore, auth, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
+import { MoonLoader } from "react-spinners";
 // import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Firestore DB
   const [firstName, setFirstName] = useState("");
@@ -20,6 +22,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [message, setMessage] = useState("");
 
   const handleButtonClick = () => {
     document.querySelector('input[type="file"]').click();
@@ -29,13 +32,12 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     const file = e.target.files[0];
     setSelectedFile(file);
     setPhotoData(file);
-
-    console.log(file);
   };
 
   // Event handlers for users entering data
   const handleCreateAccount = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (
       !firstName ||
@@ -46,9 +48,21 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       !phoneNumber
     ) {
       alert("Please fill in all required fields");
+      setIsLoading(false);
       return;
     }
 
+
+    // check for password reqs
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$&])[A-Za-z\d!@$&]{8,20}$/;
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must have at least one upper/lowercase letter, one number, and one of the following symbols: !, @, $, &. It should be 6 to 20 characters long."
+      );
+      setIsLoading(false);
+      return;
+    }
+    
     try {
       // Creates a new user in the Firebase authenticator
       const userCredential = await createUserWithEmailAndPassword(
@@ -58,7 +72,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       );
       const user = userCredential.user;
       const uid = user.uid;
-      console.log(user);
 
       if (photoData) {
         // Upload the user's profile photo to Firebase Storage
@@ -70,64 +83,59 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
-
+        
+        // Add additional user information to Firestore DB
+        const userInfo = {
+          firstName,
+          lastName,
+          devRole,
+          photoURL,
+        };
+        addUserToFirestore(uid, userInfo);
+        console.log(userInfo);
+        console.log("this is what i am looking for")
+        
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
           photoURL: photoURL,
         });
-
-        const message = "User account created successfully!";
-        alert(message);
-        console.log(
-          "User profile updated successfully with displayName and photoURL."
-        );
       } else {
         // Update the user's displayName, phoneNumber
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
         });
-
-        const message = "User account created successfully!";
-        alert(message);
-        console.log(
-          "User profile updated successfully with displayName and phoneNumber."
-        );
       }
+      
+      //sends email verification
+      await sendEmailVerification(user);
 
-      // Add additional user information to Firestore DB
-      const userInfo = {
-        firstName,
-        lastName,
-        devRole,
-      };
-      addUserToFirestore(uid, userInfo);
+      setMessage("Account created successfully. Please check your email for verification.");
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      const warning = errorMessage;
+      const warning = { errorCode, errorMessage };
       alert(warning);
-      console.error("Error creating user:", errorCode, errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   // Sending user input to create account and profile document
   const addUserToFirestore = async (uid, userInfo) => {
     try {
       // Reference the "Users" collection in Firestore
       const usersCollection = collection(firestore, "Users");
-
       const userDocRef = doc(usersCollection, uid);
 
       // Add the user data to Firestore using the uid as the document ID
       await setDoc(userDocRef, userInfo);
-
-      console.log("User data added to Firestore successfully.");
     } catch (error) {
-      console.error("Error adding user data to Firestore:", error);
+      alert("Error adding user data to Firestore:", error);
     }
 
     // Close modal after successful account creation
@@ -135,6 +143,11 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   };
   return (
     <>
+      {isLoading && (
+        <div className=" z-index-25 flex items-center justify-center">
+          <MoonLoader color="#E0A712" loading={isLoading} size={80} />
+        </div>
+      )}
       {/* Modal */}
       <div className="flex flex-col items-center justify-start text-yellow-500 ">
         <h3 className="pt-4 text-2xl text-center"> Create an Account!</h3>
@@ -279,9 +292,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             )}
             <div className="flex items-center p-4 justify-center">
               <button
-                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900 
+                className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900
               hover:rounded-3xl
-              hover:border-2 
+              hover:border-2
               hover:border-amber-700
               hover: ease-in-out duration-300"
                 type="submit"

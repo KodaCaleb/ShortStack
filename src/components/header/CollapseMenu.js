@@ -29,7 +29,7 @@ export default function CollapseMenu({openModal}) {
             src={isMenuOpen ? clickedLogo : unclickedLogo} 
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
             />
-          <ul className="drop top-12 list-none absolute left-0 z-10">
+          <ul className="drop top-12 list-none absolute left-0 z-20">
             <div className="relative p-2 ">
               <HomeLink />
               {isLoggedIn ? (

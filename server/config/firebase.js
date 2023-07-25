@@ -25,4 +25,7 @@ const firestore =  getFirestore(app) ;
 module.exports = firestore
 
 // Initialize Cloud Storage and get a reference to the service
-// export const storage = getStorage(app);
+export const storage = getStorage(app);
+
+// Initialize Cloud Storage and get a reference to the service
+export const auth = getAuth(app);

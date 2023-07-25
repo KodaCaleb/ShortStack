@@ -6,7 +6,6 @@ import { HandleLogout } from "../../utils/LoginLogout";
 import NavBar from "../header/NavBar";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 export default function CollapseMenu({ openModal }) {
   const { isLoggedIn } = useContext(AuthContext);
@@ -56,7 +55,6 @@ export default function CollapseMenu({ openModal }) {
                     <a href="/account">Account</a>
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                    <a onClick={() => HandleLogout(navigate)} >Logout</a>
                     <a onClick={() => HandleLogout(navigate)} >Logout</a>
                   </li>
                 </>

@@ -73,7 +73,7 @@ export default function EditAccount() {
       {" "}
       <div className="flex items-center justify-center h-screen">
         <form
-          className="flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
+          className=" relative flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
           action=""
         >
           <div className="flex flex-col  text-yellow-500 ">
@@ -187,6 +187,7 @@ export default function EditAccount() {
               </a>
             </div>
           </div>
+          <button className="absolute top-2 right-2 px-2 py-2">X</button>
         </form>
       </div>
     </>

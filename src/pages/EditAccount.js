@@ -1,10 +1,11 @@
-import React from "react";
-import { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { firestore, auth } from "../firebase";
 import { collection, setDoc, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from "react-icons/fa";
 import { getAuth, deleteUser } from "firebase/auth";
+import { useDeleteAccount } from "../utils/UseDeleteAccount"
+import { useNavigate } from "react-router-dom";
 
 export default function EditAccount() {
   const { user } = useContext(AuthContext);
@@ -63,24 +64,8 @@ export default function EditAccount() {
     }
   };
 
-  // Function to handle the "Delete Account" button click
-async function handleDeleteAccount() {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (user) {
-      // Delete the user from Firebase Authentication
-      await deleteUser(user);
-
-      // Extension automatically deletes the associated data based on the configured paths.
-    }
-  } catch (error) {
-    console.error("Error deleting user account:", error);
-    // Handle any errors that occurred during the deletion process
-  };
-}
-  
+  // Get the delete account function from the custom hook
+  const handleDeleteAccount = useDeleteAccount();
 
   return (
     <>

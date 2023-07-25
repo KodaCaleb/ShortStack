@@ -50,7 +50,7 @@ export default function EditAccount() {
 
       //Showing user if successful update
       setIsUpdateSuccess(true);
-      setTimeout(() => setIsUpdateSuccess(false), 3000);
+      setTimeout(() => setIsUpdateSuccess(false), 2000);
     } catch (error) {
       return error;
     }
@@ -69,22 +69,22 @@ export default function EditAccount() {
   const handleDeleteAccount = useDeleteAccount();
 
   return (
-    <>
-      {/* <div className="flex flex-col items-center justify-center text-yellow-500 ">
-        <h3 className="pt-4 text-2xl text-center"> View Account Info</h3> */}
+    <> <div className="flex items-center justify-center h-screen">
       <form
-        className="relative flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
+        className="flex flex-col  bg-black text-white rounded shadow-lg p-12 mt-12 border border-white"
         action=""
       >
         <div className="flex flex-col items-center justify-center text-yellow-500 ">
-          <h3 className="p-2 my-3 text-2xl text-center"> View Account Info</h3>
+          <h3 className="p-2 my-3 text-2xl text-center"> Account Information</h3>
+
+          {/* FirstName and LastName input boxes */}
           <div className="mb-4 md:flex md:justify-between">
             <div className="mb-4 md:mr-2 md:mb-0">
               <label className="block mb-2 text-sm font-bold text-gray-700">
                 First Name
               </label>
               <input
-                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                className="flex-grow px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 id="firstName"
                 type="text"
                 placeholder="First Name"
@@ -109,8 +109,11 @@ export default function EditAccount() {
               />
             </div>
           </div>
+          
+          {/* Email, password, devRole */}
+    
           <label
-            className="block mb-2 text-sm font-bold text-gray-700"
+            className="mb-2 text-sm font-bold text-gray-700"
             htmlFor="usernameField"
           >
             {" "}
@@ -149,6 +152,9 @@ export default function EditAccount() {
             value={updatedBio || ""}
             onChange={(e) => setUpdatedBio(e.target.value)}
           />
+      
+
+          {/* SaveChanges and Delete Account Buttons */}
           <div className="flex items-center justify-center">
             <button
               className="flex items-center justify-center h-12 px-6 w-64 bg-yellow-500 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-yellow-300
@@ -174,6 +180,7 @@ export default function EditAccount() {
           </div>
         </div>
       </form>
+      </div>
     </>
   );
 }

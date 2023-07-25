@@ -189,49 +189,6 @@ export default function PostContainer({ videoData }) {
     }
   };
 
-
-  // Logic for follow button?//
-    const followUser= async () => {
-      //Logic for following user
-      if(!isFollowing) {
-        try {
-          const currentUserUid = uid; //pull current user id
-          const userToFollowUid = videoData.userId; //based off video data containing the uid
-
-           // Add document in "following" subcollection of the current user.
-        const followingRef = doc(firestore, 'Users', currentUserUid).collection('following',).doc (userToFollowUid);
-        await setDoc(followingRef, {});
-
-           // Add document in "followers" subcollection of the user being followed.
-           const followersRef = doc(firestore, 'Users', userToFollowUid, 'followers', currentUserUid);
-           await setDoc(followersRef, {});
-           setIsFollowing(true); // Update the state to indicate that the user is now being followed.
-          } catch (error) {
-            console.error('Error following the user:', error);
-          }
-        }
-      };
-
-  const unfollowUser = async () => {
-    //Logic for unfollowing user
-    if(isFollowing){
-      try {
-        const currentUserUid = uid; //current users
-        const userToFollowUid = videoData.userId; //uses video data's user id
-
-        const followingRef = doc(firestore, 'Users', currentUserUid).collection('following').doc(userToFollowUid); //deletes document in the following sub collection
-        await deleteDoc(followingRef);
-
-        const followersRef = doc(firestore, 'User', userToFollowUid).collection('followers').doc(currentUserUid);
-        await deleteDoc(followersRef);
-        setIsFollowing(false); //updates to user that is now being unfollowed
-      } catch (error) {
-        console.error('error unfollowing the user:', error);
-      }
-    }
-  };
-
-
   return (
     <div className="flex justify-center flex-row snap start">
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">

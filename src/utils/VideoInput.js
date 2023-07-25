@@ -84,10 +84,11 @@ export default function VideoInput(props) {
   };
 
   return (
-    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-black">
-      <h3 className=" bg-yellow-950 rounded-2xl p-4 mt-5 text-center italic">720x1280 resolution or higher 
+    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-5 border-yellow-400 rounded-3xl justify-center bg-black">
+      <h2 className=" bg-yellow-900 rounded-2xl p-1 text-center italic">720x1280 resolution or higher 
       <br></br>Up to 5 minutes 
-      <br></br>Less than 2 GB</h3>
+      <br></br>Less than 2 GB
+      <br></br>Disclaimer: Files that do not adhere to these guidelines may be subject to removal without prior notice.</h2>
       <input
         ref={inputRef}
         className="hidden"

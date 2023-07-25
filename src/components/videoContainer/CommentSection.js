@@ -17,12 +17,6 @@ export default function CommentSection( { handleClose} ) {
             &times;
           </button>
         </div>
-
-        <div className="p-3 border-t-2 border-dotted border-slate-500">
-          <p className=" mb-0">
-            User's description of the video can go here.
-          </p>
-        </div>
         <div className=" p-3 border-t-2 border-dotted border-slate-500 ">
           <ul className="commentList p-0 list-none overflow-auto max-h-80 h-full">
             <li className="m-0 mt-3">

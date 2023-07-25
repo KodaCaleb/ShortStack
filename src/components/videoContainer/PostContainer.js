@@ -134,14 +134,10 @@ export default function PostContainer({ videoData }) {
     const fetchComments = async () => {
       if (videoData.id) {
         const videoRef = doc(firestore, "videos", videoData.id);
+        const videoDoc = await getDoc(videoRef);
 
-        const commentsCollectionRef = collection(videoRef, "comments");
+        setComments(videoDoc.data().comments);
         
-
-        const commentsSnapshot = await getDocs(commentsCollectionRef);
-        const commentsData = commentsSnapshot.docs.map((doc) => doc.data());
-        console.log("Comments Ref", commentsData);
-        setComments(commentsData);
       }
     };
 

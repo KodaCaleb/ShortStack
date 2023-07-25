@@ -5,6 +5,15 @@ import { collection, getDocs } from "firebase/firestore";
 
 
 export default function CommentSection( { comments, handleClose} ) {
+
+
+
+  // {comments.map((comment, index) => (
+  //   console.log("LOOK HERE", comment)
+  // ))}
+
+
+
   const handleCloseCommentSection = () => {
     handleClose();
   };
@@ -21,25 +30,21 @@ export default function CommentSection( { comments, handleClose} ) {
           </button>
         </div>
 
+        {comments.map((comment, index) => (
         <div className=" p-3 border-t-2 border-dotted border-slate-500 ">
           <ul className="commentList p-0 list-none overflow-auto max-h-80 h-full">
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/50/50" />
+        
               </div>
               <div className="table-cell">
-                <p className="m-0">Hello this is a test comment.</p>{" "}
+                <p className="m-0">{comment}</p>{" "}
               </div>
             </li>
           </ul>
         </div>
-              <div className="text-white border-4 h-12">
-                    {comments.map((comment, index) => (
-                      <div key={index}>
-                        <p>{comments.text}</p>
-                      </div>
-                    ))}
-                  </div>
+        ))}
+
 
           <form className="form-inline" role="form">
             <div className="w-full flex justify-between mt-8 p-2">

@@ -25,9 +25,9 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.videoContainer {
+/* .videoContainer {
   scroll-snap-align: start;
-}
+} */
 .videoFooter_icon {
   animation: iconSpin infinite 4s linear;
 }

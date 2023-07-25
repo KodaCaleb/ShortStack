@@ -20,7 +20,7 @@ export default function EditAccount() {
   const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
   const [updatedEmail, setUpdatedEmail] = useState(user?.email || "");
-  const [updatedUsername, setUpdatedUsername] = useState(user?.userName || "");
+  const [pdatedUsername, setUpdatedUsername] = useState(user?.displayName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function EditAccount() {
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
     setUpdatedEmail(user?.email || "");
-    setUpdatedUsername(user?.userName || "");
+    setUpdatedUsername(user?.displayName || "");
   }, [userData, user]);
 
   // Event handler for updating account information
@@ -126,27 +126,24 @@ export default function EditAccount() {
             <div className="mb-4 md:flex md:justify-between">
               <div className="mb-4 md:mr-2 md:mb-0">
                 <label className="block mb-2 text-sm font-bold text-gray-700"
-                  htmlFor="lastName"
+                  htmlFor="userName"
                 >
                   Username
                 </label>
                 <input
                   className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="lastName"
+                  id="displayName"
                   type="text"
                   placeholder="Username"
-                  value={updatedUsername || ""}
+                  value={updatedUsername}
                   onChange={(e) => setUpdatedLastName(e.target.value)}
                 />
-                {/* Password */}
-                <label className="block mb-2 text-sm font-bold text-gray-700"
-                  htmlFor="password"
-                >
-                  Password
+              </div>
+              {/* Password */}
+              <div className="flex items-center mb-4 md:flex md:justify-between mr-7 mt-7">
                   <div className="hover:text-yellow-500">
                     <ForgotPassword />
                   </div>
-                </label>
               </div>
             </div>
 
@@ -163,8 +160,9 @@ export default function EditAccount() {
               <input
                 className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 type="text"
+                autocomplete="off"
                 placeholder="Email"
-                value={updatedEmail || user?.email || ""}
+                value={updatedEmail || ""}
                 onChange={(e) => setUpdatedEmail(e.target.value)}
               />
 

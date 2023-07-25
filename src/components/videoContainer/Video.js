@@ -64,7 +64,7 @@ export default function Video({ videoData }) {
   };
 
   return (
-    <div className="w-1/4 mb-4 h-full mt-4 videoContainer">
+    <div className="w-1/3 mb-4 h-full mt-4 videoContainer">
       <div className="video-container relative">
         {isLoading && (
           <div className=" top-0 right-0 bottom-0 left-0 flex items-center justify-center">

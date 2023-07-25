@@ -8,23 +8,23 @@ export default function CommentSection( { handleClose} ) {
   
   return (
     <>
-      <div className="justify-end w-96 border text-white rounded-lg border-gray-400 m-4">
-        <div className="p-2 bg-amber-300">
+      <div className="w-80 border text-white rounded-lg border-gray-400 m-4">
+        <div className="px-4 rounded-t bg-amber-300 flex flex-row items-center justify-between">
           <label className="text-slate-700 m-0 inline-block">Comments</label>
           <button type="button"
             onClick={handleCloseCommentSection}
-          className="text-black text-xl float-right" aria-hidden="true">
+          className="text-black text-3xl float-right" aria-hidden="true">
             &times;
           </button>
         </div>
 
         <div className="p-3 border-t-2 border-dotted border-slate-500">
-          <p className="mt-2 mb-0">
+          <p className=" mb-0">
             User's description of the video can go here.
           </p>
         </div>
         <div className=" p-3 border-t-2 border-dotted border-slate-500 ">
-          <ul className="commentList p-0 list-none overflow-auto max-h-52 h-full">
+          <ul className="commentList p-0 list-none overflow-auto max-h-80 h-full">
             <li className="m-0 mt-3">
               <div className="table-cell commenterImage">
                 <img src="http://placekitten.com/50/50" />
@@ -70,11 +70,12 @@ export default function CommentSection( { handleClose} ) {
           <form className="form-inline" role="form">
             <div className="w-full flex justify-between mt-8 p-2">
               <textarea
-                className="form-control h-10 w-5/6 rounded-sm p-2 text-slate-700"
+                className="form-control h-14 w-5/6 rounded-md p-2 text-slate-200 bg-black focus:border-2 focus:border-amber-300  focus:border-opacity-20"
                 type="text"
                 placeholder="Add a comment..."
               />
-              <button className="p-2 bg-amber-300 rounded-sm text-slate-700 transition duration-300">Add</button>
+              <button className="p-2 ml-2 bg-amber-300 rounded-sm text-slate-700 transition duration-300">Add</button>
+             
             </div>
           </form>
 

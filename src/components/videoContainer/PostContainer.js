@@ -126,14 +126,17 @@ export default function PostContainer({ videoData }) {
   
 
   return (
-    <div className="flex justify-center flex-row snap start">
+    <div className="flex justify-center flex-row">
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
         {userData && (
-          <div className="username pt-20 text-amber-200 text-xl">
-            <p>
-              {userData.firstName} | {userData.bio}
+          <div className="username flex p-5 text-amber-200 text-xl">
+            <img className=" rounded-full h-24" src="https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg" />
+            <div className="pl-4">
+              <p>
+              <span className="text-3xl">{userData.firstName}</span> | <span className="font-light">{userData.bio}</span>
             </p>
-            <p>{videoData.title}</p>
+            <p className="pt-2">{videoData.title}</p>
+            </div>
           </div>
         )}
         <hr className="mt-2 mb-2" />

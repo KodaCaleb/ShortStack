@@ -480,7 +480,7 @@ ul {
 
 }
 
-@media (max-width: 912px) {
+@media (max-width: 1160px) {
   .login-button {
     display: none;
   }

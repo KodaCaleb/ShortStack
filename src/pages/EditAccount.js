@@ -1,10 +1,12 @@
-import React from "react";
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { firestore, updatePassword } from "../firebase";
 import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
 import { updateEmail } from "firebase/auth";
 import AuthContext from "../utils/AuthContext";
 import { FaPencilAlt } from "react-icons/fa";
+import { getAuth, deleteUser } from "firebase/auth";
+import { useDeleteAccount } from "../utils/UserDeleteAccount"
+import { useNavigate } from "react-router-dom";
 
 export default function EditAccount() {
   const { user, userData } = useContext(AuthContext);
@@ -62,6 +64,9 @@ export default function EditAccount() {
       console.error(error);
     }
   };
+
+  // Get the delete account function from the custom hook
+  const handleDeleteAccount = useDeleteAccount();
 
   return (
     <>
@@ -162,7 +167,8 @@ export default function EditAccount() {
             </div>
           )}
           <div className="flex mt-6 justify-center text-xs">
-            <a href="#" className="text-blue-499 hover:text-yellow-300">
+            <a href="#" className="text-blue-499 hover:text-yellow-300"
+            onClick={handleDeleteAccount}>
               Delete Account
             </a>
           </div>

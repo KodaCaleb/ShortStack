@@ -4,7 +4,7 @@ import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
 import { updateEmail } from "firebase/auth";
 import AuthContext from "../utils/AuthContext";
 import { getAuth, deleteUser } from "firebase/auth";
-import { useDeleteAccount } from "../utils/UserDeleteAccount";
+import { UserDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
 
@@ -67,7 +67,7 @@ export default function EditAccount() {
   };
 
   // Get the delete account function from the custom hook
- 
+  const handleDeleteAccount = UserDeleteAccount();
 
   const handleExit = () => {
     navigate('/profile')

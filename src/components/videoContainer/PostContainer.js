@@ -214,7 +214,7 @@ export default function PostContainer({ videoData }) {
           <div className="username flex flex-row p-5 text-amber-200 text-xl">
             <Link to={`/profile/${userData}`}>
             <img
-              className=" rounded-full h-24 w-28 md:h-32 md:w-36 bg-yellow-500"
+              className=" rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 xl:h-32 xl:w-32 bg-yellow-500"
               src={photoURL}
               at={`Profile of User ${userData}`}
             />

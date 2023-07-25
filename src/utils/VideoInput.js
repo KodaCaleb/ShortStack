@@ -22,7 +22,6 @@ export default function VideoInput(props) {
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
 
 
@@ -59,7 +58,6 @@ export default function VideoInput(props) {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           const videoData = {
             title,
-            description,
             tags,
             vidRef: downloadURL,
             userId: uid,
@@ -105,13 +103,6 @@ export default function VideoInput(props) {
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
         required
-      />
-      <input
-      className="bg-black border rounded-md m-4 px-3 py-2"
-        type="text"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
       />
       <TagsInput value={tags} onChange={setTags} />
       {!source && <button className="

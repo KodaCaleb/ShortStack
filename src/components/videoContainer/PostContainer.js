@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
-import Video from "./Video";
+import AuthContext from "../../utils/AuthContext";
 import CommentSection from "./CommentSection";
-import { firestore } from "../../firebase";
-import { doc, getDoc, runTransaction, setDoc, collection, addDoc, deleteDoc,} from "firebase/firestore";
+import Video from "./Video";
+import { storage, firestore } from "../../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
-import AuthContext from "../../utils/AuthContext";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
+import { doc, getDoc, runTransaction, 
+        setDoc, deleteDoc,
+      } from "firebase/firestore";
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -24,17 +27,31 @@ export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
-
+  const [photoURL, setPhotoURL] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png")
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
   const uid = user ? user.uid : null; // Get the uid from the user object
 
   useEffect(() => {
     if (videoData.userId) {
-      getUserData(videoData.userId).then(setUserData);
+      getUserData(videoData.userId)
+      .then(setUserData);
     }
   }, [videoData]);
-
+  
+  useEffect(() => {
+    if(userData && userData.photoURL) {
+      const photoStorageRef = ref(storage, userData.photoURL);
+      getDownloadURL(photoStorageRef)
+      .then((url) =>{
+        setPhotoURL(url)
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    };
+  }, [userData]);
+  
   useEffect(() => {
     const checkIfLiked = async () => {
       if (videoData.id && uid && !loading) {
@@ -53,75 +70,60 @@ export default function PostContainer({ videoData }) {
 
     checkIfLiked();
   }, [videoData, uid, loading]);
-
   async function likeVideo(videoId, userId) {
-    if (videoId && userId && !loading) {
+    if (videoId && userId && !loading) { // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
+      const likeRef = doc(videoRef, "likes", userId);
+    
+      if ((await getDoc(likeRef)).exists()) {
+        console.log("User has already liked this video.");
+        return;
+      }
+    
+      await setDoc(likeRef, {});
+
+      // Add video reference to the user's liked videos subcollection
       const userRef = doc(firestore, "Users", userId);
-      const userContentRef = doc(firestore, `Users/${userId}/userContent`, videoId);
+      const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
+      await setDoc(userLikedVideoRef, {});
+
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
-        const userDoc = await transaction.get(userRef);
-        const userContentDoc = await transaction.get(userContentRef);
-        if (!videoDoc.exists() || !userDoc.exists() || !userContentDoc.exists()) {
-          throw "Video, User or User content does not exist!";
+        if (!videoDoc.exists()) {
+          throw "Document does not exist!";
         }
-
-        // Update the likes count in video document and user content document
+    
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
-        transaction.update(userContentRef, { likes: newLikesCount });
-  
-        // Add the video to the user's 'likedVideos' subcollection
-        const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
-        await setDoc(userLikedVideoRef, { ...videoDoc.data(), id: videoId }); // Add the video data
-  
-
-        // Add the user to the video's 'likes' subcollection
-        const videoLikeRef = doc(videoRef, "likes", userId);
-        await setDoc(videoLikeRef, { userId: userId });
       });
-
-      setUserHasLiked(true);
+      
+      setUserHasLiked(true); // set userHasLiked to true after a successful like action
     }
   }
-  
+
   async function unlikeVideo(videoId, userId) {
-    if (videoId && userId && !loading) {
+    if (videoId && userId && !loading) { // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
+      const likeRef = doc(videoRef, "likes", userId);
+
+      await deleteDoc(likeRef); // Remove the user's like from the Firestore
+
+      // Remove video reference from the user's liked videos subcollection
       const userRef = doc(firestore, "Users", userId);
-      const userContentRef = doc(firestore, `Users/${userId}/userContent`, videoId);
-  
+      const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
+      await deleteDoc(userLikedVideoRef);
 
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
-        const userDoc = await transaction.get(userRef);
-        const userContentDoc = await transaction.get(userContentRef);
-  
-        if (!videoDoc.exists() || !userDoc.exists() || !userContentDoc.exists()) {
-          throw "Video, User or User content does not exist!";
+        if (!videoDoc.exists()) {
+          throw "Document does not exist!";
         }
-  
 
-        // Update the likes count in video document and user content document
-        const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0);
+        const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
         transaction.update(videoRef, { likes: newLikesCount });
-        transaction.update(userContentRef, { likes: newLikesCount });
-
-        // Remove the video from the user's 'likedVideos' subcollection
-        const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
-        if ((await getDoc(userLikedVideoRef)).exists()) {
-          await deleteDoc(userLikedVideoRef);
-        }
-
-        // Remove the user from the video's 'likes' subcollection
-        const videoLikeRef = doc(videoRef, "likes", userId);
-        if ((await getDoc(videoLikeRef)).exists()) {
-          await deleteDoc(videoLikeRef);
-        }
       });
 
-      setUserHasLiked(false);
+      setUserHasLiked(false); // set userHasLiked to false after a successful unlike action
     }
   }
 
@@ -194,10 +196,13 @@ export default function PostContainer({ videoData }) {
       <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
         {userData && (
           <div className="username flex p-5 text-amber-200 text-xl">
+            {/* <Link to={`/profile/${userData}`}> */}
             <img
-              className=" rounded-full h-24"
-              src="https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg"
+              className=" rounded-full h-24 bg-yellow-500"
+              src={photoURL}
+              alt={`Profile of User ${userData}`}
             />
+            {/* </Link> */}
             <div className="pl-4">
               <p>
                 <span className="text-3xl">{userData.firstName}</span> |{" "}

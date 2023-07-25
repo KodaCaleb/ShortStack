@@ -3,6 +3,7 @@ import LoginLogout from "../../utils/LoginLogout";
 import SignUpModal from "./SignUp";
 import Syrup from "../../assets/syrup.gif";
 import AuthContext from "../../utils/AuthContext";
+import ForgotPassword from "../../utils/ForgotPassword";
 
 export default function LoginModal({ isOpen, closeModal }) {
   const [modalMode, setModalMode] = useState(false);
@@ -102,7 +103,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             </div>
             <div className="flex mt-6 justify-center text-xs">
               <a href="#" className="text-blue-499 hover:text-yellow-300">
-                Forgot Password
+                <ForgotPassword email={email} />
               </a>
               <span className="mx-2 text-gray-300">/</span>
               <a

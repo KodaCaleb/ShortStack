@@ -4,10 +4,13 @@ import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext"; // Import the AuthContext
 import SearchVideosByTags from "../../utils/SearchBarTags";
+import SearchContext from "../../utils/SearchContext";
 
 function Navbar() {
   const { isLoggedIn } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { setMatchingVideos } = useContext(SearchContext);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -19,7 +22,7 @@ function Navbar() {
 
   //Search bar state
   const [searchTag, setSearchTag] = useState("");
-  const [matchingVideos, setMatchingVideos] = useState([]);
+  // const [matchingVideos, setMatchingVideos] = useState([]);
 
   // handle Search bar function
   const handleSearch = async (e) => {

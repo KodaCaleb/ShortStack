@@ -12,7 +12,6 @@ export default function CollapseMenu({ openModal }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-
   const toggleMenu = (isMenuOpen) => {
     setIsMenuOpen(isMenuOpen);
   };

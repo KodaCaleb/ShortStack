@@ -29,7 +29,7 @@ async function getUserData(userId) {
 export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false); // variables for follow buttons
+  const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
 
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
@@ -127,7 +127,7 @@ export default function PostContainer({ videoData }) {
       //Logic for following user
       if(!isFollowing) {
         try {
-          const currentUserUid = 'uid'; //pull current user id
+          const currentUserUid = uid; //pull current user id
           const userToFollowUid = videoData.userId; //based off video data containing the uid
 
            // Add document in "following" subcollection of the current user.

@@ -83,7 +83,6 @@ export default function Video({ videoData, fullSize, deleteVideo, showDeleteButt
           className={videoClass}
           ref={videoRef}
           onClick={onVideoPress}
-          // preload="metadata"
           loop
           onTimeUpdate={handleTimeUpdate}
           hidden={isLoading}

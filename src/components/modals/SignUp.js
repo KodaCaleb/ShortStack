@@ -99,6 +99,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         await updateProfile(user, {
           displayName: displayName,
           phoneNumber: phoneNumber,
+          photoURL: photoURL,
         });
       } else {
         // Update the user's displayName, phoneNumber

@@ -203,13 +203,13 @@ export default function EditAccount() {
               </div>
             )}
             <div className="flex mt-6 justify-center text-xs">
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-blue-499 hover:text-yellow-300"
-                onClick={{handleDeleteAccount, handleExit}}
+                onClick={handleDeleteAccount}
               >
                 Delete Account
-              </a>
+              </button>
             </div>
           </div>
           <button className="absolute top-2 right-2 px-2 py-2" onClick={handleExit}>X</button>

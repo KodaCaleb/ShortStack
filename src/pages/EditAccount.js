@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { firestore, updatePassword } from "../firebase";
-import { collection, setDoc, getDoc, doc, updateDoc } from "firebase/firestore";
-import { updateEmail } from "firebase/auth";
+import { firestore } from "../firebase";
+import { setDoc, doc, } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
-import { getAuth, deleteUser } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
 import { UserDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
 
 export default function EditAccount() {
-  const { user, userData } = useContext(AuthContext);
+  const { user, userData, isLoggedIn, currentUser } = useContext(AuthContext);
 
   //For redirecting user when they exit out
   const navigate = useNavigate();
@@ -35,34 +34,27 @@ export default function EditAccount() {
   const handleEditAccount = async (e) => {
     e.preventDefault();
     try {
-      const userDocRef = doc(firestore, "Users", user.uid);
+      if (isLoggedIn && user) {
+        const userDocRef = doc(firestore, "Users", user.uid);
 
-      //object with new update user
-      const updatedData = {
-        firstName: updatedFirstName,
-        lastName: updatedLastName,
-        devRole: updatedDevRole,
-      };
-      await setDoc(userDocRef, updatedData, { merge: true });
 
-      if (isEmailUpdated) {
-        await handleUpdateEmail(updatedEmail);
+        //objects with update user data
+        const updatedAuthData = { displayName: updatedUsername }
+        const updatedFirestoreData = {
+          firstName: updatedFirstName,
+          lastName: updatedLastName,
+          devRole: updatedDevRole,
+        };
+        await updateProfile(currentUser, updatedAuthData)
+        await setDoc(userDocRef, updatedFirestoreData, { merge: true })
+        .then(() => {
+          //Showing user if successful update
+          setIsUpdateSuccess(true);
+          setTimeout(() => setIsUpdateSuccess(false), 2000);
+        })
       }
-
-      //Showing user if successful update
-      setIsUpdateSuccess(true);
-      setTimeout(() => setIsUpdateSuccess(false), 2000);
     } catch (error) {
-      return error;
-    }
-  };
-
-  //Updating Email
-  const handleUpdateEmail = async (updatedEmail) => {
-    try {
-      await updateEmail(user, updatedEmail);
-    } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
@@ -132,18 +124,18 @@ export default function EditAccount() {
                 </label>
                 <input
                   className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="displayName"
+                  id="Username"
                   type="text"
                   placeholder="Username"
                   value={updatedUsername}
-                  onChange={(e) => setUpdatedLastName(e.target.value)}
+                  onChange={(e) => setUpdatedUsername(e.target.value)}
                 />
               </div>
               {/* Password */}
               <div className="flex items-center mb-4 md:flex md:justify-between mr-7 mt-7">
-                  <div className="hover:text-yellow-500">
-                    <ForgotPassword />
-                  </div>
+                <div className="hover:text-yellow-500">
+                  <ForgotPassword />
+                </div>
               </div>
             </div>
 

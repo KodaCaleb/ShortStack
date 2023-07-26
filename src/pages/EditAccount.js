@@ -20,7 +20,7 @@ export default function EditAccount() {
   const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
   const [updatedEmail, setUpdatedEmail] = useState(user?.email || "");
-  const [pdatedUsername, setUpdatedUsername] = useState(user?.displayName || "");
+  const [updatedUsername, setUpdatedUsername] = useState(user?.displayName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
   useEffect(() => {
@@ -160,7 +160,7 @@ export default function EditAccount() {
               <input
                 className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                 type="text"
-                autocomplete="off"
+                autoComplete="off"
                 placeholder="Email"
                 value={updatedEmail || ""}
                 onChange={(e) => setUpdatedEmail(e.target.value)}
@@ -206,7 +206,7 @@ export default function EditAccount() {
               <a
                 href="#"
                 className="text-blue-499 hover:text-yellow-300"
-                onClick={handleDeleteAccount}
+                onClick={{handleDeleteAccount, handleExit}}
               >
                 Delete Account
               </a>

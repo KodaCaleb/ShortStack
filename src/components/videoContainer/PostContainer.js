@@ -10,6 +10,8 @@ import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 import { doc, getDoc, runTransaction, 
         setDoc, deleteDoc,
       } from "firebase/firestore";
+import { useMediaQuery } from 'react-responsive';
+
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -24,6 +26,7 @@ async function getUserData(userId) {
 }
 
 export default function PostContainer({ videoData }) {
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 640px)' })
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
@@ -193,12 +196,12 @@ export default function PostContainer({ videoData }) {
 
   return (
     <div className="flex justify-center flex-row snap start">
-      <div className=" h-full rounded-3xl p-5 w-3/4 bg-black bg-opacity-40">
+      <div className=" h-full rounded-3xl p-5 w-full md:w-3/4 bg-black bg-opacity-40">
         {userData && (
-          <div className="username flex p-5 text-amber-200 text-xl">
+          <div className="username flex-row flex p-5 text-amber-200 text-xl">
             {/* <Link to={`/profile/${userData}`}> */}
             <img
-              className=" rounded-full h-24 bg-yellow-500"
+              className=" rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 xl:h-32 xl:w-32 bg-yellow-500"
               src={photoURL}
               alt={`Profile of User ${userData}`}
             />
@@ -208,12 +211,12 @@ export default function PostContainer({ videoData }) {
                 <span className="text-3xl">{userData.firstName}</span> |{" "}
                 <span className="font-light">{userData.bio}</span>
               </p>
-              <p className="pt-2">{videoData.title}</p>
+              <p className="pt-2 text-sm md:text-2xl">{videoData.title}</p>
             </div>
           </div>
         )}
         <hr className="mt-2 mb-2" />
-        <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll">
+        <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
 
           <div className="flex flex-col">
 
@@ -273,7 +276,7 @@ export default function PostContainer({ videoData }) {
               />
             )} */}
           </div>
-          <Video videoData={videoData} />
+          <Video fullSize={isSmallScreen} videoData={videoData} />
           {showCommentSection && (
           <>
             <CommentSection handleClose={handleCloseCommentSection} />

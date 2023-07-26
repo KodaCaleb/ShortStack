@@ -114,7 +114,7 @@ function Navbar() {
         <div className="flex items-center"></div>
         <div className="container relative bottom-1 right-24">
           <input
-            className="bg-yellow-600"
+            className="bg-yellow-600 "
             type="text"
             value={searchTag}
             onChange={(e) => setSearchTag(e.target.value)}

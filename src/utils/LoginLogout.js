@@ -12,7 +12,7 @@ export const HandleLogout = async (navigate) => {
     // Redirect to the homepage after sign-out
     navigate("/");
   } catch (error) {
-    prompt(error);
+    console.log("Error signing out", error);
   }
 };
 

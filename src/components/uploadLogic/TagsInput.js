@@ -32,7 +32,7 @@ function TagsInput({ value = [], onChange }) {
         <input
         
           placeholder="react, javascript, css"
-          className="bg-black border  flex-grow rounded-md m-4 px-3 py-2"
+          className="bg-black border text-white flex-grow rounded-md m-4 px-3 py-2"
           value={tag}
 
           onChange={(e) => setTag(e.target.value)}

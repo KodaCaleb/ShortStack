@@ -209,7 +209,7 @@ export default function PostContainer({ videoData }) {
             <div className="pl-4">
               <p>
                 <span className="text-3xl">{userData.firstName}</span> |{" "}
-                <span className="font-light">{userData.bio}</span>
+                <span className="font-light">{userData.devRole}</span>
               </p>
               <p className="pt-2 text-sm md:text-2xl">{videoData.title}</p>
             </div>

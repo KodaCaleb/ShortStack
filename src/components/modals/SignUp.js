@@ -5,7 +5,6 @@ import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 import { MoonLoader } from "react-spinners";
-// import UploadPhoto from "../../utils/UploadPhoto";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -62,7 +61,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       setIsLoading(false);
       return;
     }
-    
+
     try {
       // Creates a new user in the Firebase authenticator
       const userCredential = await createUserWithEmailAndPassword(
@@ -83,7 +82,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
-        
+
         // Add additional user information to Firestore DB
         const userInfo = {
           firstName,
@@ -92,9 +91,9 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL,
         };
         addUserToFirestore(uid, userInfo);
-     ;
-    
-        
+        ;
+
+
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
           displayName: displayName,
@@ -108,7 +107,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           phoneNumber: phoneNumber,
         });
       }
-      
+
       //sends email verification
       await sendEmailVerification(user);
 
@@ -123,7 +122,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       setIsLoading(false);
     }
   };
-  
+
   // Sending user input to create account and profile document
   const addUserToFirestore = async (uid, userInfo) => {
     try {
@@ -289,6 +288,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 <p>{selectedFile.name}</p>
               </>
             )}
+            {/* Submit Form Button */}
             <div className="flex items-center p-4 justify-center">
               <button
                 className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900
@@ -305,15 +305,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           </div>
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
-            <a
-              href="#"
+            <button
               className="text-blue-499 hover:text-yellow-300"
               onClick={toggleModalMode}
             >
               Back to Login
-            </a>
+            </button>
           </div>
-          {/* Submit Form Button */}
           {/* Exit out of modal button */}
           <button
             className=" absolute top-2 right-2 px-2 py-2"

@@ -75,6 +75,7 @@ export default function EditAccount() {
     } catch (error) {
       alert(error);
     }
+    navigate("/profile")
   };
 
   const handleFileChange = (e) => {
@@ -231,7 +232,6 @@ export default function EditAccount() {
                 Delete Account
               </button>
             </div>
-
           </div>
         </form>
       </div>

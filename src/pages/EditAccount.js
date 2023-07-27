@@ -19,9 +19,9 @@ export default function EditAccount() {
   const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
   const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
+  const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png");
   const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
   const [updatedUsername, setUpdatedUsername] = useState(currentUser?.displayName || "");
-  const [updatedPhotoURL, setUpdatedPhotoURL] = useState(currentUser?.photoURL || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
   const [updatedFile, setUpdatedFile] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -31,9 +31,9 @@ export default function EditAccount() {
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
+    setUpdatedPhotoURL(userData?.photoURL || "")
     setUpdatedEmail(currentUser?.email || "");
     setUpdatedUsername(currentUser?.displayName || "");
-    setUpdatedPhotoURL(currentUser?.photoURL || "")
   }, [userData, currentUser]);
 
   // Event handler for updating account information
@@ -51,25 +51,28 @@ export default function EditAccount() {
           // Get the download URL of the uploaded photo
           const photoURL = await getDownloadURL(storageRef);
 
+          const updatedFirestoreData = {
+            firstName: updatedFirstName,
+            lastName: updatedLastName,
+            devRole: updatedDevRole,
+            photoURL: photoURL,
+          };
+          await setDoc(userDocRef, updatedFirestoreData, { merge: true });
+
           // Update the state with the new photo URL
           setUpdatedPhotoURL(photoURL);
-        };
+        } else {
 
-        const updatedFirestoreData = {
-          firstName: updatedFirstName,
-          lastName: updatedLastName,
-          devRole: updatedDevRole,
-          photoURL: updatedPhotoURL,
-        };
-        await setDoc(userDocRef, updatedFirestoreData, { merge: true });
+          const updatedFirestoreData = {
+            firstName: updatedFirstName,
+            lastName: updatedLastName,
+            devRole: updatedDevRole,
+          };
+          await setDoc(userDocRef, updatedFirestoreData, { merge: true });
+        }
 
         // After updating Firestore data, update the photoURL in Firebase Auth
-        const updatedAuthData = {
-          displayName: updatedUsername,
-          photoURL: updatedPhotoURL,
-        };
-        await updateProfile(currentUser, updatedAuthData);
-        console.log(currentUser)
+        await updateProfile(currentUser, { displayName: updatedUsername });
       }
 
       // Showing user if successful update

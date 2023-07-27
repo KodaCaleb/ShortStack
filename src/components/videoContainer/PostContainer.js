@@ -11,7 +11,7 @@ import { doc, getDoc, runTransaction,
         setDoc, deleteDoc,
       } from "firebase/firestore";
 import { useMediaQuery } from 'react-responsive';
-
+import pancakeholder from "../../assets/pancakeholder.svg";
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -30,7 +30,7 @@ export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
-  const [photoURL, setPhotoURL] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png")
+  const [photoURL, setPhotoURL] = useState(pancakeholder)
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
   const uid = user ? user.uid : null; // Get the uid from the user object

@@ -5,7 +5,7 @@ import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 import { MoonLoader } from "react-spinners";
-// import UploadPhoto from "../../utils/UploadPhoto";
+import pancakeholder from "../../assets/pancakeholder.svg";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -21,7 +21,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [photoData, setPhotoData] = useState(pancakeholder);
   const [message, setMessage] = useState("");
 
   const handleButtonClick = () => {

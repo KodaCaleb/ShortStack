@@ -4,6 +4,7 @@ import AuthContext from "../utils/AuthContext";
 import { firestore } from "../firebase";
 import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import Video from "../components/videoContainer/Video";
+import pancakeholder from "../assets/pancakeholder.svg";
 // import { RiUserFollowLine } from 'react-icons/ri';
 
 // Component that represents the user profile heading
@@ -54,7 +55,7 @@ export default function UserProfileHeading() {
       // Call the function to get user data and content
       getUserData();
       setUsername(user.displayName || "");
-      setPhoto(userData.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png");
+      setPhoto(userData.photoURL || pancakeholder);
       setLoadingUser(false);
     };
   }, [user, uid, loading]);

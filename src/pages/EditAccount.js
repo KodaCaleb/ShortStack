@@ -7,6 +7,8 @@ import { updateProfile } from "firebase/auth";
 import { UserDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
+import pancakeholder from "../assets/pancakeholder.svg";
+
 
 export default function EditAccount() {
   // Setting global state variables
@@ -19,7 +21,7 @@ export default function EditAccount() {
   const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
   const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
-  const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || pancakeholder);
   const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
   const [updatedUsername, setUpdatedUsername] = useState(currentUser?.displayName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);

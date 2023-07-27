@@ -3,7 +3,6 @@ import clickedLogo from "../../assets/clickedStack.svg";
 import AuthContext from "../../utils/AuthContext";
 import HomeLink from "../../utils/HomeLink";
 import { HandleLogout } from "../../utils/LoginLogout";
-import NavBar from "../header/NavBar";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +26,7 @@ export default function CollapseMenu({ openModal }) {
           onMouseEnter={() => toggleMenu(true)}
           onMouseLeave={() => toggleMenu(false)}
         >
-          <img className="h-14 w-11/12 cursor-pointer "
+          <img className="h-14 w-11/12 cursor-pointer"
             src={isMenuOpen ? clickedLogo : unclickedLogo}
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />
@@ -46,13 +45,13 @@ export default function CollapseMenu({ openModal }) {
                     <a href="/account">Account</a>
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                    <a onClick={() => HandleLogout(navigate)} >Logout</a>
+                    <button onClick={() => HandleLogout(navigate)} >Logout</button>
                   </li>
                 </>
               ) : (
                 <>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                    <a onClick={handleOpenModal}>Login</a>
+                    <button onClick={handleOpenModal}>Login</button>
                   </li>
                 </>
               )}
@@ -60,6 +59,6 @@ export default function CollapseMenu({ openModal }) {
           </ul>
         </li>
       </ul>
-    </div >
+    </div>
   );
-}
+};

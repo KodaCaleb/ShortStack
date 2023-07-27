@@ -76,9 +76,8 @@ export default function LoginModal({ isOpen, closeModal }) {
               Password
             </label>
             <input
-              className={`flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2 ${
-                isIncorrectPassword ? "border-red-500 border-2" : ""
-              }`}
+              className={`flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2 ${isIncorrectPassword ? "border-red-500 border-2" : ""
+                }`}
               type="password"
               value={password}
               onChange={(e) => {
@@ -90,6 +89,7 @@ export default function LoginModal({ isOpen, closeModal }) {
               <img
                 className=" bottom-4 z-0 relative w-64 h-24"
                 src={Syrup}
+                alt="syrup drip"
               ></img>
             </div>
             <div className="flex flex-col items-center ">
@@ -101,17 +101,19 @@ export default function LoginModal({ isOpen, closeModal }) {
               />
             </div>
             <div className="flex mt-6 justify-center text-xs">
-              <a href="#" className="text-blue-499 hover:text-yellow-300">
+              <button
+                className="text-blue-499 hover:text-yellow-300"
+                type="button"
+              >
                 <ForgotPassword email={email} />
-              </a>
+              </button>
               <span className="mx-2 text-gray-300">/</span>
-              <a
-                href="#"
+              <button
                 className="text-blue-499 hover:text-yellow-300"
                 onClick={toggleSignUpMode}
               >
                 {modalMode ? "Back to Login" : "Sign Up"}
-              </a>
+              </button>
             </div>
             <button
               className=" absolute top-2 right-2 px-2 py-2"

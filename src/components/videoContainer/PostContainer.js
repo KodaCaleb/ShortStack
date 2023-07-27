@@ -11,6 +11,9 @@ import { doc, getDoc, runTransaction,
         setDoc, deleteDoc,
       } from "firebase/firestore";
 import { useMediaQuery } from 'react-responsive';
+import ProfileLink from "./ProfileLink";
+
+
 
 
 async function getUserData(userId) {
@@ -193,7 +196,7 @@ export default function PostContainer({ videoData }) {
       }
     }
   };
-
+console.log(videoData.userId)
   return (
     <div className="flex justify-center flex-row snap start">
       <div className=" h-full rounded-3xl p-5 w-full md:w-3/4 bg-black bg-opacity-40">

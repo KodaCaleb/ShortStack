@@ -1,8 +1,7 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import LoginLogout from "../../utils/LoginLogout";
 import SignUpModal from "./SignUp";
 import Syrup from "../../assets/syrup.gif";
-import AuthContext from "../../utils/AuthContext";
 import ForgotPassword from "../../utils/ForgotPassword";
 
 export default function LoginModal({ isOpen, closeModal }) {

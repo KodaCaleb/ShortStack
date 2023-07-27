@@ -69,19 +69,18 @@ export default function EditAccount() {
             devRole: updatedDevRole,
           };
           await setDoc(userDocRef, updatedFirestoreData, { merge: true });
-        }
+        };
 
         // After updating Firestore data, update the photoURL in Firebase Auth
         await updateProfile(currentUser, { displayName: updatedUsername });
-      }
+      };
 
       // Showing user if successful update
       setIsUpdateSuccess(true);
       setTimeout(() => setIsUpdateSuccess(false), 2000);
     } catch (error) {
       alert(error);
-    }
-
+    };
   };
 
   const handleFileChange = (e) => {

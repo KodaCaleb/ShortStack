@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
 
 export default function EditAccount() {
+  // Setting global state variables
   const { userData, isLoggedIn, currentUser } = useContext(AuthContext);
 
   //For redirecting user when they exit out
   const navigate = useNavigate();
 
-  //   storing the updated input values
-  const [isEmailUpdated, setIsEmailUpdated] = useState(false);
+  //Storing the updated input values
   const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
   const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
@@ -55,27 +55,30 @@ export default function EditAccount() {
           setUpdatedPhotoURL(photoURL);
         };
 
-        //objects with update user data
-        const updatedAuthData = { displayName: updatedUsername };
         const updatedFirestoreData = {
           firstName: updatedFirstName,
           lastName: updatedLastName,
           devRole: updatedDevRole,
           photoURL: updatedPhotoURL,
         };
+        await setDoc(userDocRef, updatedFirestoreData, { merge: true });
 
+        // After updating Firestore data, update the photoURL in Firebase Auth
+        const updatedAuthData = {
+          displayName: updatedUsername,
+          photoURL: updatedPhotoURL,
+        };
         await updateProfile(currentUser, updatedAuthData);
-        await setDoc(userDocRef, updatedFirestoreData, { merge: true })
-          .then(() => {
-            //Showing user if successful update
-            setIsUpdateSuccess(true);
-            setTimeout(() => setIsUpdateSuccess(false), 2000);
-          })
+        console.log(currentUser)
       }
+
+      // Showing user if successful update
+      setIsUpdateSuccess(true);
+      setTimeout(() => setIsUpdateSuccess(false), 2000);
     } catch (error) {
       alert(error);
     }
-    navigate("/profile")
+
   };
 
   const handleFileChange = (e) => {
@@ -104,9 +107,9 @@ export default function EditAccount() {
 
             <div className="flex justify-around items-center">
               {/* Password Reset */}
-              <button className="text-blue-499 hover:text-yellow-300">
+              <div className="text-blue-499 hover:text-yellow-300">
                 <ForgotPassword />
-              </button>
+              </div>
 
               <div className="flex flex-col justify-center">
                 <div className="rounded-full px-4 max-w-[145px] max-h-[145px] border border-white bg-yellow-400">

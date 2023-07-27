@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // new loading state
   const [userData, setUserData] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     // Authenticate the users login status
@@ -17,6 +18,8 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         // Conditional rules for a user that is logged in
         setIsLoggedIn(true);
+        // Store the current user data in the state
+        setCurrentUser(auth.currentUser);
 
         // List global props for authentication DB
         const {
@@ -45,8 +48,8 @@ export const AuthProvider = ({ children }) => {
             const userData = docSnap.data();
 
             // List global props for firestore DB
-            const { firstName, lastName, devRole } = userData;
-            setUserData({ firstName, lastName, devRole });
+            const { firstName, lastName, devRole, photoURL } = userData;
+            setUserData({ firstName, lastName, devRole, photoURL });
             console.log("Document data:", docSnap.data());
           } else {
             console.log("No data exists");
@@ -62,6 +65,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
         setUser(null);
         setUserData(null);
+        setCurrentUser(null);
 
         // Set loading to false only after all async tasks have completed.
         setLoading(false);
@@ -81,6 +85,8 @@ export const AuthProvider = ({ children }) => {
         setUser,
         userData,
         setUserData,
+        currentUser,
+        setCurrentUser,
       }}
     >
       {children}

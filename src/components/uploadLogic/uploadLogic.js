@@ -42,7 +42,7 @@ export default function VideoUpload() {
           try {
             await addDoc(collection(firestore, "videos"), videoData);
           } catch (error) {
-            console.log("Error adding document", error);
+            console.error("Error adding document", error);
           }
           setUploading(false);
         });
@@ -65,11 +65,11 @@ export default function VideoUpload() {
         placeholder="Title"
         required
       />
-      <button 
-        type="button" 
+      <button
+        type="button"
         disabled={uploading}>
         Upload
       </button>
     </form>
   );
-}
+};

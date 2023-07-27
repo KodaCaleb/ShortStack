@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getAuth, deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-export function useDeleteAccount() {
+export function UserDeleteAccount() {
   const navigate = useNavigate();
 
   const handleDeleteAccount = async () => {

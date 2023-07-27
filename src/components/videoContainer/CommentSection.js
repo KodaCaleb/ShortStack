@@ -1,19 +1,21 @@
-import { React, useState } from "react";
+import { React } from "react";
 
-
-export default function CommentSection( { handleClose} ) {
+export default function CommentSection({ handleClose }) {
   const handleCloseCommentSection = () => {
     handleClose();
   };
-  
+
   return (
     <>
       <div className="w-80 border text-white rounded-lg border-gray-400 m-4">
         <div className="px-4 rounded-t bg-amber-300 flex flex-row items-center justify-between">
           <label className="text-slate-700 m-0 inline-block">Comments</label>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleCloseCommentSection}
-          className="text-black text-3xl float-right" aria-hidden="true">
+            className="text-black text-3xl float-right"
+            aria-hidden="true"
+          >
             &times;
           </button>
         </div>
@@ -21,42 +23,64 @@ export default function CommentSection( { handleClose} ) {
           <ul className="commentList p-0 list-none overflow-auto max-h-80 h-full">
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/50/50" />
+                <img
+                  className="w-full rounded-full"
+                  src="http://placekitten.com/50/50"
+                />
               </div>
               <div className="table-cell">
                 <p className="m-0">Hello this is a test comment.</p>{" "}
-                <span className="date italic text-xs text-slate-400">on March 5th, 2014</span>
+                <span className="date italic text-xs text-slate-400">
+                  on March 5th, 2014
+                </span>
               </div>
             </li>
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/45/45" />
+                <img
+                  className="w-full rounded-full"
+                  src="http://placekitten.com/45/45"
+                />
               </div>
               <div className="table-cell">
                 <p className="m-0">
-                  Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
+                  Hello this is a test comment and this comment is particularly
+                  very long and it goes on and on and on.
                 </p>{" "}
-                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
+                <span className="date text-xs text-slate-400">
+                  on March 5th, 2014
+                </span>
               </div>
             </li>
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/40/40" />
+                <img
+                  className="w-full rounded-full"
+                  src="http://placekitten.com/40/40"
+                />
               </div>
               <div className="table-cell">
                 <p className="m-0">Hello this is a test comment.</p>{" "}
-                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
+                <span className="date text-xs text-slate-400">
+                  on March 5th, 2014
+                </span>
               </div>
             </li>
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
-                <img className="w-full rounded-full" src="http://placekitten.com/45/45" />
+                <img
+                  className="w-full rounded-full"
+                  src="http://placekitten.com/45/45"
+                />
               </div>
               <div className=" table-cell">
                 <p className="m-0">
-                  Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
+                  Hello this is a test comment and this comment is particularly
+                  very long and it goes on and on and on.
                 </p>{" "}
-                <span className="date text-xs text-slate-400">on March 5th, 2014</span>
+                <span className="date text-xs text-slate-400">
+                  on March 5th, 2014
+                </span>
               </div>
             </li>
           </ul>
@@ -68,11 +92,11 @@ export default function CommentSection( { handleClose} ) {
                 type="text"
                 placeholder="Add a comment..."
               />
-              <button className="p-2 ml-2 bg-amber-300 rounded-sm text-slate-700 transition duration-300">Add</button>
-             
+              <button className="p-2 ml-2 bg-amber-300 rounded-sm text-slate-700 transition duration-300">
+                Add
+              </button>
             </div>
           </form>
-
         </div>
       </div>
     </>

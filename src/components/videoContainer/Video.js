@@ -3,7 +3,12 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 import { MoonLoader } from "react-spinners";
 
-export default function Video({ videoData, fullSize, deleteVideo, showDeleteButton }) {
+export default function Video({
+  videoData,
+  fullSize,
+  deleteVideo,
+  showDeleteButton,
+}) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0); // State for tracking video progress
   const [volume, setVolume] = useState(1);
@@ -12,8 +17,12 @@ export default function Video({ videoData, fullSize, deleteVideo, showDeleteButt
   const videoRef = useRef(null);
   const progressRef = useRef(null); // Ref for the progress bar
 
-  const videoClass = fullSize ? "object-fill rounded w-full h-full" : "object-fill rounded w-auto h-auto";
-  const containerClass = fullSize ? "w-full h-full videoContainer" : "w-1/4 mb-4 h-full mt-4 videoContainer";
+  const videoClass = fullSize
+    ? "object-fill rounded w-full h-full"
+    : "object-fill rounded w-auto h-auto";
+  const containerClass = fullSize
+    ? "w-full h-full videoContainer"
+    : "w-1/4 mb-4 h-full mt-4 videoContainer";
 
   useEffect(() => {
     const filepath = videoData.vidRef.replace(
@@ -103,7 +112,14 @@ export default function Video({ videoData, fullSize, deleteVideo, showDeleteButt
           className="w-24 h-2 video-progress cursor-pointer absolute bottom-4 right-0 opacity-0 transition-opacity duration-200"
         />
       </div>
-      {showDeleteButton && <button className="bg-yellow-500 rounded-md border border-black px-2 py-1" onClick={onDeleteClick}>Delete Video</button>}
+      {showDeleteButton && (
+        <button
+          className="bg-yellow-500 rounded-md border border-black px-2 py-1"
+          onClick={onDeleteClick}
+        >
+          Delete Video
+        </button>
+      )}
     </div>
   );
 }

@@ -1,36 +1,48 @@
+// Importing necessary dependencies and assets
 import unclickedLogo from "../../assets/unclickedStack.svg";
 import clickedLogo from "../../assets/clickedStack.svg";
 import AuthContext from "../../utils/AuthContext";
 import HomeLink from "../../utils/HomeLink";
 import { HandleLogout } from "../../utils/LoginLogout";
-import NavBar from "../header/NavBar";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Declaring the functional component 'CollapseMenu'
 export default function CollapseMenu({ openModal }) {
+  // Accessing isLoggedIn state from the AuthContext using useContext hook
   const { isLoggedIn } = useContext(AuthContext);
+
+  // Setting up a local state to keep track of the menu open/closed state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Initializing the navigate function from the 'react-router-dom' library
   const navigate = useNavigate();
 
+  // Function to toggle the menu open/closed state
   const toggleMenu = (isMenuOpen) => {
     setIsMenuOpen(isMenuOpen);
   };
 
+  // Function to handle opening the modal
   const handleOpenModal = () => {
     openModal();
   }
 
   return (
     <div>
+      {/* Main menu */}
       <ul className="main p-0 relative list-none inline-block">
+        {/* Menu item with logo */}
         <li className="relative inline-block  mr-2 cursor-pointer z-5 w-20"
           onMouseEnter={() => toggleMenu(true)}
           onMouseLeave={() => toggleMenu(false)}
         >
-          <img className="h-14 w-11/12 cursor-pointer "
+          {/* Logo image that changes based on the 'isMenuOpen' state */}
+          <img className="h-14 w-11/12 cursor-pointer"
             src={isMenuOpen ? clickedLogo : unclickedLogo}
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />
+          {/* Dropdown menu */}
           <ul className="drop top-12 list-none absolute left-0 z-20">
             <div className="relative p-2 ">
               <HomeLink />
@@ -46,13 +58,13 @@ export default function CollapseMenu({ openModal }) {
                     <a href="/account">Account</a>
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                    <a onClick={() => HandleLogout(navigate)} >Logout</a>
+                    <button onClick={() => HandleLogout(navigate)} >Logout</button>
                   </li>
                 </>
               ) : (
                 <>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
-                    <a onClick={handleOpenModal}>Login</a>
+                    <button onClick={handleOpenModal}>Login</button>
                   </li>
                 </>
               )}
@@ -60,6 +72,6 @@ export default function CollapseMenu({ openModal }) {
           </ul>
         </li>
       </ul>
-    </div >
+    </div>
   );
-}
+};

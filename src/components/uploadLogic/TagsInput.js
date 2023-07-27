@@ -41,7 +41,6 @@ function TagsInput({ value = [], onChange }) {
       {/* Input field for adding new tags */}
       <div className="flex flex-row items-center space-x-2 w-full">
         <input
-
           placeholder="react, javascript, css"
           className="bg-black border text-white flex-grow rounded-md m-4 px-3 py-2"
           value={tag}

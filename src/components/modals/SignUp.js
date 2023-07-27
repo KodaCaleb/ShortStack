@@ -92,8 +92,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL,
         };
         addUserToFirestore(uid, userInfo);
-        console.log(userInfo);
-        console.log("this is what i am looking for")
+     ;
+    
         
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {

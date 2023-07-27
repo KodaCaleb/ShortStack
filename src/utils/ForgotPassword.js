@@ -29,7 +29,7 @@ const ForgotPassword = ({ email }) => {
 
   return (
     <div>
-      <button onClick={(e)=>{handleResetPassword(e)}}>Forgot Password</button>
+      <div type="butoon" onClick={(e)=>{handleResetPassword(e)}}>Forgot Password</div>
       {/* {message && window.alert(message)} */}
     </div>
   );

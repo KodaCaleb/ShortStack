@@ -14,10 +14,10 @@ export default function UserProfileHeading() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isBlurBackground, setBlurBackground] = useState(false);
 
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading, userData } = useContext(AuthContext);
 
   const uid = user ? user.uid : null;
-
+  
   useEffect(() => {
     if (user && uid && !loading) {
       const getUserData = async () => {
@@ -47,7 +47,7 @@ export default function UserProfileHeading() {
       getUserData();
       setUsername(user.displayName || "");
       setPhoto(
-        user.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png"
+        userData.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png"
       );
       setLoadingUser(false);
     }

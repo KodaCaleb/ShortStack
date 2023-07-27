@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { firestore } from "../firebase";
 import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
-import AccountModal from "./Account";
 import Video from "../components/videoContainer/Video";
 import { RiUserFollowLine } from 'react-icons/ri'
 

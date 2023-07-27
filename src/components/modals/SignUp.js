@@ -14,7 +14,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Firestore DB
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [devRole, setDevRole] = useState("Enter your role as a developer here!");
+  const [devRole, setDevRole] = useState("");
 
   // Authenticator DB
   const [displayName, setDisplayName] = useState("");

@@ -45,7 +45,7 @@ export default function EditAccount() {
 
         if (updatedFile) {
           // Upload the file to Firebase Storage
-          const storageRef = ref(storage, `profile-photos/${currentUser.uid}/${updatedFile.name}`);
+          const storageRef = ref(storage, `profilePictures/${currentUser.uid}/${updatedFile.name}`);
           await uploadBytes(storageRef, updatedFile);
 
           // Get the download URL of the uploaded photo

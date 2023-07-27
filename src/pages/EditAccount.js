@@ -27,6 +27,8 @@ export default function EditAccount() {
   const [selectedFileName, setSelectedFileName] = useState("");
   const fileInputRef = useRef(null);
   const MAX_STRING_LENGTH_DEV = 50;
+  const MAX_STRING_LENGTH_USERNAME = 25;
+
 
   useEffect(() => {
     setUpdatedFirstName(userData?.firstName || "");
@@ -37,6 +39,14 @@ export default function EditAccount() {
     setUpdatedUsername(currentUser?.displayName || "");
   }, [userData, currentUser]);
 
+  const handleUsernameChange = (e) => {
+    const inputValue = e.target.value;
+    // Truncate the input value if it exceeds the character limit
+    const truncatedUsernameValue = inputValue.slice(0, MAX_STRING_LENGTH_USERNAME);
+    setUpdatedUsername(truncatedUsernameValue);
+  };
+  
+  
   const handleDevRoleChange = (e) => {
     const inputValue = e.target.value;
     // Truncate the input value if it exceeds the character limit
@@ -196,7 +206,7 @@ export default function EditAccount() {
                     type="text"
                     placeholder="Username"
                     value={updatedUsername}
-                    onChange={(e) => setUpdatedUsername(e.target.value)}
+                    onChange={handleUsernameChange}
                   />
                 </div>
 

@@ -115,9 +115,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-
       const warning = { errorCode, errorMessage };
-      alert(warning);
+      console.error(warning);
     } finally {
       setIsLoading(false);
     }
@@ -133,7 +132,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       // Add the user data to Firestore using the uid as the document ID
       await setDoc(userDocRef, userInfo);
     } catch (error) {
-      alert("Error adding user data to Firestore:", error);
+      console.error(error);
     }
 
     // Close modal after successful account creation

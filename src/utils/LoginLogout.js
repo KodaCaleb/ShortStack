@@ -1,4 +1,4 @@
-import { signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useContext } from "react";
 import AuthContext from "../utils/AuthContext";

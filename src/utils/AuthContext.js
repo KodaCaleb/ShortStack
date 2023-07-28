@@ -1,15 +1,26 @@
 import { createContext, useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 import { firestore, auth, storage } from "../firebase";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // new loading state
   const [userData, setUserData] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+
+  // Function to handle user logout
+  const logout = async () => {
+    try {
+      // Firebase method to sign the user out
+      await signOut(auth);
+      setIsLoggedIn(false); // Update the isLoggedIn state to false
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
 
   useEffect(() => {
     // Authenticate the users login status
@@ -42,8 +53,6 @@ export const AuthProvider = ({ children }) => {
         // Set loading to false only after all async tasks have completed.
         setLoading(false);
       } else {
-        // Conditional rules for a User that is logged out
-        setIsLoggedIn(false);
         setUser(null);
         setUserData(null);
         setCurrentUser(null);
@@ -81,19 +90,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider
-      value={{
-        loading,
-        isLoggedIn,
-        setIsLoggedIn,
-        user,
-        setUser,
-        userData,
-        setUserData,
-        currentUser,
-        setCurrentUser,
-      }}
-    >
+    <AuthContext.Provider value={context}>
       {children}
     </AuthContext.Provider>
   );

@@ -7,14 +7,15 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
-import { doc, getDoc, runTransaction, 
-        setDoc, deleteDoc,
-      } from "firebase/firestore";
-import { useMediaQuery } from 'react-responsive';
-import ProfileLink from "./ProfileLink";
-
-
-
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { useMediaQuery } from "react-responsive";
+import pancakeholder from "../../assets/pancakeholder.svg";
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -29,36 +30,34 @@ async function getUserData(userId) {
 }
 
 export default function PostContainer({ videoData }) {
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 640px)' })
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
-  const [photoURL, setPhotoURL] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png")
+  const [photoURL, setPhotoURL] = useState(pancakeholder)
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
   const uid = user ? user.uid : null; // Get the uid from the user object
 
   useEffect(() => {
     if (videoData.userId) {
-      getUserData(videoData.userId)
-      .then(setUserData);
+      getUserData(videoData.userId).then(setUserData);
     }
   }, [videoData]);
-  
+
   useEffect(() => {
-    if(userData && userData.photoURL) {
-      console.log(userData)
+    if (userData && userData.photoURL) {
       const photoStorageRef = ref(storage, userData.photoURL);
       getDownloadURL(photoStorageRef)
-      .then((url) =>{
-        setPhotoURL(url)
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    };
+        .then((url) => {
+          setPhotoURL(url);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
   }, [userData]);
-  
+
   useEffect(() => {
     const checkIfLiked = async () => {
       if (videoData.id && uid && !loading) {
@@ -78,15 +77,16 @@ export default function PostContainer({ videoData }) {
     checkIfLiked();
   }, [videoData, uid, loading]);
   async function likeVideo(videoId, userId) {
-    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+    if (videoId && userId && !loading) {
+      // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
-    
+
       if ((await getDoc(likeRef)).exists()) {
         console.log("User has already liked this video.");
         return;
       }
-    
+
       await setDoc(likeRef, {});
 
       // Add video reference to the user's liked videos subcollection
@@ -99,17 +99,18 @@ export default function PostContainer({ videoData }) {
         if (!videoDoc.exists()) {
           throw "Document does not exist!";
         }
-    
+
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
       });
-      
+
       setUserHasLiked(true); // set userHasLiked to true after a successful like action
     }
   }
 
   async function unlikeVideo(videoId, userId) {
-    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+    if (videoId && userId && !loading) {
+      // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
 
@@ -135,7 +136,6 @@ export default function PostContainer({ videoData }) {
   }
 
   const [showCommentSection, setShowCommentSection] = useState(false);
-
 
   const handleCloseCommentSection = () => {
     setShowCommentSection(false);
@@ -170,7 +170,7 @@ export default function PostContainer({ videoData }) {
         await setDoc(followersRef, {});
         setIsFollowing(true); // Update the state to indicate that the user is now being followed.
       } catch (error) {
-        console.error("Error following the user:", error);
+        console.error(error);
       }
     }
   };
@@ -199,63 +199,64 @@ export default function PostContainer({ videoData }) {
   };
 console.log(videoData.userId)
   return (
-    <div className="flex justify-center flex-row snap start">
-      <div className=" h-full rounded-3xl p-5 w-full md:w-3/4 bg-black bg-opacity-40">
-        {userData && (
-          <div className="username flex-row flex p-5 text-amber-200 text-xl">
-            {/* <Link to={`/profile/${userData}`}> */}
-            <img
-              className=" rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 xl:h-32 xl:w-32 bg-yellow-500"
-              src={photoURL}
-              alt={`Profile of User ${userData}`}
-            />
-            {/* </Link> */}
-            <div className="pl-4">
-              <p>
-                <span className="text-3xl">{userData.firstName}</span> |{" "}
-                <span className="font-light">{userData.bio}</span>
-              </p>
-              <p className="pt-2 text-sm md:text-2xl">{videoData.title}</p>
+    <>
+      <div className="flex justify-center flex-row">
+      <div className="fixed h-full rounded-3xl w-full md:w-3/4 bg-black bg-opacity-40 pointer-events-none"></div>
+        <div className="z-10 h-full rounded-3xl mb-64 w-full md:w-3/4">
+          {userData && (
+            <div className="username flex flex-row p-2 text-amber-200 text-xl">
+              {/* <Link to={`/profile/${userData}`}> */}
+              <img
+                className=" flex self-center rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-14 lg:w-14 xl:h-12 xl:w-12 bg-yellow-500"
+                src={photoURL}
+                alt={`Profile of User ${userData}`}
+              />
+              {/* </Link> */}
+              <div className="pl-4">
+                <p>
+                  <span className="text-2xl">{userData.firstName}</span> |{" "}
+                  <span className="font-light text-lg">{userData.devRole}</span>
+                </p>
+                <span className="pt-2 text-sm md:text-lg">{videoData.title}</span> |{" "}
+                <span className="pt-2 text-sm md:text-md">{videoData.tags ? '#' : ''}{videoData.tags}</span>
+              </div>
             </div>
-          </div>
-        )}
-        <hr className="mt-2 mb-2" />
-        <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
+          )}
+          <hr className="mt-2 mb-2" />
+          <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
+            <div className="flex flex-col">
+              {userHasLiked ? (
+                <AiFillHeart
+                  className="m-4 hover:cursor-pointer"
+                  style={{ color: "tan" }}
+                  size={28}
+                  onClick={() => {
+                    console.log("videoData.id:", videoData.id); // debugging logs
+                    console.log("uid:", uid);
 
-          <div className="flex flex-col">
+                    unlikeVideo(videoData.id, uid); // Call the unlikeVideo function
+                  }}
+                />
+              ) : (
+                <AiOutlineHeart
+                  className="m-4 hover:cursor-pointer"
+                  style={{ color: "tan" }}
+                  size={28}
+                  onClick={() => {
+                    console.log("videoData.id:", videoData.id); // debugging logs
+                    console.log("uid:", uid);
 
-            {userHasLiked ? (
-              <AiFillHeart
-                className="m-4 hover:cursor-pointer"
-                style={{ color: "tan" }}
-                size={28}
-                onClick={() => {
-                  console.log('videoData.id:', videoData.id); // debugging logs
-                  console.log('uid:', uid);
-
-                  unlikeVideo(videoData.id, uid); // Call the unlikeVideo function
-                }}
-              />
-            ) : (
-              <AiOutlineHeart
-                className="m-4 hover:cursor-pointer"
-                style={{ color: "tan" }}
-                size={28}
-                onClick={() => {
-                  console.log('videoData.id:', videoData.id); // debugging logs
-                  console.log('uid:', uid);
-
-                  likeVideo(videoData.id, uid);
-                }}
-              />
-            )}
-            {/* <BiCommentDetail
+                    likeVideo(videoData.id, uid);
+                  }}
+                />
+              )}
+              {/* <BiCommentDetail
               className="m-4 hover:cursor-pointer"
               style={{ color: "tan" }}
               size={28}
               onClick={handleCommentBtnClick}
             /> */}
-            {/* <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
+              {/* <BiBookmarks className="m-4" style={{ color: "tan" }} size={28} />
             <BiShare className="m-4" style={{ color: "tan" }} size={28} />
 
             {isFollowing ? (
@@ -268,7 +269,7 @@ console.log(videoData.userId)
                   console.log("User clicked the RiUserFollowLine icon");
                 }}
               /> */}
-            {/* ) : (
+              {/* ) : (
               <RiUserUnfollowFill
                 className="m-4 hover:cursor-pointer"
                 style={{ color: "tan" }}
@@ -279,18 +280,19 @@ console.log(videoData.userId)
                 }}
               />
             )} */}
+            </div>
+            <Video fullSize={isSmallScreen} videoData={videoData} />
+            {showCommentSection && (
+              <>
+                <CommentSection handleClose={handleCloseCommentSection} />
+                {/* fetch comments related to the video post and map them to display in this section. */}
+                {/* Add code here to display the list of comments */}
+                {/* Add code here to display the form to submit a comment */}
+              </>
+            )}
           </div>
-          <Video fullSize={isSmallScreen} videoData={videoData} />
-          {showCommentSection && (
-          <>
-            <CommentSection handleClose={handleCloseCommentSection} />
-            {/* fetch comments related to the video post and map them to display in this section. */}
-            {/* Add code here to display the list of comments */}
-            {/* Add code here to display the form to submit a comment */}
-            </>
-          )}
         </div>
       </div>
-    </div>
+    </>
   );
 }

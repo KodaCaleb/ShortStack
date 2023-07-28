@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useContext, serverTimestamp } from "react"; // import the useContext method
+import React, { useState, useRef, useEffect, useContext } from "react"; // import the useContext method
 import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
 import TagsInput from "../components/uploadLogic/TagsInput";
 

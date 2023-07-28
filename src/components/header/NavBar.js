@@ -1,6 +1,6 @@
 // Importing necessary dependencies and components
 import { useState, useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import LoginLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";

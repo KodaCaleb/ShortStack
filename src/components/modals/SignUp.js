@@ -23,7 +23,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [photoData, setPhotoData] = useState(process.env.PUBLIC_URL + "/pancakeholder.img.png");
+  const [photoData, setPhotoData] = useState(null);
   const [message, setMessage] = useState("");
 
   // Function to trigger the file input click event
@@ -97,7 +97,8 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL,
         };
         addUserToFirestore(uid, userInfo);
-
+     ;
+        
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
           displayName: displayName,
@@ -105,13 +106,21 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL: photoURL,
         });
       } else {
-        // Update the user's displayName, phoneNumber
-        await updateProfile(user, {
-          displayName: displayName,
-          phoneNumber: phoneNumber,
-        });
-      };
+        // If no photo is uploaded, only update the user's displayName and phoneNumber
+      await updateProfile(user, {
+        displayName: displayName,
+        phoneNumber: phoneNumber,
+      });
 
+      // Add additional user information to Firestore DB without photoURL
+      const userInfo = {
+        firstName,
+        lastName,
+        devRole,
+      };
+      addUserToFirestore(uid, userInfo);
+    }
+      
       //sends email verification
       await sendEmailVerification(user);
 

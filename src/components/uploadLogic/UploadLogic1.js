@@ -1,5 +1,5 @@
 // Import React and useState hook from 'react' package
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Import specific functions and objects from Firebase packages
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
@@ -11,6 +11,7 @@ export default function VideoUpload() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   // Function to handle file selection change
   const handleFileChange = (e) => {
@@ -24,7 +25,7 @@ export default function VideoUpload() {
 
     // Create a reference in Firebase Storage for the selected file
     const storageRef = ref(storage, file.name);
-    
+
     // Start the upload task
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -35,7 +36,7 @@ export default function VideoUpload() {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-      // Use this part to show progress bar (not implemented in the provided code)
+        // Use this part to show progress bar (not implemented in the provided code)
       },
       (error) => {
         console.log("error uploading file", error);
@@ -54,16 +55,31 @@ export default function VideoUpload() {
           try {
             // Add the videoData object to the "videos" collection in Firestore
             await addDoc(collection(firestore, "videos"), videoData);
+            setUploadSuccess(true);
+            setTitle("");
+            setFile(null);
           } catch (error) {
             console.error("Error adding document", error);
+          } finally {
+            // Set uploading state back to false as the upload is complete
+            setUploading(false);
           }
-
-          // Set uploading state back to false as the upload is complete
-          setUploading(false);
         });
       }
     );
   };
+
+  useEffect(() => {
+    if (uploadSuccess) {
+      const timeoutId = setTimeout(() => {
+        setUploadSuccess(false);
+      }, 2000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [uploadSuccess]);
 
   // Rendering the VideoUpload component
   return (
@@ -84,11 +100,14 @@ export default function VideoUpload() {
         required
       />
       {/* Button to trigger the video upload */}
-      <button
-        type="button"
-        disabled={uploading}>
+      <button type="submit" disabled={uploading}>
         Upload
       </button>
+      {uploadSuccess && (
+        <div className="flex items-center justify-center mt-4 text-green-500">
+          Video uploaded successfully!
+        </div>
+      )}
     </form>
   );
-};
+}

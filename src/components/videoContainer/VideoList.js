@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PostContainer from "./PostContainer";
 import { firestore } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
-import SearchContext from "../../utils/SearchContext";
+import SearchContext from "../../utils/searchLogic/SearchContext";
 
 export default function VideoList() {
   const [videos, setVideos] = useState([]);

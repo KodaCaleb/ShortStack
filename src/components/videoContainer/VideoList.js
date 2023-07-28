@@ -1,30 +1,56 @@
 import React, { useContext, useEffect, useState } from "react";
 import PostContainer from "./PostContainer";
 import { firestore } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  getDocs,
+} from "firebase/firestore";
 import SearchContext from "../../utils/searchLogic/SearchContext";
 
 export default function VideoList() {
   const [videos, setVideos] = useState([]);
+  const [lastDoc, setLastDoc] = useState(null);
+
+  const fetchVideos = async (afterDoc) => {
+    try {
+      let videosQuery = query(
+        collection(firestore, "videos"),
+        orderBy("createdAt"),
+        limit(10)
+      );
+      if (afterDoc) {
+        videosQuery = query(
+          collection(firestore, "videos"),
+          orderBy("createdAt"),
+          startAfter(afterDoc),
+          limit(10)
+        );
+      }
+      const videosSnapshot = await getDocs(videosQuery);
+      let videosData = videosSnapshot.docs.map((doc, index) => {
+        const id = doc.id ? doc.id : index;
+        console.log("Document ID:", id); // Log the document ID
+        return {
+          id,
+          ...doc.data(),
+        };
+      });
+
+      console.log(videosData);
+
+      setLastDoc(videosSnapshot.docs[videosSnapshot.docs.length - 1]);
+
+      setVideos(videosData);
+    } catch (error) {
+      console.error("Error fetching videos", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const videosCollection = collection(firestore, "videos");
-        const videosSnapshot = await getDocs(videosCollection);
-        let videosData = videosSnapshot.docs.map((doc, index) => ({
-          id: doc.id ? doc.id : index,
-          ...doc.data(),
-        }));
-
-        videosData = videosData.sort(() => Math.random() - 0.5);
-
-        setVideos(videosData);
-      } catch (error) {
-        console.error("Error fetching videos", error);
-      }
-    };
-
     fetchVideos();
   }, []);
 
@@ -40,6 +66,15 @@ export default function VideoList() {
             {videoList.map((video) => (
               <PostContainer key={video.id} videoData={video} />
             ))}
+            <button
+              className="bg-white w-full"
+              onClick={() => {
+                fetchVideos(lastDoc);
+                window.scrollTo(0, 0);
+              }}
+            >
+              Load More
+            </button>
           </div>
         </div>
       </div>

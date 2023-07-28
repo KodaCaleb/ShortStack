@@ -38,7 +38,6 @@ export const AuthProvider = ({ children }) => {
           emailVerified,
           phoneNumber,
         });
-        console.log(user);
 
         // Method to grab users data from firestore DB
         const docRef = doc(firestore, "Users", user.uid);
@@ -50,7 +49,6 @@ export const AuthProvider = ({ children }) => {
             // List global props for firestore DB
             const { firstName, lastName, devRole, photoURL } = userData;
             setUserData({ firstName, lastName, devRole, photoURL });
-            console.log("Document data:", docSnap.data());
           } else {
             console.log("No data exists");
           }

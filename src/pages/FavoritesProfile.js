@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { firestore } from "../firebase";
-import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
-import { RiUserFollowLine } from 'react-icons/ri'
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { RiUserFollowLine } from "react-icons/ri";
 import AuthContext from "../utils/AuthContext";
 import Video from "../components/videoContainer/Video";
 
 export default function FavoritesProfile(videoData) {
+  //State variables for user favorites page
   const [devRole, setDevRole] = useState("");
   const [userContentData, setUserContentData] = useState([]);
   const [username, setUsername] = useState("");
@@ -16,30 +17,39 @@ export default function FavoritesProfile(videoData) {
   const [isFollowing, setIsFollowing] = useState(true);
   const { loading, user } = useContext(AuthContext);
 
-
   const { userId } = useParams();
 
   useEffect(() => {
+    //Function to fetch user data from FireStore
     const getUserData = async (userId) => {
       try {
         const userDocRef = doc(firestore, "Users", userId);
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
+          // If the user data exists, extract and set the necessary state variables
           const userData = userDocSnapshot.data();
-          console.log("Over Here!", userData);
-          setDevRole(userData.devRole || "");
-          setUsername(userData.displayName || ""); // Assuming displayName is available in the user data
-          setPhoto(userData.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png");
 
+          setDevRole(userData.devRole || "");
+          setUsername(userData.displayName || "");
+
+          setPhoto(
+            userData.photoURL ||
+              process.env.PUBLIC_URL + "/pancakeholder.img.png"
+          );
+
+          //Fetch user content data from the "userContent" collection
           const userContentRef = collection(userDocRef, "userContent");
           const userContentSnapshot = await getDocs(userContentRef);
 
-          const userContentDataArray = userContentSnapshot.docs.map(
-            (doc) => ({ id: doc.id, ...doc.data() })
-          );
+          //Convert the user content documents to an array and store it in state
+          const userContentDataArray = userContentSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
           setUserContentData(userContentDataArray);
         }
       } catch (error) {
+        //Handle errors when fetching data
         alert("Error fetching data from firestore:", error);
       }
       setLoadingUser(false);
@@ -68,27 +78,26 @@ export default function FavoritesProfile(videoData) {
             <span>{devRole}</span>
           </div>
           <div className="justify-start">
-            <button
-              className="flex items-center justify-center h-8 px-12 w-50 bg-yellow-500 mt-2 rounded font-semibold text-sm text-black-100 hover:bg-yellow-300 hover:rounded-3xl hover:border-2 hover:border-amber-700"
-            >
+            <button className="flex items-center justify-center h-8 px-12 w-50 bg-yellow-500 mt-2 rounded font-semibold text-sm text-black-100 hover:bg-yellow-300 hover:rounded-3xl hover:border-2 hover:border-amber-700">
               <RiUserFollowLine className="mr-2" />
               Follow Me!
             </button>
           </div>
         </div>
       </div>
-    <div>
-      {loadingUser ? (
-        <div>Loading...</div>
-      ) : (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        {userContentData.map((content, index) => (
-          <div key={index} className="flex flex-row p-20 justify-center">
-            <Video videoData={content} fullSize={true} />
+      <div>
+        {loadingUser ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {userContentData.map((content, index) => (
+              <div key={index} className="flex flex-row p-20 justify-center">
+                <Video videoData={content} fullSize={true} />
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
-      )}
     </div>
-  </div>
-  )
+  );
 }

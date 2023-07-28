@@ -1,8 +1,8 @@
-import React, { useContext, useEffect,useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PostContainer from "./PostContainer";
 import { firestore } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
-import SearchContext from "../../utils/SearchContext";
+import SearchContext from "../../utils/searchLogic/SearchContext";
 
 export default function VideoList() {
   const [videos, setVideos] = useState([]);
@@ -13,15 +13,13 @@ export default function VideoList() {
         const videosCollection = collection(firestore, "videos");
         const videosSnapshot = await getDocs(videosCollection);
         let videosData = videosSnapshot.docs.map((doc, index) => ({
-          id: doc.id ? doc.id: index,
+          id: doc.id ? doc.id : index,
           ...doc.data(),
         }));
 
         videosData = videosData.sort(() => Math.random() - 0.5);
 
-
         setVideos(videosData);
-        console.log("LOOK HERE", videosData);
       } catch (error) {
         console.error("Error fetching videos", error);
       }
@@ -32,7 +30,7 @@ export default function VideoList() {
 
   const { matchingVideos } = useContext(SearchContext);
 
-  const videoList = matchingVideos.length > 0  ? matchingVideos : videos;
+  const videoList = matchingVideos.length > 0 ? matchingVideos : videos;
 
   return (
     <div className="h-full w-full flex p-4 justify-between items-center">
@@ -48,4 +46,3 @@ export default function VideoList() {
     </div>
   );
 }
-

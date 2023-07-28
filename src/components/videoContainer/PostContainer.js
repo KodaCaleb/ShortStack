@@ -7,10 +7,14 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
-import { doc, getDoc, runTransaction, 
-        setDoc, deleteDoc,
-      } from "firebase/firestore";
-import { useMediaQuery } from 'react-responsive';
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { useMediaQuery } from "react-responsive";
 import pancakeholder from "../../assets/pancakeholder.svg";
 
 async function getUserData(userId) {
@@ -26,7 +30,7 @@ async function getUserData(userId) {
 }
 
 export default function PostContainer({ videoData }) {
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 640px)' })
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
@@ -37,24 +41,23 @@ export default function PostContainer({ videoData }) {
 
   useEffect(() => {
     if (videoData.userId) {
-      getUserData(videoData.userId)
-      .then(setUserData);
+      getUserData(videoData.userId).then(setUserData);
     }
   }, [videoData]);
-  
+
   useEffect(() => {
-    if(userData && userData.photoURL) {
+    if (userData && userData.photoURL) {
       const photoStorageRef = ref(storage, userData.photoURL);
       getDownloadURL(photoStorageRef)
-      .then((url) =>{
-        setPhotoURL(url)
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    };
+        .then((url) => {
+          setPhotoURL(url);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
   }, [userData]);
-  
+
   useEffect(() => {
     const checkIfLiked = async () => {
       if (videoData.id && uid && !loading) {
@@ -74,15 +77,16 @@ export default function PostContainer({ videoData }) {
     checkIfLiked();
   }, [videoData, uid, loading]);
   async function likeVideo(videoId, userId) {
-    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+    if (videoId && userId && !loading) {
+      // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
-    
+
       if ((await getDoc(likeRef)).exists()) {
         console.log("User has already liked this video.");
         return;
       }
-    
+
       await setDoc(likeRef, {});
 
       // Add video reference to the user's liked videos subcollection
@@ -95,17 +99,18 @@ export default function PostContainer({ videoData }) {
         if (!videoDoc.exists()) {
           throw "Document does not exist!";
         }
-    
+
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
       });
-      
+
       setUserHasLiked(true); // set userHasLiked to true after a successful like action
     }
   }
 
   async function unlikeVideo(videoId, userId) {
-    if (videoId && userId && !loading) { // ensure neither is undefined or loading
+    if (videoId && userId && !loading) {
+      // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
 
@@ -131,7 +136,6 @@ export default function PostContainer({ videoData }) {
   }
 
   const [showCommentSection, setShowCommentSection] = useState(false);
-
 
   const handleCloseCommentSection = () => {
     setShowCommentSection(false);
@@ -166,7 +170,7 @@ export default function PostContainer({ videoData }) {
         await setDoc(followersRef, {});
         setIsFollowing(true); // Update the state to indicate that the user is now being followed.
       } catch (error) {
-        console.error("Error following the user:", error);
+        console.error(error);
       }
     }
   };
@@ -217,17 +221,15 @@ export default function PostContainer({ videoData }) {
         )}
         <hr className="mt-2 mb-2" />
         <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
-
           <div className="flex flex-col">
-
             {userHasLiked ? (
               <AiFillHeart
                 className="m-4 hover:cursor-pointer"
                 style={{ color: "tan" }}
                 size={28}
                 onClick={() => {
-                  console.log('videoData.id:', videoData.id); // debugging logs
-                  console.log('uid:', uid);
+                  console.log("videoData.id:", videoData.id); // debugging logs
+                  console.log("uid:", uid);
 
                   unlikeVideo(videoData.id, uid); // Call the unlikeVideo function
                 }}
@@ -238,8 +240,8 @@ export default function PostContainer({ videoData }) {
                 style={{ color: "tan" }}
                 size={28}
                 onClick={() => {
-                  console.log('videoData.id:', videoData.id); // debugging logs
-                  console.log('uid:', uid);
+                  console.log("videoData.id:", videoData.id); // debugging logs
+                  console.log("uid:", uid);
 
                   likeVideo(videoData.id, uid);
                 }}
@@ -278,11 +280,11 @@ export default function PostContainer({ videoData }) {
           </div>
           <Video fullSize={isSmallScreen} videoData={videoData} />
           {showCommentSection && (
-          <>
-            <CommentSection handleClose={handleCloseCommentSection} />
-            {/* fetch comments related to the video post and map them to display in this section. */}
-            {/* Add code here to display the list of comments */}
-            {/* Add code here to display the form to submit a comment */}
+            <>
+              <CommentSection handleClose={handleCloseCommentSection} />
+              {/* fetch comments related to the video post and map them to display in this section. */}
+              {/* Add code here to display the list of comments */}
+              {/* Add code here to display the form to submit a comment */}
             </>
           )}
         </div>

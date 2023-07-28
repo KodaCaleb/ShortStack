@@ -48,22 +48,22 @@ export default function CollapseMenu({ openModal }) {
               <HomeLink />
               {isLoggedIn ? (
                 <>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 color-yellow-600 hover:opacity-50">
                     <a href="/Upload">Upload</a>
                   </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
+                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/profile">Profile</a>
                   </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3">
+                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/account">Account</a>
                   </li>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
                     <button onClick={() => HandleLogout(navigate)} >Logout</button>
                   </li>
                 </>
               ) : (
                 <>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3">
+                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
                     <button onClick={handleOpenModal}>Login</button>
                   </li>
                 </>

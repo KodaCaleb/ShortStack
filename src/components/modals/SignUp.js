@@ -5,7 +5,6 @@ import { collection, setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { IoIosArrowBack } from "react-icons/io";
 import { MoonLoader } from "react-spinners";
-import pancakeholder from "../../assets/pancakeholder.svg";
 
 export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -21,7 +20,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [photoData, setPhotoData] = useState(pancakeholder);
+  const [photoData, setPhotoData] = useState(null);
   const [message, setMessage] = useState("");
 
   const handleButtonClick = () => {
@@ -93,7 +92,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         };
         addUserToFirestore(uid, userInfo);
      ;
-    
         
         // Update the user's displayName, phoneNumber, and photoURL
         await updateProfile(user, {
@@ -102,12 +100,20 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           photoURL: photoURL,
         });
       } else {
-        // Update the user's displayName, phoneNumber
-        await updateProfile(user, {
-          displayName: displayName,
-          phoneNumber: phoneNumber,
-        });
-      }
+        // If no photo is uploaded, only update the user's displayName and phoneNumber
+      await updateProfile(user, {
+        displayName: displayName,
+        phoneNumber: phoneNumber,
+      });
+
+      // Add additional user information to Firestore DB without photoURL
+      const userInfo = {
+        firstName,
+        lastName,
+        devRole,
+      };
+      addUserToFirestore(uid, userInfo);
+    }
       
       //sends email verification
       await sendEmailVerification(user);

@@ -35,8 +35,11 @@ export default function UserProfileHeading() {
           // If the user document exists, extract and set user data and content
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
-            setDevRole(userData.devRole || "");
-            
+            if (userData) {
+              setDevRole(userData.devRole || "");
+              setPhoto(userData.photoURL || pancakeholder);
+            }
+
             // Get the userContent collection associated with the user document
             const userContentRef = collection(userDocRef, "userContent");
             const userContentSnapshot = await getDocs(userContentRef);
@@ -45,8 +48,10 @@ export default function UserProfileHeading() {
             const userContentDataArray = userContentSnapshot.docs.map(
               (doc) => ({ id: doc.id, ...doc.data() })
             );
+
             setUserContentData(userContentDataArray);
           };
+
         } catch (error) {
           alert(error);
         };
@@ -55,7 +60,6 @@ export default function UserProfileHeading() {
       // Call the function to get user data and content
       getUserData();
       setUsername(user.displayName || "");
-      setPhoto(userData.photoURL || pancakeholder);
       setLoadingUser(false);
     };
   }, [user, uid, loading]);

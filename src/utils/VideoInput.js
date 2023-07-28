@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useContext } from "react"; // import the useContext method
+import React, { useState, useRef, useEffect, useContext, serverTimestamp } from "react"; // import the useContext method
 import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
 import TagsInput from "../components/uploadLogic/TagsInput";
 
@@ -18,12 +18,12 @@ export default function VideoInput(props) {
       console.log("UID in VideoInput:", uid); // Log the value of uid
     }
   }, [user, loading, uid]);
-  
+
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [uploading, setUploading] = useState(false);
-
+  const {setMessage} = useState(null);
 
   const inputRef = useRef();
 
@@ -38,20 +38,20 @@ export default function VideoInput(props) {
   const handleUpload = async (event) => {
     event.preventDefault();
     if (!file || uploading || uploading) {
-      console.log("missing data. User ID:", uid);
+      setMessage("missing data. User ID:", uid);
       return
     }
-  
+
     const storageRef = ref(storage, file.name);
     const uploadTask = uploadBytesResumable(storageRef, file);
-  
+
     setUploading(true);
-  
+
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (error) => {
-        console.log("error uploading file", error);
+        console.error("error uploading file", error);
         setUploading(false);
       },
       () => {
@@ -62,11 +62,12 @@ export default function VideoInput(props) {
             vidRef: downloadURL,
             userId: uid,
             likes: 0,
+            createdAt: serverTimestamp(), // Add the created at timestamp field
           };
-  
+
           // Generate a document reference ID beforehand
           const docRef = doc(collection(firestore, "videos"));
-  
+
           try {
             await setDoc(doc(firestore, "videos", docRef.id), videoData);
             await setDoc(doc(firestore, `Users/${uid}/userContent`, docRef.id), videoData);
@@ -85,10 +86,10 @@ export default function VideoInput(props) {
 
   return (
     <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-zinc-200 bg-opacity-20">
-      <h3 className=" bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6  text-center italic pb-8">720x1280 resolution or higher 
-      <br></br>Up to 5 minutes 
-      <br></br>Less than 2 GB
-      <br></br>Disclaimer: Files that do not adhere to these guidelines may be subject to removal without prior notice.</h3>
+      <h3 className=" bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6  text-center italic pb-8">720x1280 resolution or higher
+        <br></br>Up to 5 minutes
+        <br></br>Less than 2 GB
+        <br></br>Disclaimer: Files that do not adhere to these guidelines may be subject to removal without prior notice.</h3>
       <input
         ref={inputRef}
         className="hidden"
@@ -97,7 +98,7 @@ export default function VideoInput(props) {
         accept="video/*"
       />
       <input
-      className="bg-black text-white border rounded-md m-4 px-3 py-2"
+        className="bg-black text-white border rounded-md m-4 px-3 py-2"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -115,8 +116,8 @@ export default function VideoInput(props) {
       text-sm 
       text-black 
       hover:bg-yellow-400
-      " 
-      onClick={handleChoose}>Select File</button>}
+      "
+        onClick={handleChoose}>Select File</button>}
       {source && (
         <video
           className="block m-0 text-white rounded"

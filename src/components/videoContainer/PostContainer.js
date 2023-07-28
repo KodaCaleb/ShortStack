@@ -47,6 +47,7 @@ export default function PostContainer({ videoData }) {
   
   useEffect(() => {
     if(userData && userData.photoURL) {
+      console.log(userData)
       const photoStorageRef = ref(storage, userData.photoURL);
       getDownloadURL(photoStorageRef)
       .then((url) =>{

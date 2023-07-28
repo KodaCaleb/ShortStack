@@ -38,25 +38,6 @@ export const AuthProvider = ({ children }) => {
           emailVerified,
           phoneNumber,
         });
-        console.log(user);
-
-        // Method to grab users data from firestore DB
-        const docRef = doc(firestore, "Users", user.uid);
-        try {
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-
-            // List global props for firestore DB
-            const { firstName, lastName, devRole, photoURL } = userData;
-            setUserData({ firstName, lastName, devRole, photoURL });
-            console.log("Document data:", docSnap.data());
-          } else {
-            console.log("No data exists");
-          }
-        } catch (error) {
-          console.error("Error fetching document:", error);
-        }
 
         // Set loading to false only after all async tasks have completed.
         setLoading(false);
@@ -74,6 +55,30 @@ export const AuthProvider = ({ children }) => {
 
     return () => unsubscribe();
   }, []);
+
+  const getFirestoreUserData = async (videoData) => {
+
+    // useEffect(() => {
+    //   try {
+    //     if (videoData.userId) {
+    //       const userId = videoData.userId
+    //       const docRef = doc(firestore, "Users", userId)
+    //       const docSnap = getDoc(docRef)
+    //     }
+    //     // .then() => {
+
+          
+    //       if (docSnap.exists()) {
+    //         return docSnap.data();
+    //       }
+    //     // } else {
+    //       console.log("No such document!");
+    //       return null;
+    //     }
+    //   }, [userId])
+
+  }
+
 
   return (
     <AuthContext.Provider

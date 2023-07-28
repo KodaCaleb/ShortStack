@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { collection, query, getDocs, doc, where } from "firebase/firestore";
-import { firestore } from "../firebase";
+
+import { collection, query, getDocs, where } from "firebase/firestore";
+import { firestore } from "../../firebase";
 
 export default async function SearchVideosByTags(searchTag) {
   try {

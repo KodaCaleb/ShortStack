@@ -59,10 +59,10 @@ export default function VideoList() {
   const videoList = matchingVideos.length > 0 ? matchingVideos : videos;
 
   return (
-    <div className="h-full w-full flex p-4 justify-between items-center">
-      <div className="flex  w-full flex-row h-3/4">
-        <div className=" h-full rounded-2xl p-2 w-full">
-          <div className="app_videos snap-y snap-mandatory h-full w-full relative rounded-2xl overflow-scroll">
+    <div className="fixed h-full w-full flex justify-between items-center">
+      <div className="flex w-full flex-row h-3/4">
+        <div className=" h-screen rounded-2xl p-2 w-full">
+          <div className="app_videos h-full w-full relative rounded-2xl overflow-scroll">
             {videoList.map((video) => (
               <PostContainer key={video.id} videoData={video} />
             ))}

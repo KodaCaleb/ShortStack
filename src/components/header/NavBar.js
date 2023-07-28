@@ -1,5 +1,6 @@
 // Importing necessary dependencies and components
 import { useState, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import LoginLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
@@ -9,14 +10,18 @@ import SearchContext from "../../utils/searchLogic/SearchContext";
 
 // Functional component 'Navbar'
 function Navbar() {
-  // Accessing isLoggedIn state from the AuthContext using useContext hook
+  // State variables to help with componenent functionality
   const { isLoggedIn } = useContext(AuthContext);
-
-  // Setting up a local state to manage the login modal open/closed state
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Accessing setMatchingVideos function from the SearchContext using useContext hook
   const { setMatchingVideos } = useContext(SearchContext);
+
+  const location = useLocation();
+
+  // Define an array of paths where the search bar should be hidden
+  const hiddenSearchBarPaths = ["/profile", "/account", "/upload"];
+
+  // Function to check if the search bar should be visible based on the current location
+  const isSearchBarVisible = !hiddenSearchBarPaths.includes(location.pathname);
 
   // Function to open the login modal
   const openModal = () => {
@@ -91,6 +96,7 @@ function Navbar() {
 
         {/* Search bar */}
         <div className="flex items-center"></div>
+        {isSearchBarVisible && (
         <div className="container relative bottom-1 right-24">
           <input
             className="bg-yellow-600 "
@@ -105,6 +111,7 @@ function Navbar() {
             onClick={handleSearch}
           ></div>
         </div>
+        )}
 
         {/* Login button */}
         <div className="login-button absolute top-5 right-6 mr-1">

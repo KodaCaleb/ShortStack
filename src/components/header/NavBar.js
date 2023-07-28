@@ -4,8 +4,8 @@ import LoginLogout from "../../utils/LoginLogout";
 import LoginModal from "../modals/Login";
 import CollapseMenu from "./CollapseMenu";
 import AuthContext from "../../utils/AuthContext";
-import SearchVideosByTags from "../../utils/SearchBarTags";
-import SearchContext from "../../utils/SearchContext";
+import SearchVideosByTags from "../../utils/searchLogic/SearchBarTags";
+import SearchContext from "../../utils/searchLogic/SearchContext";
 
 // Functional component 'Navbar'
 function Navbar() {

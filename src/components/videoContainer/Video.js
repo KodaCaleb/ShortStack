@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase";
 import { MoonLoader } from "react-spinners";
+import { BsFillTrashFill } from "react-icons/bs";
 
 export default function Video({
   videoData,
@@ -113,13 +114,13 @@ export default function Video({
         />
       </div>
       {showDeleteButton && (
-        <button
-          className="bg-yellow-500 rounded-md border border-black px-2 py-1"
-          onClick={onDeleteClick}
-        >
-          Delete Video
-        </button>
+        <div className="flex m-10 justify-center">
+          <BsFillTrashFill
+            style={{ color:"gold", cursor:"pointer" }} size={28}
+            onClick={onDeleteClick}
+          />
+        </div>
       )}
     </div>
   );
-}
+};

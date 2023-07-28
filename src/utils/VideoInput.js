@@ -6,6 +6,8 @@ import { storage, firestore } from "../firebase";
 import TagsInput from "../components/uploadLogic/TagsInput";
 
 export default function VideoInput(props) {
+  // State management to store input
+// New code added
   const [tags, setTags] = useState([]);
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
@@ -13,19 +15,20 @@ export default function VideoInput(props) {
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
-  const { width, height } = props;
-
+  const { height } = props;
   // console.log("UID in SomeOtherComponent:", uid); // Log the value of uid
   const { user, loading } = useContext(AuthContext)
+  // Store the user's ID if available, otherwise set it to null
   const uid = user && !loading ? user.uid : null // This is the global user id reference
 
   useEffect(() => {
     if (user && uid && !loading) {
       console.log("UID in VideoInput:", uid); // Log the value of uid
-    }
+    }    
+    // Get the current user and loading state from the AuthContext
   }, [user, loading, uid]);
-  
 
+  // Create a ref to the file input element
   const inputRef = useRef();
 
   const handleFileChange = (event) => {

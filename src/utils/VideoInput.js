@@ -1,5 +1,5 @@
-import { useState, useRef, useContext } from "react"; // import the useContext method
-import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
+import { useState, useRef, useContext } from "react";
+import AuthContext from "../utils/AuthContext";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { storage, firestore } from "../firebase";

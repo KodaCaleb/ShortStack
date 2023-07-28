@@ -2,7 +2,6 @@ import { signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useContext } from "react";
 import AuthContext from "../utils/AuthContext"; // Import the AuthContext
-import { closeModal } from "../components/modals/Login";
 import { useNavigate } from "react-router-dom";
 
 export const HandleLogout = async (navigate) => {
@@ -41,9 +40,10 @@ export default function LoginLogout(props) {
         if (errorCode === "auth/wrong-password") {
           props.onLoginError();
         } else {
-          alert(errorMessage);
+          console.error("Error logging user in:",errorMessage);
         }
-      });
+      }
+    );
   };
 
   return (
@@ -66,7 +66,7 @@ export default function LoginLogout(props) {
         >
           Login
         </button>
-      )}
+      )};
     </div>
   );
-}
+};

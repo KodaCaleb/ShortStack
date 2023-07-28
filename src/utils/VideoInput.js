@@ -88,8 +88,11 @@ export default function VideoInput(props) {
   };
 
   
+  //User gets alerted when successful upload and input clears
   useEffect(() => {
     if (uploadSuccess) {
+      setTags([])
+      setSource("");
       const timeoutId = setTimeout(() => {
         setUploadSuccess(false);
       }, 2000);

@@ -1,49 +1,52 @@
 import { signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useContext } from "react";
-import AuthContext from "../utils/AuthContext"; // Import the AuthContext
-import { closeModal } from "../components/modals/Login";
+import AuthContext from "../utils/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export const HandleLogout = async (navigate) => {
-  try {
-    // Firebase method to sign the user out
-    await signOut(auth);
-    // Redirect to the homepage after sign-out
-    navigate("/");
-  } catch (error) {
-    console.log("Error signing out", error);
-  }
-};
-
 export default function LoginLogout(props) {
-  const { isLoggedIn } = useContext(AuthContext);
-  useNavigate();
+  // Access the authentication status from AuthContext
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
-  // Firebase authenticator to log in a user
+  // Get the navigation function from react-router-dom
+  const navigate = useNavigate();
+
+  // Function to handle user login
   const HandleLogin = async () => {
+    // Show an alert if email or password is missing
     if (!props.email || !props.password) {
       alert("Please fill in all required fields");
       return;
     }
 
-    await signInWithEmailAndPassword(auth, props.email, props.password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user, ": is now logged in!");
-        props.closeModal();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+    try {
+      // Firebase method to log in a user with email and password
+      const userCredential = await signInWithEmailAndPassword(auth, props.email, props.password)
 
-        if (errorCode === "auth/wrong-password") {
-          props.onLoginError();
-        } else {
-          alert(errorMessage);
-        }
-      });
+      // Get the logged-in user
+      const user = userCredential.user;
+
+      if (user) {
+        // Close the login modal after successful login
+        props.closeModal();
+      };
+    } catch (error) {
+      // Handle login errors
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      if (errorCode === "auth/wrong-password") {
+        // Notify the parent component about the login error
+        props.onLoginError();
+      } else {
+        console.error("Error logging user in:", errorMessage);
+      }
+    }
+  };
+
+  const handleLogoutClick = async () => {
+    await logout(); // Call the logout function from AuthContext
+    navigate("/"); // Redirect to the homepage after logout
   };
 
   return (
@@ -53,7 +56,7 @@ export default function LoginLogout(props) {
           type="button"
           className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
           data-modal-target="authentication-modal"
-          onClick={HandleLogout}
+          onClick={handleLogoutClick}
         >
           Logout
         </button>
@@ -69,4 +72,4 @@ export default function LoginLogout(props) {
       )}
     </div>
   );
-}
+};

@@ -2,7 +2,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { firestore } from "../firebase";
-import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 import Video from "../components/videoContainer/Video";
 // import { RiUserFollowLine } from 'react-icons/ri';
 
@@ -35,7 +41,7 @@ export default function UserProfileHeading() {
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
             setDevRole(userData.devRole || "");
-            
+
             // Get the userContent collection associated with the user document
             const userContentRef = collection(userDocRef, "userContent");
             const userContentSnapshot = await getDocs(userContentRef);
@@ -45,18 +51,20 @@ export default function UserProfileHeading() {
               (doc) => ({ id: doc.id, ...doc.data() })
             );
             setUserContentData(userContentDataArray);
-          };
+          }
         } catch (error) {
           alert(error);
-        };
+        }
       };
 
       // Call the function to get user data and content
       getUserData();
       setUsername(user.displayName || "");
-      setPhoto(userData.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png");
+      setPhoto(
+        userData.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png"
+      );
       setLoadingUser(false);
-    };
+    }
   }, [user, uid, loading]);
 
   // Function to delete a video from Firestore and update the state accordingly
@@ -69,10 +77,12 @@ export default function UserProfileHeading() {
       await deleteDoc(mainVideoDocRef);
 
       // Update the userContentData state to remove the deleted video
-      setUserContentData((prev) => prev.filter(video => video.id !== videoId));
+      setUserContentData((prev) =>
+        prev.filter((video) => video.id !== videoId)
+      );
     } catch (error) {
       console.log("Error deleting video:", error);
-    };
+    }
   };
 
   // Render the JSX for the user profile heading
@@ -108,15 +118,21 @@ export default function UserProfileHeading() {
 
         {loadingUser ? (
           <div>Loading...</div>
-        ) : (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {userContentData.map((content, index) => (
-            <div key={index} className="flex flex-row p-20 justify-center">
-              <Video videoData={content} fullSize={true} deleteVideo={deleteVideo} showDeleteButton={true} />
-            </div>
-          ))}
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {userContentData.map((content, index) => (
+              <div key={index} className="flex flex-row p-20 justify-center">
+                <Video
+                  videoData={content}
+                  fullSize={true}
+                  deleteVideo={deleteVideo}
+                  showDeleteButton={true}
+                />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </>
   );
-};
+}

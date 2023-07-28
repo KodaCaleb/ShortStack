@@ -51,11 +51,11 @@ function Navbar() {
   };
 
   return (
-    <header className="w-full">
+    <header className="fixed z-10 w-full">
       <nav
-        className="
+        className=" 
         w-full 
-        py-4
+        py-2
         px-2
         lg:ml-0
         lg:pl-4
@@ -84,10 +84,11 @@ function Navbar() {
           <CollapseMenu openModal={openModal} />
           <h1
             className="
+            mb-3
             text-white 
             md:text-4xl 
-            lg:text-5xl
-            text-5xl  
+            lg:text-4xl
+            text-xl  
             title"
           >
             short_Stack

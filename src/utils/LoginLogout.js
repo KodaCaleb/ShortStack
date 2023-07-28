@@ -1,30 +1,15 @@
-import { signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-// Function to handle user logout
-export const HandleLogout = async (navigate, isLoggedIn) => {
-  try {
-    // Firebase method to sign the user out
-    await signOut(auth);
-
-    if (!isLoggedIn) {
-      // Redirect to the homepage after sign-out
-      navigate("/");
-    }
-  } catch (error) {
-    console.error("Error signing out", error);
-  }
-};
-
 export default function LoginLogout(props) {
   // Access the authentication status from AuthContext
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   // Get the navigation function from react-router-dom
-  useNavigate();
+  const navigate = useNavigate();
 
   // Function to handle user login
   const HandleLogin = async () => {
@@ -59,6 +44,11 @@ export default function LoginLogout(props) {
     }
   };
 
+  const handleLogoutClick = async () => {
+    await logout(); // Call the logout function from AuthContext
+    navigate("/"); // Redirect to the homepage after logout
+  };
+
   return (
     <div className="relative z-20">
       {isLoggedIn ? (
@@ -66,7 +56,7 @@ export default function LoginLogout(props) {
           type="button"
           className="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
           data-modal-target="authentication-modal"
-          onClick={HandleLogout}
+          onClick={handleLogoutClick}
         >
           Logout
         </button>

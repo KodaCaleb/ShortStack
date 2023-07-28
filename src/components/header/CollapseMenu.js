@@ -3,14 +3,13 @@ import unclickedLogo from "../../assets/unclickedStack.svg";
 import clickedLogo from "../../assets/clickedStack.svg";
 import AuthContext from "../../utils/AuthContext";
 import HomeLink from "../../utils/HomeLink";
-import { HandleLogout } from "../../utils/LoginLogout";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Declaring the functional component 'CollapseMenu'
 export default function CollapseMenu({ openModal }) {
   // Accessing isLoggedIn state from the AuthContext using useContext hook
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   // Setting up a local state to keep track of the menu open/closed state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,6 +26,11 @@ export default function CollapseMenu({ openModal }) {
   const handleOpenModal = () => {
     openModal();
   }
+
+  const handleLogoutClick = async () => {
+    await logout(); // Call the logout function from AuthContext
+    navigate("/"); // Redirect to the homepage after logout
+  };
 
   return (
     <div>

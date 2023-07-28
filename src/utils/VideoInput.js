@@ -115,7 +115,7 @@ export default function VideoInput(props) {
       <input
         ref={inputRef}
         className="hidden"
-        type="file"
+        type="file"handle
         onChange={handleFileChange}
         accept="video/*"
       />

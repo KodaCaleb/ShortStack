@@ -62,7 +62,7 @@ export default function CollapseMenu({ openModal }) {
                     <a href="/account">Account</a>
                   </li>
                   <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
-                    <button onClick={() => HandleLogout(navigate)} >Logout</button>
+                    <button onClick={() => handleLogoutClick(navigate)} >Logout</button>
                   </li>
                 </>
               ) : (

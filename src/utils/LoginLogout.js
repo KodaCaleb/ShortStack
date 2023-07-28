@@ -15,7 +15,7 @@ export const HandleLogout = async (navigate, isLoggedIn) => {
       navigate("/");
     }
   } catch (error) {
-    console.log("Error signing out", error);
+    console.error("Error signing out", error);
   }
 };
 

@@ -33,14 +33,11 @@ export default function VideoList() {
       const videosSnapshot = await getDocs(videosQuery);
       let videosData = videosSnapshot.docs.map((doc, index) => {
         const id = doc.id ? doc.id : index;
-        console.log("Document ID:", id); // Log the document ID
         return {
           id,
           ...doc.data(),
         };
       });
-
-      console.log(videosData);
 
       setLastDoc(videosSnapshot.docs[videosSnapshot.docs.length - 1]);
 

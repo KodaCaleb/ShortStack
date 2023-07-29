@@ -79,7 +79,7 @@ export default function UserProfileHeading() {
   }, [user, uid, loading]);
 
   // Function to delete a video from Firestore and update the state accordingly
-  const deleteVideo = async (videoId) => {
+  const deleteVideo = async (videoId, vidRef) => {
     try {
       // Delete the user-specific video reference
       const videoDocRef = doc(firestore, "Users", uid, "userContent", videoId);
@@ -166,7 +166,7 @@ export default function UserProfileHeading() {
                 <Video
                   videoData={content}
                   fullSize={true}
-                  deleteVideo={deleteVideo}
+                  deleteVideo={() => deleteVideo(content.id, content.vidRef)}
                   showDeleteButton={true}
                 />
               </div>

@@ -6,8 +6,8 @@ import { storage, firestore } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Link } from 'react-router-dom';
-import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
-import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
+// import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
+// import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 import {
   doc,
   getDoc,
@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import { useMediaQuery } from "react-responsive";
 import pancakeholder from "../../assets/pancakeholder.svg";
-import ViewProfiles from "../../pages/ViewProfiles";
+// import ViewProfiles from "../../pages/ViewProfiles";
 
 async function getUserData(userId) {
   const docRef = doc(firestore, "Users", userId);
@@ -99,7 +99,7 @@ export default function PostContainer({ videoData }) {
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         if (!videoDoc.exists()) {
-          throw "Document does not exist!";
+          throw console.error("Document does not exist!");
         }
 
         const newLikesCount = (videoDoc.data().likes || 0) + 1;

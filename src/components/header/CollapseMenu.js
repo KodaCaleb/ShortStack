@@ -56,7 +56,7 @@ export default function CollapseMenu({ openModal }) {
                     <a href="/Upload">Upload</a>
                   </li>
                   <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
-                    <a href="/profile">Profile</a>
+                    <a href="/myprofile">Profile</a>
                   </li>
                   <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/account">Account</a>

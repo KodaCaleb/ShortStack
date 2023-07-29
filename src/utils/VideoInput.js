@@ -45,8 +45,11 @@ export default function VideoInput(props) {
       console.log("missing data. User ID:", uid);
       return
     }
+
+    // Generate a unique file name using a combination of timestamp and user ID
+    const uniqueFileName = `${Date.now()}_${uid}_${file.name}`;
   
-    const storageRef = ref(storage, file.name);
+    const storageRef = ref(storage, uniqueFileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
   
     setUploading(true);
@@ -115,7 +118,7 @@ export default function VideoInput(props) {
       <input
         ref={inputRef}
         className="hidden"
-        type="file"
+        type="file"handle
         onChange={handleFileChange}
         accept="video/*"
       />

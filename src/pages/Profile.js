@@ -2,7 +2,7 @@
 // Import necessary modules and components
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
-import { firestore } from "../firebase";
+import { storage, firestore } from "../firebase";
 import {
   doc,
   getDoc,
@@ -10,6 +10,7 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
 import { RiUserFollowFill } from "react-icons/ri";
@@ -78,13 +79,19 @@ export default function UserProfileHeading() {
   }, [user, uid, loading]);
 
   // Function to delete a video from Firestore and update the state accordingly
-  const deleteVideo = async (videoId) => {
+  const deleteVideo = async (videoId, vidRef) => {
     try {
+      // Delete the user-specific video reference
       const videoDocRef = doc(firestore, "Users", uid, "userContent", videoId);
       await deleteDoc(videoDocRef);
 
+      // Delete the main video document from the "videos" collection
       const mainVideoDocRef = doc(firestore, "videos", videoId);
       await deleteDoc(mainVideoDocRef);
+
+      // Delete the video from Firebase Storage
+      const storageRef = ref(storage, vidRef);
+      await deleteObject(storageRef);
 
       // Update the userContentData state to remove the deleted video
       setUserContentData((prev) =>
@@ -159,7 +166,7 @@ export default function UserProfileHeading() {
                 <Video
                   videoData={content}
                   fullSize={true}
-                  deleteVideo={deleteVideo}
+                  deleteVideo={() => deleteVideo(content.id, content.vidRef)}
                   showDeleteButton={true}
                 />
               </div>

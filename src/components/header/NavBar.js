@@ -38,22 +38,42 @@ function Navbar() {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      if (searchTag.trim() !== "") {
+      // Removes white space and converts to lowercase lettering
+      const lowercaseSearch = searchTag.trim().toLowerCase();
+      if (lowercaseSearch !== "") {
         // Search videos by tags and update the matching videos state
-        const videos = await SearchVideosByTags(searchTag);
-        setMatchingVideos(videos);
+        const videos = await SearchVideosByTags(lowercaseSearch);
+        // Convert tags of fetched videos to lowercase for case-insensitive comparison
+        const lowercaseVideoTags = videos.map((video) => ({
+          ...video,
+          tags: video.tags.map((tag) => tag.toLowerCase()),
+        }));
+        // Filter videos with tags that match the search tag
+        const matchingVideos = lowercaseVideoTags.filter((video) =>
+          video.tags.includes(lowercaseSearch)
+        );
+        setMatchingVideos(matchingVideos);
       } else {
         setMatchingVideos([]);
       }
+
+      const formElement = e.currentTarget;
+    const searchButton = formElement.querySelector("#search");
+    if (searchButton) {
+      searchButton.blur();
+    }
+
     } catch (error) {
       console.error("error searching videos", error);
     }
+    setSearchTag("");
   };
 
   return (
     <header className="fixed z-10 w-full">
       <nav
         className=" 
+        nav
         w-full 
         py-2
         px-2
@@ -99,18 +119,23 @@ function Navbar() {
         <div className="flex items-center"></div>
         {isSearchBarVisible && (
         <div className="container relative bottom-1 right-24">
+        <form
+          id="searchForm"
+          className="searchbar-container"
+          onSubmit={handleSearch}
+        >
           <input
-            className="bg-yellow-600 "
+            className="input bg-yellow-600 "
             type="text"
             value={searchTag}
             onChange={(e) => setSearchTag(e.target.value)}
-            onSubmit={handleSearch}
             placeholder="Search Tutorials"
           />
           <div
+            type="submit"
             className="search h-4 w-6 bg-yellow-400"
-            onClick={handleSearch}
           ></div>
+            </form>
         </div>
         )}
 

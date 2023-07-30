@@ -1,8 +1,9 @@
 
+
 // Import necessary modules and components
-import React, { useState, useEffect, useContext } from "react";
-import AuthContext from "../utils/AuthContext";
-import { storage, firestore } from "../firebase";
+import React, { useState, useEffect } from "react";
+import { firestore } from "../firebase";
+import { useParams } from "react-router-dom";
 import {
   doc,
   getDoc,
@@ -10,97 +11,70 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
-import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
-// import { RiUserFollowFill } from "react-icons/ri";
-// import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
-// import { RiUserFollowLine } from 'react-icons/ri';
+import { RiUserFollowFill } from "react-icons/ri";
+import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 
-// Component that represents the user profile heading
-export default function UserProfileHeading() {
+export default function ViewProfiles() {
   // Define state variables using useState hook
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("");
-  const [devRole, setDevRole] = useState("");
+  const [firstName, setFirstName] = useState(null)
+  const [lastName, setLastName] = useState(null);
+  const [devRole, setDevRole] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [photo, setPhoto] = useState(null);
   const [userContentData, setUserContentData] = useState([]);
-  const [username, setUsername] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [likedVideoData, setLikedVideoData] = useState(null)
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // Extract user, loading, and userData from AuthContext using useContext hook
-  const { user, loading, userData } = useContext(AuthContext);
+  const { userId } = useParams();
+  console.log(userId)
 
-  // Get the user's unique ID (uid), if available
-  const uid = user ? user.uid : null;
-  // useEffect hook to fetch user data and content from Firestore
   useEffect(() => {
-    // Only fetch data if the user is logged in and the necessary data is available
-    if (user && uid && !loading) {
-      const getUserData = async () => {
-        try {
-          // Get the user document from Firestore based on the user's ID (uid)
-          const userDocRef = doc(firestore, "Users", uid);
+    const getUserData = async () => {
+      try {
+        if (userId) {
+          // Get the user document from Firestore based on the user's ID (userId)
+          const userDocRef = doc(firestore, "Users", userId);
           const userDocSnapshot = await getDoc(userDocRef);
 
           // If the user document exists, extract and set user data and content
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
             if (userData) {
-              setDevRole(userData.devRole || "");
-              setPhoto(userData.photoURL || pancakeholder);
               setFirstName(userData.firstName || "");
               setLastName(userData.lastName || "");
+              setUsername(userData.userName || "");
+              setDevRole(userData.devRole || "");
+              setPhoto(userData.photoURL || pancakeholder);
             }
 
             // Get the userContent collection associated with the user document
             const userContentRef = collection(userDocRef, "userContent");
             const userContentSnapshot = await getDocs(userContentRef);
-
             // Map the user content data to an array and set the state variable
             const userContentDataArray = userContentSnapshot.docs.map(
               (doc) => ({ id: doc.id, ...doc.data() })
             );
-
             setUserContentData(userContentDataArray);
-          };
 
-        } catch (error) {
-          alert(error);
+            // Fetch liked videos data from the "likedVideos" subcollection
+            const likedVideosRef = collection(userDocRef, "likedVideos");
+            const likedVideosSnapshot = await getDocs(likedVideosRef);
+            const likedVideosDataArray = likedVideosSnapshot.docs.map(
+              (doc) => ({ id: doc.id, ...doc.data() })
+            );
+            setLikedVideoData(likedVideosDataArray);
+          }
         }
-      };
-
-      // Call the function to get user data and content
-      getUserData();
-      setUsername(user.displayName || "");
-      setLoadingUser(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
-  }, [user, uid, loading]);
-
-  // Function to delete a video from Firestore and update the state accordingly
-  const deleteVideo = async (videoId, vidRef) => {
-    try {
-      // Delete the user-specific video reference
-      const videoDocRef = doc(firestore, "Users", uid, "userContent", videoId);
-      await deleteDoc(videoDocRef);
-
-      // Delete the main video document from the "videos" collection
-      const mainVideoDocRef = doc(firestore, "videos", videoId);
-      await deleteDoc(mainVideoDocRef);
-
-      // Delete the video from Firebase Storage
-      const storageRef = ref(storage, vidRef);
-      await deleteObject(storageRef);
-
-      // Update the userContentData state to remove the deleted video
-      setUserContentData((prev) =>
-        prev.filter((video) => video.id !== videoId)
-      );
-    } catch (error) {
-      console.log("Error deleting video:", error);
-    }
-  };
-
+    setLoadingUser(false);
+    // Call the function to fetch data for the specified user
+    getUserData();
+  }, [userId]);
   // Render the JSX for the user profile heading
   return (
     <>
@@ -124,26 +98,26 @@ export default function UserProfileHeading() {
               <div className="bio-floating relative p-1 text-white">
                 <p>
                   <span className="text-2xl">{firstName}</span>{" "}|{" "}
-                  <span className="pt-2 text-xl">{lastName}</span>
+                  <span className="pt-2 text-2xl">{lastName}</span>
                 </p>
                 <span>{devRole}</span>
               </div>
-              {/* <hr className="w-12 translate-y-8 rotate-90" /> */}
+              <hr className="w-12 translate-y-8 rotate-90" />
               <div className="flex justify-between mt-2">
-                {/* <div className="flex mr-10">
+                <div className="flex mr-10">
                   <RiUserFollowFill style={{ color: "tan" }} size={28} />
                   <p className="ml-3 text-amber-500 text-center">22</p>
-                </div> */}
-                {/* <div className="flex mr-10">
+                </div>
+                <div className="flex mr-10">
                   <AiFillHeart style={{ color: "tan" }} size={28} />
                   <p className="ml-3 text-amber-500 text-center">57</p>
-                </div> */}
-                {/* <a href="https://github.com" className="mr-10 hover:amber-500">
+                </div>
+                <a href="https://github.com" className="mr-10 hover:amber-500">
                   <AiFillGithub className="github" style={{ color: "tan", cursor: "pointer" }} size={28} />
                 </a>
                 <a href="https://github.com" className="mr-10 hover:amber-500">
                   <AiFillLinkedin style={{ color: "tan", cursor: "pointer" }} size={28} />
-                </a> */}
+                </a>
               </div>
             </div>
             <div className="justify-start">
@@ -164,9 +138,9 @@ export default function UserProfileHeading() {
               <div key={index} className="flex flex-row p-20 justify-center">
                 <Video
                   videoData={content}
+                  
                   fullSize={true}
-                  deleteVideo={() => deleteVideo(content.id, content.vidRef)}
-                  showDeleteButton={true}
+                  showDeleteButton={false}
                 />
               </div>
             ))}
@@ -174,5 +148,5 @@ export default function UserProfileHeading() {
         )}
       </div>
     </>
-  );
+  )
 }

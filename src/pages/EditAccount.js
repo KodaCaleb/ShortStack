@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firestore, storage } from "../firebase";
-import { setDoc, doc, } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { UserDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
+import pancakeholder from "../assets/pancakeholder.svg";
+
 
 export default function EditAccount() {
   // Setting global state variables
@@ -16,12 +18,18 @@ export default function EditAccount() {
   const navigate = useNavigate();
 
   //Storing the updated input values
-  const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
-  const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
+  const [updatedFirstName, setUpdatedFirstName] = useState(
+    userData?.firstName || ""
+  );
+  const [updatedLastName, setUpdatedLastName] = useState(
+    userData?.lastName || ""
+  );
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
-  const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || process.env.PUBLIC_URL + "/pancakeholder.img.png");
-  const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
-  const [updatedUsername, setUpdatedUsername] = useState(currentUser?.displayName || "");
+  const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || pancakeholder);
+  // const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
+  const [updatedUsername, setUpdatedUsername] = useState(
+    currentUser?.displayName || ""
+  );
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
   const [updatedFile, setUpdatedFile] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -29,24 +37,25 @@ export default function EditAccount() {
   const MAX_STRING_LENGTH_DEV = 50;
   const MAX_STRING_LENGTH_USERNAME = 25;
 
-
   useEffect(() => {
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
-    setUpdatedPhotoURL(userData?.photoURL || "")
-    setUpdatedEmail(currentUser?.email || "");
+    setUpdatedPhotoURL(userData?.photoURL || "");
+    // setUpdatedEmail(currentUser?.email || "");
     setUpdatedUsername(currentUser?.displayName || "");
   }, [userData, currentUser]);
 
   const handleUsernameChange = (e) => {
     const inputValue = e.target.value;
     // Truncate the input value if it exceeds the character limit
-    const truncatedUsernameValue = inputValue.slice(0, MAX_STRING_LENGTH_USERNAME);
+    const truncatedUsernameValue = inputValue.slice(
+      0,
+      MAX_STRING_LENGTH_USERNAME
+    );
     setUpdatedUsername(truncatedUsernameValue);
   };
-  
-  
+
   const handleDevRoleChange = (e) => {
     const inputValue = e.target.value;
     // Truncate the input value if it exceeds the character limit
@@ -63,7 +72,10 @@ export default function EditAccount() {
 
         if (updatedFile) {
           // Upload the file to Firebase Storage
-          const storageRef = ref(storage, `profilePictures/${currentUser.uid}/${updatedFile.name}`);
+          const storageRef = ref(
+            storage,
+            `profilePictures/${currentUser.uid}/${updatedFile.name}`
+          );
           await uploadBytes(storageRef, updatedFile);
 
           // Get the download URL of the uploaded photo
@@ -80,25 +92,24 @@ export default function EditAccount() {
           // Update the state with the new photo URL
           setUpdatedPhotoURL(photoURL);
         } else {
-
           const updatedFirestoreData = {
             firstName: updatedFirstName,
             lastName: updatedLastName,
             devRole: updatedDevRole,
           };
           await setDoc(userDocRef, updatedFirestoreData, { merge: true });
-        };
+        }
 
         // After updating Firestore data, update the photoURL in Firebase Auth
         await updateProfile(currentUser, { displayName: updatedUsername });
-      };
+      }
 
       // Showing user if successful update
       setIsUpdateSuccess(true);
       setTimeout(() => setIsUpdateSuccess(false), 2000);
     } catch (error) {
       alert(error);
-    };
+    }
   };
 
   const handleFileChange = (e) => {
@@ -111,25 +122,27 @@ export default function EditAccount() {
   const handleDeleteAccount = UserDeleteAccount();
 
   const handleExit = () => {
-    navigate('/')
+    navigate("/");
   };
 
   return (
-    <>
+    <div className="mt-20">
       <h3 className="text-white text-center text-3xl p-3">
         {" "}
         Account Information
       </h3>
-      <div className="w-3/4 ml-auto mr-auto z-40">
+      <div className="w-3/4 m-auto z-40">
         <form className="border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-zinc-200 bg-opacity-20">
           <div className="relative bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6 text-center italic">
-            <button className="absolute top-2 right-2 px-2 py-2" onClick={handleExit}>X</button>
+            <button
+              className="absolute top-2 right-2 px-2 py-2"
+              onClick={handleExit}
+            >
+              X
+            </button>
 
             <div className="flex justify-around items-center">
-              {/* Password Reset */}
-              <div className="text-blue-499 hover:text-yellow-300">
-                <ForgotPassword />
-              </div>
+
 
               <div className="flex flex-col justify-center">
                 <div className="rounded-full px-4 max-w-[145px] max-h-[145px] border border-white bg-yellow-400">
@@ -137,35 +150,35 @@ export default function EditAccount() {
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                     ref={fileInputRef}
                   />
                   <label htmlFor="fileInput" className="cursor-pointer">
                     <img
                       src={updatedPhotoURL}
-                      alt="Profile Photo"
+                      alt="Profile"
                       type="button"
                       className="w-full h-full object-cover rounded-full"
                       onClick={() => fileInputRef.current.click()}
                     />
                   </label>
                 </div>
-                {selectedFileName && <div className="text-xs">{selectedFileName}</div>}
+                {selectedFileName && (
+                  <div className="text-xs">{selectedFileName}</div>
+                )}
               </div>
 
               {/* Email Reset */}
-              <button className="p-3 text-blue-499 hover:text-yellow-300">
+              {/* <button className="p-3 text-blue-499 hover:text-yellow-300">
                 Reset Email
-              </button>
+                </button>*/}
             </div>
 
             <div className="flex md:flex md:justify-between">
               <div className="flex flex-col items-center">
                 {/* FirstName */}
                 <div>
-                  <label htmlFor="firstName">
-                    First Name
-                  </label>
+                  <label htmlFor="firstName">First Name</label>
                   <input
                     className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="firstName"
@@ -178,9 +191,7 @@ export default function EditAccount() {
 
                 {/* LastName */}
                 <div className="mt-5">
-                  <label htmlFor="lastName">
-                    Last Name
-                  </label>
+                  <label htmlFor="lastName">Last Name</label>
                   <input
                     className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="lastName"
@@ -190,16 +201,12 @@ export default function EditAccount() {
                     onChange={(e) => setUpdatedLastName(e.target.value)}
                   />
                 </div>
-
               </div>
-
 
               <div className="flex flex-col items-center md:flex md:justify-between">
                 {/* Username */}
                 <div>
-                  <label htmlFor="userName">
-                    Username
-                  </label>
+                  <label htmlFor="userName">Username</label>
                   <input
                     className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="Username"
@@ -212,10 +219,7 @@ export default function EditAccount() {
 
                 {/* Developer Role  */}
                 <div className="mt-5">
-                  <label htmlFor="devRole">
-                    {" "}
-                    Dev Role
-                  </label>
+                  <label htmlFor="devRole"> Dev Role</label>
                   <input
                     className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     type="text"
@@ -224,7 +228,6 @@ export default function EditAccount() {
                     onChange={handleDevRoleChange}
                   />
                 </div>
-
               </div>
             </div>
 
@@ -237,7 +240,7 @@ export default function EditAccount() {
               hover:border-amber-700
               hover:w-80 ease-in-out duration-300"
                 onClick={handleEditAccount}
-              >
+                >
                 Save Changes
               </button>
             </div>
@@ -246,6 +249,10 @@ export default function EditAccount() {
                 Account updated successfully!
               </div>
             )}
+                {/* Password Reset */}
+                <div className="text-blue-499 my-4 hover:text-yellow-300">
+                  <ForgotPassword />
+                </div>
             <div className="flex mt-3 justify-center text-xs">
               <button
                 type="button"
@@ -258,6 +265,6 @@ export default function EditAccount() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }

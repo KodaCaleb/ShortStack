@@ -10,6 +10,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import SearchContext from "../../utils/searchLogic/SearchContext";
+import { MdOutlineExpandCircleDown } from "react-icons/md";
 
 export default function VideoList() {
   const [videos, setVideos] = useState([]);
@@ -56,23 +57,34 @@ export default function VideoList() {
   const videoList = matchingVideos.length > 0 ? matchingVideos : videos;
 
   return (
-    <div className="fixed h-full w-full flex justify-between items-center">
-      <div className="flex w-full flex-row h-3/4">
-        <div className=" h-screen rounded-2xl p-2 w-full">
-          <div className="app_videos h-full w-full relative rounded-2xl overflow-scroll">
-            {videoList.map((video) => (
-              <PostContainer key={video.id} videoData={video} />
-            ))}
-            <button
-              className="bg-white w-full"
-              onClick={() => {
-                fetchVideos(lastDoc);
-                window.scrollTo(0, 0);
-              }}
-            >
-              Load More
-            </button>
-          </div>
+    <div
+      className="flex justify-center h-screen rounded-2xl">
+
+      {/* Fixed black backdrop */}
+      <div className="fixed h-full rounded-3xl w-full md:w-3/4 bg-black bg-opacity-40 pointer-events-none z-5"></div>
+      <div
+        className="app_videos h-full w-full relative flex flex-col rounded-2xl overflow-scroll"
+      >
+        {videoList.map((video) => (
+          <PostContainer key={video.id} videoData={video} />
+        ))}
+        <div className="flex justify-center z-10">
+
+          <button
+            className="text-yellow-800 mb-5 w-fit hover:text-yellow-500"
+            onClick={() => {
+              fetchVideos(lastDoc);
+              window.scrollTo(0, 0);
+            }}
+          >
+            Want a
+            <br></br>
+            Bigger Stack?
+            <MdOutlineExpandCircleDown
+              size={120}
+              style={{ color: "tan" }}
+            />
+          </button>
         </div>
       </div>
     </div>

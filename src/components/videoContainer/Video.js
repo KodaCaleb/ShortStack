@@ -22,8 +22,8 @@ export default function Video({
     ? "object-fill rounded w-full h-full"
     : "object-fill rounded w-auto h-auto";
   const containerClass = fullSize
-    ? "w-full h-full videoContainer"
-    : "w-1/4 mb-4 h-full mt-4 videoContainer";
+    ? "w-full h-fit videoContainer"
+    : "w-[30%] mb-4 h-fit mt-4 videoContainer";
 
   useEffect(() => {
     const filepath = videoData.vidRef.replace(

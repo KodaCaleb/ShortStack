@@ -24,9 +24,11 @@ async function getUserData(userId) {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data();
+    const userData = docSnap.data();
+    console.log(userData)
+    return userData;
   } else {
-    console.log("No such document!");
+    console.error("No such document!");
     return null;
   }
 }
@@ -203,19 +205,17 @@ console.log(videoData.userId)
   return (
     <>
       <div className="flex justify-center flex-row mt-20">
-        {/* Fixed black backdrop */}
-        <div className="fixed h-full rounded-3xl w-full md:w-3/4 bg-black bg-opacity-40 pointer-events-none"></div>
+
 
         {/* Post Container */}
         <div className="z-8 h-full rounded-3xl mb-64 w-full md:w-3/4">
-
           {/* Header Container */}
           {userData && (
-            <div className="username header-container flex p-2 text-amber-200 text-xl">
-              <div id="photo-link">
+            <div className="flex justify-center username header-container w-fullp-2 text-amber-200 z-10 text-xl">
+              <div id="photo-link" className="mr-4">
                 <Link to={"/viewprofiles"}>
                   <img
-                    className="flex self-center rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-14 lg:w-14 xl:h-12 xl:w-12 bg-yellow-500"
+                    className="rounded-full h-20 mr-2 bg-yellow-500"
                     src={photoURL}
                     alt={"post creator"}
                   />
@@ -223,22 +223,22 @@ console.log(videoData.userId)
               </div>
               <div className="header-info pl-4">
                 <p>
-                  <span className="name text-2xl">{userData.firstName}</span> |{" "}
+                  <span className="name text-2xl">{userData.displayName}</span> |{" "}
+                  <span className="dev-role font-light text-sm">{userData.devRole}</span>
                 </p>
-                <span className="dev-role font-light text-lg">{userData.devRole}</span>
-                <span className="vid-title pt-2 text-sm md:text-lg">{videoData.title}</span>
+                <span className="vid-title pt-2 text-sm md:text-md">{videoData.title}</span>
                 <p className="tags">
                   <span className="pt-2 text-sm md:text-md">{videoData.tags.value ? `|` + videoData.tags : ''}</span>
                 </p>
               </div>
             </div>
           )}
-          <div className="flex">
-            <hr className="flex align-center divider mt-2 mb-2 w-5/6" />
+          <div className="flex justify-center">
+            <hr className="divider mt-2 mb-2 w-3/4" />
           </div>
 
           {/* Icons and Video Container */}
-          <div className="app_videos h-full flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
+          <div className="app_videos h-fit flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
             <div className="flex flex-col icons-container">
 
               {/* Heart Icon */}

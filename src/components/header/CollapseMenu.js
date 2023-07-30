@@ -37,7 +37,7 @@ export default function CollapseMenu({ openModal }) {
       {/* Main menu */}
       <ul className="main p-0 relative list-none inline-block">
         {/* Menu item with logo */}
-        <li className="header relative inline-block  mr-2 cursor-pointer z-5 w-20"
+        <li className="relative mr-2 cursor-pointer z-5 w-20"
           onMouseEnter={() => toggleMenu(true)}
           onMouseLeave={() => toggleMenu(false)}
         >

@@ -94,10 +94,7 @@ function Navbar() {
         <div
           className="
           header
-          flex  
-          sm:justify-center
-          md:justify-start
-          justify-center w-full"
+          flex"
         >
           <div className="absolute inset-x-0 bottom-0 h-0 border-yellow-600 border border-opacity-25 "></div>
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
@@ -105,7 +102,9 @@ function Navbar() {
           <h1
             className=" 
             logo
-            mb-3
+            flex
+            self-center
+            mb-2
             text-white 
             md:text-4xl 
             lg:text-4xl

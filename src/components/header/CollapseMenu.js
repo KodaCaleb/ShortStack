@@ -42,7 +42,7 @@ export default function CollapseMenu({ openModal }) {
           onMouseLeave={() => toggleMenu(false)}
         >
           {/* Logo image that changes based on the 'isMenuOpen' state */}
-          <img className="pancake-image h-14 w-11/12 cursor-pointer"
+          <img className="pancake-image p-3 cursor-pointer"
             src={isMenuOpen ? clickedLogo : unclickedLogo}
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />

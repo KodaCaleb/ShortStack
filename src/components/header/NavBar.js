@@ -92,9 +92,7 @@ function Navbar() {
       >
         {/* Logo and CollapseMenu */}
         <div
-          className="
-          header
-          flex"
+          className="nav-header h-16 flex"
         >
           <div className="absolute inset-x-0 bottom-0 h-0 border-yellow-600 border border-opacity-25 "></div>
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
@@ -118,7 +116,7 @@ function Navbar() {
         {/* Search bar */}
         <div className="flex items-center"></div>
         {isSearchBarVisible ? (
-          <div className="container relative bottom-1 right-24">
+          <div className="container relative">
             <form
               id="searchForm"
               className="searchbar-container"

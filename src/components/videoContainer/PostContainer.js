@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import AuthContext from "../../utils/AuthContext";
-import CommentSection from "./CommentSection";
+// import CommentSection from "./CommentSection";
 import Video from "./Video";
 import { storage, firestore } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -35,7 +35,7 @@ export default function PostContainer({ videoData }) {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
+  // const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
   const [photoURL, setPhotoURL] = useState(pancakeholder)
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
 
@@ -126,7 +126,7 @@ export default function PostContainer({ videoData }) {
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         if (!videoDoc.exists()) {
-          throw "Document does not exist!";
+          console.error("Document does not exist!");
         }
 
         const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
@@ -137,69 +137,69 @@ export default function PostContainer({ videoData }) {
     }
   }
 
-  const [showCommentSection, setShowCommentSection] = useState(false);
+  // const [showCommentSection, setShowCommentSection] = useState(false);
 
-  const handleCloseCommentSection = () => {
-    setShowCommentSection(false);
-  };
+  // const handleCloseCommentSection = () => {
+  //   setShowCommentSection(false);
+  // };
 
-  const handleCommentBtnClick = () => {
-    setShowCommentSection(!showCommentSection);
-  };
+  // const handleCommentBtnClick = () => {
+  //   setShowCommentSection(!showCommentSection);
+  // };
 
   // Logic for follow button?//
-  const followUser = async () => {
-    //Logic for following user
-    if (!isFollowing) {
-      try {
-        const currentUserUid = uid; //pull current user id
-        const userToFollowUid = videoData.userId; //based off video data containing the uid
+  // const followUser = async () => {
+  //   //Logic for following user
+  //   if (!isFollowing) {
+  //     try {
+  //       const currentUserUid = uid; //pull current user id
+  //       const userToFollowUid = videoData.userId; //based off video data containing the uid
 
-        // Add document in "following" subcollection of the current user.
-        const followingRef = doc(firestore, "Users", currentUserUid)
-          .collection("following")
-          .doc(userToFollowUid);
-        await setDoc(followingRef, {});
+  //       // Add document in "following" subcollection of the current user.
+  //       const followingRef = doc(firestore, "Users", currentUserUid)
+  //         .collection("following")
+  //         .doc(userToFollowUid);
+  //       await setDoc(followingRef, {});
 
-        // Add document in "followers" subcollection of the user being followed.
-        const followersRef = doc(
-          firestore,
-          "Users",
-          userToFollowUid,
-          "followers",
-          currentUserUid
-        );
-        await setDoc(followersRef, {});
-        setIsFollowing(true); // Update the state to indicate that the user is now being followed.
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
+  //       // Add document in "followers" subcollection of the user being followed.
+  //       const followersRef = doc(
+  //         firestore,
+  //         "Users",
+  //         userToFollowUid,
+  //         "followers",
+  //         currentUserUid
+  //       );
+  //       await setDoc(followersRef, {});
+  //       setIsFollowing(true); // Update the state to indicate that the user is now being followed.
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // };
 
-  const unfollowUser = async () => {
-    //Logic for unfollowing user
-    if (isFollowing) {
-      try {
-        const currentUserUid = uid; //current users
-        const userToFollowUid = videoData.userId; //uses video data's user id
+  // const unfollowUser = async () => {
+  //   //Logic for unfollowing user
+  //   if (isFollowing) {
+  //     try {
+  //       const currentUserUid = uid; //current users
+  //       const userToFollowUid = videoData.userId; //uses video data's user id
 
-        const followingRef = doc(firestore, "Users", currentUserUid)
-          .collection("following")
-          .doc(userToFollowUid); //deletes document in the following sub collection
-        await deleteDoc(followingRef);
+  //       const followingRef = doc(firestore, "Users", currentUserUid)
+  //         .collection("following")
+  //         .doc(userToFollowUid); //deletes document in the following sub collection
+  //       await deleteDoc(followingRef);
 
-        const followersRef = doc(firestore, "User", userToFollowUid)
-          .collection("followers")
-          .doc(currentUserUid);
-        await deleteDoc(followersRef);
-        setIsFollowing(false); //updates to user that is now being unfollowed
-      } catch (error) {
-        console.error("error unfollowing the user:", error);
-      }
-    }
-  };
-  console.log(videoData.userId)
+  //       const followersRef = doc(firestore, "User", userToFollowUid)
+  //         .collection("followers")
+  //         .doc(currentUserUid);
+  //       await deleteDoc(followersRef);
+  //       setIsFollowing(false); //updates to user that is now being unfollowed
+  //     } catch (error) {
+  //       console.error("error unfollowing the user:", error);
+  //     }
+  //   }
+  // };
+console.log(videoData.userId)
   return (
     <>
       <div className="flex justify-center flex-row mt-20">
@@ -314,14 +314,14 @@ export default function PostContainer({ videoData }) {
             )} */}
             </div>
             <Video fullSize={isSmallScreen} videoData={videoData} />
-            {showCommentSection && (
+            {/* {showCommentSection && (
               <>
-                <CommentSection handleClose={handleCloseCommentSection} />
+                <CommentSection handleClose={handleCloseCommentSection} /> */}
                 {/* fetch comments related to the video post and map them to display in this section. */}
                 {/* Add code here to display the list of comments */}
                 {/* Add code here to display the form to submit a comment */}
-              </>
-            )}
+              {/* </> */}
+            {/* )} */}
           </div>
         </div>
       </div>

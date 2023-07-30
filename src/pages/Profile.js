@@ -13,8 +13,8 @@ import {
 import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
-import { RiUserFollowFill } from "react-icons/ri";
-import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
+// import { RiUserFollowFill } from "react-icons/ri";
+// import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 // import { RiUserFollowLine } from 'react-icons/ri';
 
 // Component that represents the user profile heading
@@ -33,7 +33,6 @@ export default function UserProfileHeading() {
 
   // Get the user's unique ID (uid), if available
   const uid = user ? user.uid : null;
-
   // useEffect hook to fetch user data and content from Firestore
   useEffect(() => {
     // Only fetch data if the user is logged in and the necessary data is available
@@ -125,26 +124,26 @@ export default function UserProfileHeading() {
               <div className="bio-floating relative p-1 text-white">
                 <p>
                   <span className="text-2xl">{firstName}</span>{" "}|{" "}
-                  <span className="pt-2 text-2xl">{lastName}</span>
+                  <span className="pt-2 text-xl">{lastName}</span>
                 </p>
                 <span>{devRole}</span>
               </div>
-              <hr className="w-12 translate-y-8 rotate-90" />
+              {/* <hr className="w-12 translate-y-8 rotate-90" /> */}
               <div className="flex justify-between mt-2">
-                <div className="flex mr-10">
+                {/* <div className="flex mr-10">
                   <RiUserFollowFill style={{ color: "tan" }} size={28} />
                   <p className="ml-3 text-amber-500 text-center">22</p>
-                </div>
-                <div className="flex mr-10">
+                </div> */}
+                {/* <div className="flex mr-10">
                   <AiFillHeart style={{ color: "tan" }} size={28} />
                   <p className="ml-3 text-amber-500 text-center">57</p>
-                </div>
-                <a href="https://github.com" className="mr-10 hover:amber-500">
+                </div> */}
+                {/* <a href="https://github.com" className="mr-10 hover:amber-500">
                   <AiFillGithub className="github" style={{ color: "tan", cursor: "pointer" }} size={28} />
                 </a>
                 <a href="https://github.com" className="mr-10 hover:amber-500">
                   <AiFillLinkedin style={{ color: "tan", cursor: "pointer" }} size={28} />
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="justify-start">

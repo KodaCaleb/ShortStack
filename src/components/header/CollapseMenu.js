@@ -37,12 +37,12 @@ export default function CollapseMenu({ openModal }) {
       {/* Main menu */}
       <ul className="main p-0 relative list-none inline-block">
         {/* Menu item with logo */}
-        <li className="relative inline-block  mr-2 cursor-pointer z-5 w-20"
+        <li className="header relative inline-block  mr-2 cursor-pointer z-5 w-20"
           onMouseEnter={() => toggleMenu(true)}
           onMouseLeave={() => toggleMenu(false)}
         >
           {/* Logo image that changes based on the 'isMenuOpen' state */}
-          <img className="h-14 w-11/12 cursor-pointer"
+          <img className="pancake-image h-14 w-11/12 cursor-pointer"
             src={isMenuOpen ? clickedLogo : unclickedLogo}
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />

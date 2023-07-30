@@ -23,7 +23,7 @@ function TagsInput({ value = [], onChange }) {
 
   // Rendering the TagsInput component
   return (
-    <div className="flex flex-col justify-center items-start space-y-4">
+    <div className="flex flex-col justify-center items-end space-y-4">
       <div className="flex flex-wrap space-x-2">
         {/* Display existing tags */}
         {value.map((tag, index) => (
@@ -39,17 +39,17 @@ function TagsInput({ value = [], onChange }) {
         ))}
       </div>
       {/* Input field for adding new tags */}
-      <div className="flex flex-row items-center space-x-2 w-full">
+      <div className="flex items-center w-full">
         <input
           placeholder="react, javascript, css"
-          className="bg-black border text-white flex-grow rounded-md m-4 px-3 py-2"
+          className="bg-black border text-white rounded-md m-4 px-3 py-2 w-3/4"
           value={tag}
           // Update the 'tag' state with the entered value
           onChange={(e) => setTag(e.target.value)}
         />
         {/* Button to add the new tag */}
         <button
-          className="bg-yellow-500 rounded-lg p-2 h-1/2"
+          className="bg-yellow-500 rounded-lg p-2 w-1/4"
           type="button"
           onClick={addTag}
         >

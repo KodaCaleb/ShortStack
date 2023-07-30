@@ -18,7 +18,7 @@ function Navbar() {
   const location = useLocation();
 
   // Define an array of paths where the search bar should be hidden
-  const hiddenSearchBarPaths = ["/profile", "/account", "/upload"];
+  const hiddenSearchBarPaths = ["/myprofile", "/account", "/Upload"];
 
   // Function to check if the search bar should be visible based on the current location
   const isSearchBarVisible = !hiddenSearchBarPaths.includes(location.pathname);
@@ -58,10 +58,10 @@ function Navbar() {
       }
 
       const formElement = e.currentTarget;
-    const searchButton = formElement.querySelector("#search");
-    if (searchButton) {
-      searchButton.blur();
-    }
+      const searchButton = formElement.querySelector("#search");
+      if (searchButton) {
+        searchButton.blur();
+      }
 
     } catch (error) {
       console.error("error searching videos", error);
@@ -117,26 +117,28 @@ function Navbar() {
 
         {/* Search bar */}
         <div className="flex items-center"></div>
-        {isSearchBarVisible && (
-        <div className="container relative bottom-1 right-24">
-        <form
-          id="searchForm"
-          className="searchbar-container"
-          onSubmit={handleSearch}
-        >
-          <input
-            className="input bg-yellow-600 "
-            type="text"
-            value={searchTag}
-            onChange={(e) => setSearchTag(e.target.value)}
-            placeholder="Search Tutorials"
-          />
-          <div
-            type="submit"
-            className="search h-4 w-6 bg-yellow-400"
-          ></div>
+        {isSearchBarVisible ? (
+          <div className="container relative bottom-1 right-24">
+            <form
+              id="searchForm"
+              className="searchbar-container"
+              onSubmit={handleSearch}
+            >
+              <input
+                className="input bg-yellow-600 "
+                type="text"
+                value={searchTag}
+                onChange={(e) => setSearchTag(e.target.value)}
+                placeholder="Search Tutorials"
+              />
+              <div
+                type="submit"
+                className="search h-4 w-6 bg-yellow-400"
+              ></div>
             </form>
-        </div>
+          </div>
+        ) : (
+          <div></div>
         )}
 
         {/* Login button */}

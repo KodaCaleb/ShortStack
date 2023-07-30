@@ -26,7 +26,7 @@ export default function EditAccount() {
   );
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
   const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || pancakeholder);
-  const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
+  // const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
   const [updatedUsername, setUpdatedUsername] = useState(
     currentUser?.displayName || ""
   );
@@ -42,7 +42,7 @@ export default function EditAccount() {
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
     setUpdatedPhotoURL(userData?.photoURL || "");
-    setUpdatedEmail(currentUser?.email || "");
+    // setUpdatedEmail(currentUser?.email || "");
     setUpdatedUsername(currentUser?.displayName || "");
   }, [userData, currentUser]);
 
@@ -126,12 +126,12 @@ export default function EditAccount() {
   };
 
   return (
-    <>
+    <div className="mt-20">
       <h3 className="text-white text-center text-3xl p-3">
         {" "}
         Account Information
       </h3>
-      <div className="w-3/4 ml-auto mr-auto z-40">
+      <div className="w-3/4 m-auto z-40">
         <form className="border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-zinc-200 bg-opacity-20">
           <div className="relative bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6 text-center italic">
             <button
@@ -142,10 +142,7 @@ export default function EditAccount() {
             </button>
 
             <div className="flex justify-around items-center">
-              {/* Password Reset */}
-              <div className="text-blue-499 hover:text-yellow-300">
-                <ForgotPassword />
-              </div>
+
 
               <div className="flex flex-col justify-center">
                 <div className="rounded-full px-4 max-w-[145px] max-h-[145px] border border-white bg-yellow-400">
@@ -159,7 +156,7 @@ export default function EditAccount() {
                   <label htmlFor="fileInput" className="cursor-pointer">
                     <img
                       src={updatedPhotoURL}
-                      alt="Profile Photo"
+                      alt="Profile"
                       type="button"
                       className="w-full h-full object-cover rounded-full"
                       onClick={() => fileInputRef.current.click()}
@@ -172,9 +169,9 @@ export default function EditAccount() {
               </div>
 
               {/* Email Reset */}
-              <button className="p-3 text-blue-499 hover:text-yellow-300">
+              {/* <button className="p-3 text-blue-499 hover:text-yellow-300">
                 Reset Email
-              </button>
+                </button>*/}
             </div>
 
             <div className="flex md:flex md:justify-between">
@@ -243,7 +240,7 @@ export default function EditAccount() {
               hover:border-amber-700
               hover:w-80 ease-in-out duration-300"
                 onClick={handleEditAccount}
-              >
+                >
                 Save Changes
               </button>
             </div>
@@ -252,6 +249,10 @@ export default function EditAccount() {
                 Account updated successfully!
               </div>
             )}
+                {/* Password Reset */}
+                <div className="text-blue-499 my-4 hover:text-yellow-300">
+                  <ForgotPassword />
+                </div>
             <div className="flex mt-3 justify-center text-xs">
               <button
                 type="button"
@@ -264,6 +265,6 @@ export default function EditAccount() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }

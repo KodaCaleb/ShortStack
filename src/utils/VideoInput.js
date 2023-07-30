@@ -100,6 +100,7 @@ export default function VideoInput(props) {
   useEffect(() => {
     if (uploadSuccess) {
       setTags([])
+      setFileName("");
       setSource("");
       const timeoutId = setTimeout(() => {
         setUploadSuccess(false);
@@ -112,12 +113,12 @@ export default function VideoInput(props) {
   }, [uploadSuccess]);
 
   return (
-    <form onSubmit={handleUpload} className="flex flex-col border-2 p-6 border-yellow-400 rounded-3xl bg-zinc-200 bg-opacity-20">
+    <form className="flex flex-col border-2 p-6 border-yellow-400 rounded-3xl bg-zinc-200 bg-opacity-20">
       <div className="flex flex-row fle">
         <div className="flex flex-col min-w-[33%] justify-center items-center">
           {source && (
             <video
-              className="w-2/3 block text-white rounded"
+              className="w-3/4 block text-white rounded"
               width="100%"
               height={height}
               controls
@@ -134,11 +135,11 @@ export default function VideoInput(props) {
           <div
             className="w-2/3 text-center text-white text-opacity-40"
           >
-            {fileName}
+            {fileName || "Nothing selected"}
           </div>
         </div>
         <div className="flex flex-col items-center w-full">
-          <h3 className="bg-black w-11/12 text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6 text-center italic pb-8">
+          <h3 className="bg-black w-11/12 text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-3 text-center italic">
             Video Uploading Guidelines
             <br></br>
             <br></br>
@@ -165,11 +166,13 @@ export default function VideoInput(props) {
           <div className="w-11/12">
             <TagsInput value={tags} onChange={setTags} />
           </div>
-          {!source &&
-            <button
-              className="
-              w-1/2
-                mt-8
+          <div className="flex justify-evenly w-11/12">
+            {!source &&
+              <button
+                type="button"
+                className="
+              w-1/3
+              mt-4
               h-12 px-6
               bg-yellow-500 
               rounded 
@@ -178,17 +181,29 @@ export default function VideoInput(props) {
               text-black 
               hover:bg-yellow-400
               "
-              onClick={handleChoose}>
-              Select File
+                onClick={handleChoose}>
+                Select File
+              </button>
+            }
+            <button
+              type="button"
+              disabled={uploading}
+              onClick={handleUpload}
+              className="
+              w-1/3
+              mt-4
+              h-12 
+              px-6 
+              bg-yellow-500 
+              rounded 
+              font-semibold 
+              text-sm 
+              text-black 
+              hover:bg-yellow-400"
+            >
+              Upload
             </button>
-          }
-          <button
-            type="submit"
-            disabled={uploading}
-            className="w-1/2 mt-8 h-12 px-6 bg-yellow-500 rounded font-semibold text-sm text-black hover:bg-yellow-400"
-          >
-            Upload
-          </button>
+          </div>
         </div>
       </div>
       {uploadSuccess && (

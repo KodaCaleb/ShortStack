@@ -126,7 +126,7 @@ function Navbar() {
               onSubmit={handleSearch}
             >
               <input
-                className="input bg-yellow-600 "
+                className="input bg-yellow-600"
                 type="text"
                 value={searchTag}
                 onChange={(e) => setSearchTag(e.target.value)}

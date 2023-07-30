@@ -311,6 +311,18 @@ body {
   border-radius: 20px;
 }
 
+.scroll-to-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 @media (max-width: 1160px) {
   .login-button {
     display: none;
@@ -334,8 +346,8 @@ body {
   /* Search Bar Components */
   /* Search Button */
   .container .search {
-    top: -50px;
-    left: 75%;
+    top: -65px;
+    left: 120%;
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -345,31 +357,29 @@ body {
   }
   /* Search Bar Hidden */
   .container input {
-    top: -50px;
-    left: 100%;
+    top: -65px;
+    left: 128%;
     transform: translateX(-50%);
-    width: 35px;
+    width: 45px;
     height: 45px;
-    padding: 0 30px 0 5px;
+    padding-left:50px;
     font-size: 12px;
   }
-  /* Search Bar Shown */
+  /* Search Bar Transition */
   .container input:focus {
-    left: 140px;
-    width: 98%;
-    opacity: 1;
-    cursor: text;
+    left: 86%;
+    width: 103%;
   }
-  /* Button and Search Bar transition */
+  /* Button Transition */
   .container input:focus ~ .search {
-    right: 100%;
+    left: -15%;
     height: 35px;
     width: 35px;
-    background: #275a15a5;
-    z-index: 6;
   }
-/* Home Page */
-   /* Header Container */
+  
+  /* Home Page */
+
+  /* Header Container */
   .header-container {
     justify-content: space-evenly;
     padding: 0;

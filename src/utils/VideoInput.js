@@ -7,10 +7,11 @@ import TagsInput from "../components/uploadLogic/TagsInput";
 
 export default function VideoInput(props) {
   // State management to store input
-// New code added
+  // New code added
   const [tags, setTags] = useState([]);
   const [source, setSource] = useState();
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState("Nothing selected")
   const [title, setTitle] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -24,7 +25,7 @@ export default function VideoInput(props) {
   useEffect(() => {
     if (user && uid && !loading) {
       console.log("UID in VideoInput:", uid); // Log the value of uid
-    }    
+    }
     // Get the current user and loading state from the AuthContext
   }, [user, loading, uid]);
 
@@ -36,6 +37,7 @@ export default function VideoInput(props) {
     const url = URL.createObjectURL(file);
     setFile(file);
     setSource(url);
+    setFileName(file.name)
 
   };
 
@@ -48,15 +50,15 @@ export default function VideoInput(props) {
 
     // Generate a unique file name using a combination of timestamp and user ID
     const uniqueFileName = `${Date.now()}_${uid}_${file.name}`;
-  
+
     const storageRef = ref(storage, uniqueFileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
-  
+
     setUploading(true);
-  
+
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (error) => {
         console.log("error uploading file", error);
         setUploading(false);
@@ -70,10 +72,10 @@ export default function VideoInput(props) {
             userId: uid,
             likes: 0,
           };
-  
+
           // Generate a document reference ID beforehand
           const docRef = doc(collection(firestore, "videos"));
-  
+
           try {
             await setDoc(doc(firestore, "videos", docRef.id), videoData);
             await setDoc(doc(firestore, `Users/${uid}/userContent`, docRef.id), videoData);
@@ -93,7 +95,7 @@ export default function VideoInput(props) {
     inputRef.current.click();
   };
 
-  
+
   //User gets alerted when successful upload and input clears
   useEffect(() => {
     if (uploadSuccess) {
@@ -110,50 +112,85 @@ export default function VideoInput(props) {
   }, [uploadSuccess]);
 
   return (
-    <form onSubmit={handleUpload} className="flex flex-col align-center border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-zinc-200 bg-opacity-20">
-      <h3 className=" bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6  text-center italic pb-8">720x1280 resolution or higher 
-      <br></br>Up to 5 minutes 
-      <br></br>Less than 2 GB
-      <br></br>Disclaimer: Files that do not adhere to these guidelines may be subject to removal without prior notice.</h3>
-      <input
-        ref={inputRef}
-        className="hidden"
-        type="file"handle
-        onChange={handleFileChange}
-        accept="video/*"
-      />
-      <input
-      className="bg-black text-white border rounded-md m-4 px-3 py-2"
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-        required
-      />
-      <TagsInput value={tags} onChange={setTags} />
-      {!source && <button className="
-      justify-center 
-      h-12 px-6  
-      w-full 
-      bg-yellow-500 
-      mt-8 rounded 
-      font-semibold 
-      text-sm 
-      text-black 
-      hover:bg-yellow-400
-      " 
-      onClick={handleChoose}>Select File</button>}
-      {source && (
-        <video
-          className="block m-0 text-white rounded"
-          width="100%"
-          height={height}
-          controls
-          src={source}
-        />
-      )}
-      <div className="min-h-fit leading-10 text-center w-full text-white text-opacity-40">{source || "Nothing selected"}</div>
-      <button type="submit" disabled={uploading} className="justify-center h-12 px-6  w-full bg-yellow-500 mt-8 rounded font-semibold text-sm text-black hover:bg-yellow-400">Upload</button>
+    <form onSubmit={handleUpload} className="flex flex-col border-2 p-6 border-yellow-400 rounded-3xl bg-zinc-200 bg-opacity-20">
+      <div className="flex flex-row fle">
+        <div className="flex flex-col min-w-[33%] justify-center items-center">
+          {source && (
+            <video
+              className="w-2/3 block text-white rounded"
+              width="100%"
+              height={height}
+              controls
+              src={source}
+            />
+          )}
+          <input
+            ref={inputRef}
+            className="hidden"
+            type="file"
+            onChange={handleFileChange}
+            accept="video/*"
+          />
+          <div
+            className="w-2/3 text-center text-white text-opacity-40"
+          >
+            {fileName}
+          </div>
+        </div>
+        <div className="flex flex-col items-center w-full">
+          <h3 className="bg-black w-11/12 text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6 text-center italic pb-8">
+            Video Uploading Guidelines
+            <br></br>
+            <br></br>
+            1. Resolution: 720x1280 or higher
+            <br></br>
+            2. Duration: Up to 5 minutes
+            <br></br>
+            3. File Size: Less than 2 GB
+            <br></br>
+            <br></br>
+            Non-compliant videos may be removed without notice.
+            <br></br>
+            <br></br>
+            Thank you for your cooperation.
+          </h3>
+          <input
+            className="bg-black text-white border rounded-md m-4 px-3 py-2 w-11/12"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+            required
+          />
+          <div className="w-11/12">
+            <TagsInput value={tags} onChange={setTags} />
+          </div>
+          {!source &&
+            <button
+              className="
+              w-1/2
+                mt-8
+              h-12 px-6
+              bg-yellow-500 
+              rounded 
+              font-semibold 
+              text-sm 
+              text-black 
+              hover:bg-yellow-400
+              "
+              onClick={handleChoose}>
+              Select File
+            </button>
+          }
+          <button
+            type="submit"
+            disabled={uploading}
+            className="w-1/2 mt-8 h-12 px-6 bg-yellow-500 rounded font-semibold text-sm text-black hover:bg-yellow-400"
+          >
+            Upload
+          </button>
+        </div>
+      </div>
       {uploadSuccess && (
         <div className="flex items-center justify-center mt-4 text-green-500">
           Video uploaded successfully!

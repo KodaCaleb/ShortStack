@@ -116,7 +116,7 @@ export default function Video({
       {showDeleteButton && (
         <div className="flex m-10 justify-center">
           <BsFillTrashFill
-            style={{ color:"gold", cursor:"pointer" }} size={28}
+            style={{ color: "gold", cursor: "pointer" }} size={28}
             onClick={onDeleteClick}
           />
         </div>

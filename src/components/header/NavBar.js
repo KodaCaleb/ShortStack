@@ -123,7 +123,12 @@ function Navbar() {
             <form
               id="searchForm"
               className="searchbar-container"
-              onSubmit={handleSearch}
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchTag.trim() !== "") {
+                  handleSearch(e);
+                }
+              }}
             >
               <input
                 className="input bg-yellow-600"
@@ -132,10 +137,10 @@ function Navbar() {
                 onChange={(e) => setSearchTag(e.target.value)}
                 placeholder="Search Tutorials"
               />
-              <div
+              <button
                 type="submit"
-                className="search h-4 w-6 bg-yellow-400"
-              ></div>
+                className="search active h-4 w-6 bg-yellow-400"
+              ></button>
             </form>
           </div>
         ) : (

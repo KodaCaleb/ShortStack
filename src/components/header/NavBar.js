@@ -75,33 +75,25 @@ function Navbar() {
         className=" 
         nav
         w-full 
-        py-2
-        px-2
-        lg:ml-0
-        lg:pl-4
-        md:mx-4
-        grid-cols-1
-        justify-center
-        sm:items-center 
-        items-center
-        // md:grid 
-        // md:grid-cols-3 
+        p-2
         duration-500
         bg-black
         relative"
       >
         {/* Logo and CollapseMenu */}
-        <div
-          className="nav-header h-16 flex"
-        >
+        <div className="nav-header h-16 flex grid-cols-3">
           <div className="absolute inset-x-0 bottom-0 h-0 border-yellow-600 border border-opacity-25 "></div>
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
+          <div className="nav-image w-1/3">
           <CollapseMenu openModal={openModal} />
+          </div>
           <h1
             className=" 
             logo
             flex
-            self-center
+            place-self-center
+            justify-center
+            w-1/3
             mb-2
             text-white 
             md:text-4xl 
@@ -145,26 +137,23 @@ function Navbar() {
         )}
 
         {/* Login button */}
-        <div className="login-button absolute top-5 right-6 mr-1">
+        <div className="login-button absolute top-4 right-4">
           {isLoggedIn ? (
             <LoginLogout />
           ) : (
             <button
               type="button"
-              className="focus:outline-none
+              className="
+              focus:outline-none
               text-black
               bg-yellow-400
               focus:ring-4
               hover:bg-yellow-500 focus:ring-yellow-300 
               hover:rounded-3xl
               ease-in-out duration-500
-              font-medium
               rounded-lg
-              text-sm
               px-5 py-2.5
-              dark:focus:ring-yellow-900
-              w-full 
-              md:w-auto"
+              dark:focus:ring-yellow-900"
               data-modal-target="authentication-modal"
               onClick={openModal}
             >

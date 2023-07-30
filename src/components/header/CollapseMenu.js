@@ -47,7 +47,7 @@ export default function CollapseMenu({ openModal }) {
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />
           {/* Dropdown menu */}
-          <ul className="drop top-12 list-none absolute left-0 z-20">
+          <ul className="drop top-12 list-none z-20">
             <div className="relative p-2 ">
               <HomeLink />
               {isLoggedIn ? (

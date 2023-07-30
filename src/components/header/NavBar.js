@@ -73,8 +73,8 @@ function Navbar() {
         {/* Logo and CollapseMenu */}
         <div
           className="
-          flex 
-          items-center 
+          header
+          flex  
           sm:justify-center
           md:justify-start
           justify-center w-full"
@@ -83,7 +83,8 @@ function Navbar() {
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
           <CollapseMenu openModal={openModal} />
           <h1
-            className="
+            className=" 
+            logo
             mb-3
             text-white 
             md:text-4xl 

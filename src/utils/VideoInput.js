@@ -113,9 +113,20 @@ export default function VideoInput(props) {
   }, [uploadSuccess]);
 
   return (
-    <form className="flex flex-col border-2 p-6 border-yellow-400 rounded-3xl bg-zinc-200 bg-opacity-20">
-      <div className="flex flex-row fle">
-        <div className="flex flex-col min-w-[33%] justify-center items-center">
+    <form className="flex 
+    flex-col 
+    border-2 
+    py-6
+    sm:p-6 
+    border-yellow-400 
+    rounded-3xl 
+    bg-zinc-200 
+    bg-opacity-20">
+      <div className="
+      flex 
+      sm:flex-row 
+      flex-col">
+        <div className="flex flex-col min-w-[33%] justify-center items-center py-4 sm:p-0">
           {source && (
             <video
               className="w-3/4 block text-white rounded"
@@ -133,14 +144,14 @@ export default function VideoInput(props) {
             accept="video/*"
           />
           <div
-            className="w-2/3 text-center text-white text-opacity-40"
+            className="w-2/3 text-center text-white text-opacity-40 italic"
           >
             {fileName || "Nothing selected"}
           </div>
         </div>
         <div className="flex flex-col items-center w-full">
           <h3 className="bg-black w-11/12 text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-3 text-center italic">
-            Video Uploading Guidelines
+            Video Upload Guidelines
             <br></br>
             <br></br>
             1. Resolution: 720x1280 or higher
@@ -193,11 +204,11 @@ export default function VideoInput(props) {
               w-1/3
               mt-4
               h-12 
-              px-6 
               bg-yellow-500 
               rounded 
               font-semibold 
               text-sm 
+             text-center
               text-black 
               hover:bg-yellow-400"
             >

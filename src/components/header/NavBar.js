@@ -88,18 +88,19 @@ function Navbar() {
           <CollapseMenu openModal={openModal} />
           </div>
           <h1
-            className=" 
-            logo
+            className={`logo
             flex
             place-self-center
             justify-center
-            w-1/3
+            
             mb-2
             text-white 
             md:text-4xl 
             lg:text-4xl
             text-xl  
-            title"
+            title 
+            ${isSearchBarVisible ? "w-1/3" : "w-1/4"
+            }`}
           >
             short_Stack
           </h1>

@@ -47,21 +47,21 @@ export default function CollapseMenu({ openModal }) {
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />
           {/* Dropdown menu */}
-          <ul className="drop top-12 list-none z-20">
-            <div className="relative p-2 ">
+          <ul className="drop ml-1 px-3 list-none z-20">
+              <div className="relative">
               <HomeLink />
               {isLoggedIn ? (
                 <>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 color-yellow-600 hover:opacity-50">
+                  <li id="upload-drop" className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 color-yellow-600 hover:opacity-50">
                     <a href="/Upload">Upload</a>
                   </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
+                  <li id="profile-drop" className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/myprofile">Profile</a>
                   </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
+                  <li id="account-drop" className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/account">Account</a>
                   </li>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
+                  <li id="logout-drop" className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
                     <button onClick={() => handleLogoutClick(navigate)} >Logout</button>
                   </li>
                 </>

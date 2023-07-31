@@ -126,7 +126,7 @@ export default function VideoInput(props) {
       flex 
       sm:flex-row 
       flex-col">
-        <div className="flex flex-col min-w-[33%] justify-center items-center">
+        <div className="flex flex-col min-w-[33%] justify-center items-center py-4 sm:p-0">
           {source && (
             <video
               className="w-3/4 block text-white rounded"
@@ -144,7 +144,7 @@ export default function VideoInput(props) {
             accept="video/*"
           />
           <div
-            className="w-2/3 text-center text-white text-opacity-40"
+            className="w-2/3 text-center text-white text-opacity-40 italic"
           >
             {fileName || "Nothing selected"}
           </div>

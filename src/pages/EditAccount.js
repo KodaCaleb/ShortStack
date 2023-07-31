@@ -37,6 +37,7 @@ export default function EditAccount() {
   const MAX_STRING_LENGTH_DEV = 50;
   const MAX_STRING_LENGTH_USERNAME = 25;
 
+
   useEffect(() => {
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
@@ -251,7 +252,7 @@ export default function EditAccount() {
             )}
                 {/* Password Reset */}
                 <div className="text-blue-499 my-4 hover:text-yellow-300">
-                  <ForgotPassword />
+                  <ForgotPassword email={currentUser?.email} />
                 </div>
             <div className="flex mt-3 justify-center text-xs">
               <button

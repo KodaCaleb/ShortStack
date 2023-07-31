@@ -16,14 +16,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   // Firestore DB
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [devRole, setDevRole] = useState("");
-
-  // Authenticator DB
   const [displayName, setDisplayName] = useState("");
+  const [devRole, setDevRole] = useState("");
+  const [photoURL, setPhotoURL] = useState("")
+  
+  // Authenticator DB
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [photoData, setPhotoData] = useState(null);
   const [message, setMessage] = useState("");
 
   // Function to trigger the file input click event
@@ -35,7 +34,6 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    setPhotoData(file);
   };
 
   // Event handler for creating a new user account
@@ -49,8 +47,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       !lastName ||
       !displayName ||
       !email ||
-      !password ||
-      !phoneNumber
+      !password
     ) {
       alert("Please fill in all required fields");
       setIsLoading(false);
@@ -78,13 +75,13 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
       const user = userCredential.user;
       const uid = user.uid;
 
-      if (photoData) {
+      if (selectedFile) {
         // Upload the user's profile photo to Firebase Storage
         const photoRef = ref(
           storage,
-          `profilePictures/${user.uid}/${photoData.name}`
+          `profilePictures/${user.uid}/${selectedFile.name}`
         );
-        await uploadBytes(photoRef, photoData);
+        await uploadBytes(photoRef, selectedFile);
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
@@ -93,29 +90,18 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
         const userInfo = {
           firstName,
           lastName,
+          displayName,
           devRole,
           photoURL,
         };
         addUserToFirestore(uid, userInfo);
-     ;
         
-        // Update the user's displayName, phoneNumber, and photoURL
-        await updateProfile(user, {
-          displayName: displayName,
-          phoneNumber: phoneNumber,
-          photoURL: photoURL,
-        });
       } else {
-        // If no photo is uploaded, only update the user's displayName and phoneNumber
-      await updateProfile(user, {
-        displayName: displayName,
-        phoneNumber: phoneNumber,
-      });
-
-      // Add additional user information to Firestore DB without photoURL
+        // If no photo is uploade add additional user information to Firestore DB without photoURL
       const userInfo = {
         firstName,
         lastName,
+        displayName,
         devRole,
       };
       addUserToFirestore(uid, userInfo);
@@ -126,10 +112,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
       setMessage("Account created successfully. Please check your email for verification.");
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const warning = { errorCode, errorMessage };
-      console.error(warning);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -229,16 +212,16 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
                 htmlFor="phoneNumberField"
               >
                 {" "}
-                Phone Number
+                Developer Role
               </label>
               <input
                 className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                type="tel"
-                id="phoneNumberField"
-                name="phoneNumber"
-                placeholder="Phone Number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                type="text"
+                id="devRoleField"
+                name="devRole"
+                placeholder="Dev Role"
+                value={devRole}
+                onChange={(e) => setDevRole(e.target.value)}
               />
             </div>
           </div>
@@ -304,11 +287,11 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
             <div className="flex items-center p-4 justify-center">
               <button
                 className="flex items-center justify-center h-12 px-6 w-52 focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg focus:border-2  focus:border-white dark:focus:ring-yellow-900
-              hover:rounded-3xl
-              hover:border-2
-              hover:border-amber-700
-              hover: ease-in-out duration-300"
-                type="submit"
+                hover:rounded-3xl
+                hover:border-2
+                hover:border-amber-700
+                hover: ease-in-out duration-300"
+                type="button"
                 onClick={handleCreateAccount}
               >
                 Create
@@ -319,6 +302,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           <div className="flex flex-row mt-6 justify-center items-center text-xs">
             <IoIosArrowBack className="mr-3" />
             <button
+              type="button"
               className="text-blue-499 hover:text-yellow-300"
               onClick={toggleModalMode}
             >
@@ -327,6 +311,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
           </div>
           {/* Exit out of modal button */}
           <button
+            pe="button"
             className=" absolute top-2 right-2 px-2 py-2"
             onClick={closeModal}
           >

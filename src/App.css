@@ -401,7 +401,8 @@ body {
     width: 12%
   }
   .logo {
-    width: 20%
+    width: 20%;
+    justify-content: flex-start;
   }
   /* Search Button */
   .container .search {

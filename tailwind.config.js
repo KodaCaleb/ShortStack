@@ -12,10 +12,11 @@ module.exports = {
         'galS20':'412px',
         'iphnXR':'414px',
         'surfDuo':'540px',
-        'galTab':'712',
+        'galTab':'712px',
         'ipadMin':'768px',
         'ipadAir':'820px',
         'surfPro':'912px',
+        'notebk' :'1000px',
       }
     },
   },

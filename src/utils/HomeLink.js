@@ -10,7 +10,7 @@ const HomeLink = () => {
   return (
     <>
       {!isHomePage && (
-        <li className="text-white text-center block p-0 align-middle rounded-lg mt-3 hover:opacity-50">
+        <li id="home-drop"className="relative right-6 bottom-2 text-white text-center block p-0 align-middle rounded-lg mt-3 hover:opacity-50">
           <a href="/">Home</a>
         </li>
       )}

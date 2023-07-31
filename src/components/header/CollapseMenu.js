@@ -37,37 +37,37 @@ export default function CollapseMenu({ openModal }) {
       {/* Main menu */}
       <ul className="main p-0 relative list-none inline-block">
         {/* Menu item with logo */}
-        <li className="relative mr-2 cursor-pointer z-5 w-20"
+        <li className="relative cursor-pointer z-5 w-20"
           onMouseEnter={() => toggleMenu(true)}
           onMouseLeave={() => toggleMenu(false)}
         >
           {/* Logo image that changes based on the 'isMenuOpen' state */}
-          <img className="pancake-image p-3 cursor-pointer"
+          <img className="pancake-image p-3 cursor-pointer background:"
             src={isMenuOpen ? clickedLogo : unclickedLogo}
             alt={isMenuOpen ? "stack of pancakes with syrup" : "stack of pancakes"}
           />
           {/* Dropdown menu */}
-          <ul className="drop top-12 list-none z-20">
-            <div className="relative p-2 ">
+          <ul className="drop px-3.5 list-none z-20">
+              <div className="list-container relative right-2">
               <HomeLink />
               {isLoggedIn ? (
                 <>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 color-yellow-600 hover:opacity-50">
+                  <li id="upload-drop" className="relative right-8 text-white text-center block p-0 w-full align-middle rounded-lg mt-3 color-yellow-600 hover:opacity-50">
                     <a href="/Upload">Upload</a>
                   </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
+                  <li id="profile-drop" className="relative right-9 text-white block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/myprofile">Profile</a>
                   </li>
-                  <li className="text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
+                  <li id="account-drop" className="relative right-8 text-white  block p-0 w-full align-middle text-center rounded-lg mt-3 hover:opacity-50">
                     <a href="/account">Account</a>
                   </li>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
+                  <li id="logout-drop" className="relative right-7 top-2 text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
                     <button onClick={() => handleLogoutClick(navigate)} >Logout</button>
                   </li>
                 </>
               ) : (
                 <>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
+                  <li id="logout-drop" className="relative right-6 bottom-2 text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
                     <button onClick={handleOpenModal}>Login</button>
                   </li>
                 </>

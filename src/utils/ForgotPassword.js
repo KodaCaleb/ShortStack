@@ -13,7 +13,7 @@ const ForgotPassword = ({ email }) => {
     e.preventDefault();
     try {
       const userEmail = window.prompt("Please enter your email address:");
-      if (!userEmail){
+      if (!userEmail) {
         return
       }
       const auth = getAuth();
@@ -37,14 +37,15 @@ const ForgotPassword = ({ email }) => {
 
   return (
     <div>
-      <div
+      <button
+        className="cursor-pointer"
         type="button"
         onClick={(e) => {
           handleResetPassword(e);
         }}
       >
         Forgot Password
-      </div>
+      </button>
       {/* {message && window.alert(message)} */}
     </div>
   );

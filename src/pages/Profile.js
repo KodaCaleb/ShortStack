@@ -2,86 +2,36 @@
 // Import necessary modules and components
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
-import { storage, firestore } from "../firebase";
-import {
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  deleteDoc,
-} from "firebase/firestore";
+import { firestore, storage } from "../firebase";
+import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
+
+// Future Development Code
 // import { RiUserFollowFill } from "react-icons/ri";
 // import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 // import { RiUserFollowLine } from 'react-icons/ri';
 
 // Component that represents the user profile heading
 export default function UserProfileHeading() {
-  // Define state variables using useState hook
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("");
-  const [devRole, setDevRole] = useState("");
-  const [userContentData, setUserContentData] = useState([]);
-  const [username, setUsername] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [loadingUser, setLoadingUser] = useState(true);
 
   // Extract user, loading, and userData from AuthContext using useContext hook
-  const { user, loading, userData } = useContext(AuthContext);
+  const { loading, userData, currentUser } = useContext(AuthContext);
 
-  // Get the user's unique ID (uid), if available
-  const uid = user ? user.uid : null;
-  // useEffect hook to fetch user data and content from Firestore
-  useEffect(() => {
-    // Only fetch data if the user is logged in and the necessary data is available
-    if (user && uid && !loading) {
-      const getUserData = async () => {
-        try {
-          // Get the user document from Firestore based on the user's ID (uid)
-          const userDocRef = doc(firestore, "Users", uid);
-          const userDocSnapshot = await getDoc(userDocRef);
-
-          // If the user document exists, extract and set user data and content
-          if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            if (userData) {
-              setDevRole(userData.devRole || "");
-              setPhoto(userData.photoURL || pancakeholder);
-              setFirstName(userData.firstName || "");
-              setLastName(userData.lastName || "");
-            }
-
-            // Get the userContent collection associated with the user document
-            const userContentRef = collection(userDocRef, "userContent");
-            const userContentSnapshot = await getDocs(userContentRef);
-
-            // Map the user content data to an array and set the state variable
-            const userContentDataArray = userContentSnapshot.docs.map(
-              (doc) => ({ id: doc.id, ...doc.data() })
-            );
-
-            setUserContentData(userContentDataArray);
-          };
-
-        } catch (error) {
-          alert(error);
-        }
-      };
-
-      // Call the function to get user data and content
-      getUserData();
-      setUsername(user.displayName || "");
-      setLoadingUser(false);
-    }
-  }, [user, uid, loading]);
+  // Define state variables for profile data
+  const [devRole, setDevRole] = useState("");
+  const [photo, setPhoto] = useState(pancakeholder);
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userContentData, setUserContentData] = useState([]);
 
   // Function to delete a video from Firestore and update the state accordingly
   const deleteVideo = async (videoId, vidRef) => {
     try {
       // Delete the user-specific video reference
-      const videoDocRef = doc(firestore, "Users", uid, "userContent", videoId);
+      const videoDocRef = doc(firestore, "Users", currentUser, "userContent", videoId);
       await deleteDoc(videoDocRef);
 
       // Delete the main video document from the "videos" collection
@@ -101,7 +51,42 @@ export default function UserProfileHeading() {
     }
   };
 
-  // Render the JSX for the user profile heading
+  // useEffect hook to fetch user data and content from Firestore
+  useEffect(() => {
+    if (currentUser && userData && !loading) {
+      setDevRole(userData.devRole || "");
+      setPhoto(userData.photoURL || pancakeholder);
+      setUsername(userData.displayName || "")
+      setFirstName(userData.firstName || "");
+      setLastName(userData.lastName || "");
+
+      try {
+        const getUserContentData = async () => {
+
+          const userDocRef = collection(
+            firestore,
+            "Users",
+            currentUser.uid,
+            "userContent"
+          );
+
+          const userContentSnapshot = await getDocs(userDocRef);
+
+          // Map the user content data to an array and set the state variable
+          const userContentDataArray = userContentSnapshot.docs.map(
+            (doc) => ({ id: doc.id, ...doc.data() })
+          );
+
+          setUserContentData(userContentDataArray);
+        };
+
+        getUserContentData();
+      } catch (error) {
+        alert(error);
+      }
+    }
+  }, [currentUser, userData, loading]);
+
   return (
     <>
       <div className="flex h-100 flex-col items-center mt-20">
@@ -156,7 +141,7 @@ export default function UserProfileHeading() {
             </div>
           </div>
         </div>
-        {loadingUser ? (
+        {loading ? (
           <div>Loading...</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">

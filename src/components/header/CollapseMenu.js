@@ -67,7 +67,7 @@ export default function CollapseMenu({ openModal }) {
                 </>
               ) : (
                 <>
-                  <li className="text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
+                  <li id="logout-drop" className="relative right-6 bottom-2 text-white text-center block p-0 w-full align-middle rounded-lg mt-3 hover:opacity-50">
                     <button onClick={handleOpenModal}>Login</button>
                   </li>
                 </>

@@ -394,6 +394,53 @@ body {
   }
 }
 
+/* SCREEN AT MAX 361px */
+@media (max-width: 361px) {
+  .login-form {
+    width: 75%;
+  }
+  .login-email,
+  .login-password {
+    width: 200px
+  }
+  }
+  
+  /* SCREEN AT MAX 377px */
+  @media (max-width: 377px) {
+  .signup-form {
+    position:absolute;
+    padding: 18px;
+    margin: 0;
+    top:50px;
+  }
+  .signup-message{
+    padding:0;
+    position: absolute;
+    top: 5px;
+  }
+  .signup-field {
+    margin-bottom: 4px;
+  }
+  }
+  
+  /* SCREEN AT MAX 394px */
+  @media (max-width: 394px) {
+  .signup-form {
+    padding: 28px;
+    position:absolute;
+    
+  }
+  .back-login{
+    margin: 5px;
+  }
+  .login-syrup,
+  .login-email,
+  .login-password {
+    width: 200px
+  }
+  }
+    
+
 /* SCREEN AT 540px */
 @media (min-width: 540px) {
 

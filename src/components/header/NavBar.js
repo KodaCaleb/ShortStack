@@ -108,7 +108,7 @@ function Navbar() {
 
         {/* Search bar */}
         <div className="flex items-center"></div>
-        {isSearchBarVisible ? (
+        {isSearchBarVisible && !isModalOpen && (
           <div className="container relative">
             <form
               id="searchForm"
@@ -133,8 +133,6 @@ function Navbar() {
               ></button>
             </form>
           </div>
-        ) : (
-          <div></div>
         )}
 
         {/* Login button */}

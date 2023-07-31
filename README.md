@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Short Stack
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Description
+Short Stack is a social platform that caters to developers or anyone in the tech community, providing them with a space to share short-form videos on tech insights and interesting techniques. Our motivation for creating "Short Stack" was to encourage users to share valuable, short videos that others can learn from. Additionally, users are able to create their own accounts where they can connect with other users and share their passion for technology and development. 
 
-In the project directory, you can run:
 
-### `npm start`
+## Table of Contents 
+ * [Installation](#installation)
+ * [Usage](#usage)
+ * [Credits](#credits)
+ * [License](#license)
+ * [Questions](#questions)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ ## Installation
 
-### `npm test`
+Clone the repository. Install all required dependencies using: npm i. Once installed, type 'npm run start' into the terminal. A window on your browser will open allowing you to view the app on your computer as localhost.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+ ## Usage
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ This app is intended for developers looking to share short-form videos that are coding related. Users can view random videos on the homepage, or they can join the community by creating a profile. Members can search for videos on specific topics or can upload their own videos for others to view, like, and learn from.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+https://github.com/KodaCaleb/ShortStack.git
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+![Home Page](/src/assets/homePage.png)
+![Login](./src/assets/login.png)
+![Profile](./src/assets/profilePage.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Credits
+- https://tailwindcss.com/
+- https://firebase.google.com/docs/firestore
+- https://www.tiktok.com/en/
+- https://react.dev/
+- https://stackoverflow.com/
+- Andrea Presto (TA)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## License
+This app is licensed under the MIT license.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Questions
+Questions about this app?  
+- GitHub: https://github.com/kodaCaleb
+- GitHub: https://github.com/abigailmgarcia
+- GitHub: https://github.com/cjsolis12  
+- GitHub: https://github.com/joaqsala 
+- GitHub: https://github.com/csullins
+- GitHub: https://github.com/Jstanion

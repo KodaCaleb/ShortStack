@@ -21,14 +21,14 @@ Clone the repository. Install all required dependencies using: npm i. Once insta
 
  ## Usage
 
- This app is intended for developers looking to share short-form videos that are coding related. Users can view random videos on the homepage, or they can join the community by creating a profile. Members can search for videos on specific topics or can upload their own videos for others to view, like, and learn from.
+![Home Page](./assets/screenshot-short-stack-home.png)
 
 https://github.com/KodaCaleb/ShortStack.git
 
+ This app is intended for developers looking to share short-form videos that are coding related. Users can view random videos on the homepage, or they can join the community by creating a profile. Members can search for videos on specific topics or can upload their own videos for others to view, like, and learn from.
 
-![Home Page](/src/assets/homePage.png)
-![Login](./src/assets/login.png)
-![Profile](./src/assets/profilePage.png)
+![Signuo](./assets/screenshot-short-stack-signup.png)
+![Profile](./assets/screenshot-short-stack-profile.png)
 
 
 ## Credits

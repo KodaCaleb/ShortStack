@@ -147,7 +147,7 @@ export default function UserProfileHeading() {
                       <p className="text-amber-500 text-center">57</p>
                     </div>
                     <hr className="w-10 translate-y-5 rotate-90" />
-                    <a href={gitHub} className="mr-5 hover:amber-500">
+                    <a href={gitHub} className="hover:amber-500">
                       <AiFillGithub className="github" style={{ color: "tan", cursor: "pointer" }} size={28} />
                     </a>
                     <a href={linkedIn} className="hover:amber-500">

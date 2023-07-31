@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
-import { firestore, auth, storage } from "../firebase";
+import { firestore, auth } from "../firebase";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -33,22 +33,8 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(auth.currentUser);
 
         // List global props for authentication DB
-        const {
-          uid,
-          displayName,
-          email,
-          photoURL,
-          emailVerified,
-          phoneNumber,
-        } = user;
-        setUser({
-          uid,
-          displayName,
-          email,
-          photoURL,
-          emailVerified,
-          phoneNumber,
-        });
+        const { uid, email } = user;
+        setUser({ uid, email });
 
         // Method to grab users data from firestore DB
         const docRef = doc(firestore, "Users", user.uid);
@@ -58,8 +44,8 @@ export const AuthProvider = ({ children }) => {
             const userData = docSnap.data();
 
             // List global props for firestore DB
-            const { firstName, lastName, devRole, photoURL } = userData;
-            setUserData({ firstName, lastName, devRole, photoURL });
+            const { firstName, lastName, devRole, displayName, photoURL } = userData;
+            setUserData({ firstName, lastName, devRole, displayName, photoURL });
           } else {
             console.log("No data exists");
           }

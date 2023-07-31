@@ -201,7 +201,7 @@ export default function PostContainer({ videoData }) {
   //     }
   //   }
   // };
-console.log(videoData.userId)
+  console.log(videoData.userId)
   return (
     <>
       <div className="flex justify-center flex-row mt-20">
@@ -317,10 +317,10 @@ console.log(videoData.userId)
             {/* {showCommentSection && (
               <>
                 <CommentSection handleClose={handleCloseCommentSection} /> */}
-                {/* fetch comments related to the video post and map them to display in this section. */}
-                {/* Add code here to display the list of comments */}
-                {/* Add code here to display the form to submit a comment */}
-              {/* </> */}
+            {/* fetch comments related to the video post and map them to display in this section. */}
+            {/* Add code here to display the list of comments */}
+            {/* Add code here to display the form to submit a comment */}
+            {/* </> */}
             {/* )} */}
           </div>
         </div>

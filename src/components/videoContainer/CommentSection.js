@@ -24,6 +24,7 @@ export default function CommentSection({ handleClose }) {
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
                 <img
+                  alt="test kitty"
                   className="w-full rounded-full"
                   src="http://placekitten.com/50/50"
                 />
@@ -38,6 +39,7 @@ export default function CommentSection({ handleClose }) {
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
                 <img
+                  alt=""
                   className="w-full rounded-full"
                   src="http://placekitten.com/45/45"
                 />
@@ -57,6 +59,7 @@ export default function CommentSection({ handleClose }) {
                 <img
                   className="w-full rounded-full"
                   src="http://placekitten.com/40/40"
+                  alt=""
                 />
               </div>
               <div className="table-cell">
@@ -69,6 +72,7 @@ export default function CommentSection({ handleClose }) {
             <li className="m-0 mt-3">
               <div className="table-cell w-7 mr-1.5 h-full float-left">
                 <img
+                  alt=""
                   className="w-full rounded-full"
                   src="http://placekitten.com/45/45"
                 />
@@ -85,7 +89,7 @@ export default function CommentSection({ handleClose }) {
             </li>
           </ul>
 
-          <form className="form-inline" role="form">
+          <form className="form-inline">
             <div className="w-full flex justify-between mt-8 p-2">
               <textarea
                 className="form-control h-14 w-5/6 rounded-md p-2 text-slate-200 bg-black focus:border-2 focus:border-amber-300  focus:border-opacity-20"

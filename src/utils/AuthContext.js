@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 import { firestore, auth } from "../firebase";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -30,22 +31,21 @@ export const AuthProvider = ({ children }) => {
         // Conditional rules for a user that is logged in
         setIsLoggedIn(true);
         // Store the current user data in the state
-        setCurrentUser(auth.currentUser);
+        setCurrentUser(user);
 
         // List global props for authentication DB
         const { uid, email } = user;
         setUser({ uid, email });
+
 
         // Method to grab users data from firestore DB
         const docRef = doc(firestore, "Users", user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            const userData = docSnap.data();
+            const firestoreData = docSnap.data();
+            setUserData(firestoreData)
 
-            // List global props for firestore DB
-            const { firstName, lastName, devRole, displayName, photoURL } = userData;
-            setUserData({ firstName, lastName, devRole, displayName, photoURL });
           } else {
             console.log("No data exists");
           }

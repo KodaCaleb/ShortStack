@@ -1,6 +1,7 @@
 // ForgotPassword.js
 import React, { useState, useEffect } from "react";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+// import User, { authContext, useContext } from "firebase/auth";
 
 const ForgotPassword = ({ email }) => {
   //State variables to manage the message and processing state
@@ -11,6 +12,10 @@ const ForgotPassword = ({ email }) => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
+      const userEmail = window.prompt("Please enter your email address:");
+      if (!userEmail) {
+        return
+      }
       const auth = getAuth();
       await sendPasswordResetEmail(auth, email);
       setMessage("Password reset email sent. Please check your inbox.");
@@ -32,14 +37,15 @@ const ForgotPassword = ({ email }) => {
 
   return (
     <div>
-      <div
+      <button
+        className="cursor-pointer"
         type="button"
         onClick={(e) => {
           handleResetPassword(e);
         }}
       >
         Forgot Password
-      </div>
+      </button>
       {/* {message && window.alert(message)} */}
     </div>
   );

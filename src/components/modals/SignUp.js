@@ -85,7 +85,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
 
         // Get the download URL of the uploaded photo
         const photoURL = await getDownloadURL(photoRef);
-
+        setPhotoURL(photoURL)
         // Add additional user information to Firestore DB
         const userInfo = {
           firstName,

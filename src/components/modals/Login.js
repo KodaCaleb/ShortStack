@@ -49,17 +49,19 @@ export default function LoginModal({ isOpen, closeModal }) {
   return (
     <>
       {/* Modal */}
-      <div className="absolute z-10 flex flex-col items-center justify-start text-white h-full w-screen bg-black bg-opacity-80 backdrop-blur-sm">
+      <div className="fixed top-0 h-screen w-screen bg-black bg-opacity-80 backdrop-blur-sm"></div>
+      <div className="flex flex-col items-center justify-start text-white">
+
         {/* Render either Sign Up or Login form based on 'modalMode' */}
         {modalMode ? (
           <SignUpModal
-            isOpen={isOpen}
-            closeModal={closeModal}
-            toggleModalMode={toggleSignUpMode}
+          isOpen={isOpen}
+          closeModal={closeModal}
+          toggleModalMode={toggleSignUpMode}
           />
-        ) : (
+          ) : (
           <form
-            className="items-center border-white border  relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
+            className="login-form items-center border-white border  relative flex flex-col bg-black rounded shadow-lg p-12 mt-12"
             action=""
           >
             {/* Login form */}
@@ -71,7 +73,7 @@ export default function LoginModal({ isOpen, closeModal }) {
               Email
             </label>
             <input
-              className="flex items-center text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
+              className="login-email flex items-center text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2"
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -84,7 +86,7 @@ export default function LoginModal({ isOpen, closeModal }) {
               Password
             </label>
             <input
-              className={`flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2 ${isIncorrectPassword ? "border-red-500 border-2" : ""
+              className={`login-password flex relative items-center z-10 text-black h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2 ${isIncorrectPassword ? "border-red-500 border-2" : ""
                 }`}
               type="password"
               value={password}
@@ -95,7 +97,7 @@ export default function LoginModal({ isOpen, closeModal }) {
             />
             <div className="h-20">
               <img
-                className=" bottom-4 z-0 relative w-64 h-24"
+                className=" login-syrup bottom-4 z-0 relative w-64 h-24"
                 src={Syrup}
                 alt="syrup drip"
               ></img>

@@ -351,6 +351,7 @@ body {
     padding: 8px 8px 0 0;
   }
 
+  /* Droop-down Styling */
   .drop div {
     -webkit-transform: translate(0, -100%);
     transform: translate(0, -100%);
@@ -392,6 +393,12 @@ body {
     margin-top: 10px;
     transform: rotate(10deg);
   }
+
+  /* Account Page */
+  .account-form div {
+    margin-top: 8px;
+    width: 100%;
+  }
 }
 
 /* SCREEN AT MAX 361px */
@@ -399,47 +406,52 @@ body {
   .login-form {
     width: 75%;
   }
+
   .login-email,
   .login-password {
     width: 200px
   }
-  }
-  
-  /* SCREEN AT MAX 377px */
-  @media (max-width: 377px) {
+}
+
+/* SCREEN AT MAX 377px */
+@media (max-width: 377px) {
   .signup-form {
-    position:absolute;
+    position: absolute;
     padding: 18px;
     margin: 0;
-    top:50px;
+    top: 50px;
   }
-  .signup-message{
-    padding:0;
+
+  .signup-message {
+    padding: 0;
     position: absolute;
     top: 5px;
   }
+
   .signup-field {
     margin-bottom: 4px;
   }
-  }
-  
-  /* SCREEN AT MAX 394px */
-  @media (max-width: 394px) {
+}
+
+/* SCREEN AT MAX 394px */
+@media (max-width: 394px) {
   .signup-form {
     padding: 28px;
-    position:absolute;
-    
+    position: absolute;
+
   }
-  .back-login{
+
+  .back-login {
     margin: 5px;
   }
+
   .login-syrup,
   .login-email,
   .login-password {
     width: 200px
   }
-  }
-    
+}
+
 
 /* SCREEN AT 540px */
 @media (min-width: 540px) {
@@ -556,6 +568,13 @@ body {
   .container input:focus~.search {
     left: -57%;
   }
+
+  .field-container {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+  }
 }
 
 
@@ -578,7 +597,6 @@ body {
   .container input:focus~.search {
     left: -6%;
   }
-
 }
 
 /* Post Container */

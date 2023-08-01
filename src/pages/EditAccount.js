@@ -3,7 +3,6 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firestore, storage } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
-import { updateProfile } from "firebase/auth";
 import { UserDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
@@ -18,33 +17,32 @@ export default function EditAccount() {
   const navigate = useNavigate();
 
   //Storing the updated input values
-  const [updatedFirstName, setUpdatedFirstName] = useState(
-    userData?.firstName || ""
-  );
-  const [updatedLastName, setUpdatedLastName] = useState(
-    userData?.lastName || ""
-  );
+  // const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
+  const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
+  const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
   const [updatedPhotoURL, setUpdatedPhotoURL] = useState(userData?.photoURL || pancakeholder);
-  // const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
-  const [updatedUsername, setUpdatedUsername] = useState(
-    currentUser?.displayName || ""
-  );
+  const [updatedPortfolio, setUpdatedPortfolio] = useState(userData?.portfolio || "");
+  const [updatedGitHub, setUpdatedGitHub] = useState(userData?.gitHub || "");
+  const [updatedLinkedIn, setUpdatedLinkedIn] = useState(userData?.linkedIn || "");
+  const [updatedUsername, setUpdatedUsername] = useState(currentUser?.displayName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
   const [updatedFile, setUpdatedFile] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState("");
   const fileInputRef = useRef(null);
   const MAX_STRING_LENGTH_DEV = 50;
   const MAX_STRING_LENGTH_USERNAME = 25;
-
-
+  
   useEffect(() => {
+    // setUpdatedEmail(currentUser?.email || "");
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
     setUpdatedPhotoURL(userData?.photoURL || "");
-    // setUpdatedEmail(currentUser?.email || "");
     setUpdatedUsername(currentUser?.displayName || "");
+    setUpdatedPortfolio(currentUser?.portfolio || "");
+    setUpdatedGitHub(currentUser?.gitHub || "");
+    setUpdatedLinkedIn(currentUser?.linkedIn || "");
   }, [userData, currentUser]);
 
   const handleUsernameChange = (e) => {
@@ -73,9 +71,7 @@ export default function EditAccount() {
 
         if (updatedFile) {
           // Upload the file to Firebase Storage
-          const storageRef = ref(
-            storage,
-            `profilePictures/${currentUser.uid}/${updatedFile.name}`
+          const storageRef = ref(storage, `profilePictures/${currentUser.uid}/${updatedFile.name}`
           );
           await uploadBytes(storageRef, updatedFile);
 
@@ -86,7 +82,11 @@ export default function EditAccount() {
             firstName: updatedFirstName,
             lastName: updatedLastName,
             devRole: updatedDevRole,
+            displayName: updatedUsername,
             photoURL: photoURL,
+            gitHub: updatedGitHub,
+            linkedIn: updatedLinkedIn,
+            portfolio: updatedPortfolio,
           };
           await setDoc(userDocRef, updatedFirestoreData, { merge: true });
 
@@ -97,12 +97,13 @@ export default function EditAccount() {
             firstName: updatedFirstName,
             lastName: updatedLastName,
             devRole: updatedDevRole,
+            displayName: updatedUsername,
+            gitHub: updatedGitHub,
+            linkedIn: updatedLinkedIn,
+            portfolio: updatedPortfolio,
           };
           await setDoc(userDocRef, updatedFirestoreData, { merge: true });
         }
-
-        // After updating Firestore data, update the photoURL in Firebase Auth
-        await updateProfile(currentUser, { displayName: updatedUsername });
       }
 
       // Showing user if successful update
@@ -126,15 +127,48 @@ export default function EditAccount() {
     navigate("/");
   };
 
+  // variable storing the input field styling below
+  const inputStyle =
+  `px-3 
+  py-2
+  w-full
+  text-sm 
+  leading-tight 
+  text-gray-700 
+  border rounded 
+  shadow 
+  appearance-none 
+  focus:outline-none 
+  focus:shadow-outline`
+
   return (
-    <div className="mt-20">
-      <h3 className="text-white text-center text-3xl p-3">
+    <div id="account-page" className="mt-20">
+      <h3 className="text-white text-center p-3 galTab:text-4xl">
         {" "}
         Account Information
       </h3>
-      <div className="w-3/4 m-auto z-40">
-        <form className="border-2 p-6 border-yellow-400 rounded-3xl justify-center bg-zinc-200 bg-opacity-20">
-          <div className="relative bg-black text-amber-300 bg-opacity-50 text-opacity-50 rounded-2xl p-6 text-center italic">
+      <div className="w-11/12 mx-auto galTab:w-3/4 galTab:h-2/3 notebk:w-1/2">
+        <form className="
+        border-2 
+        border-yellow-400 
+        rounded-3xl  
+        p-3 
+        bg-zinc-200 
+        bg-opacity-20
+        surfPro:h-3/4"
+        >
+          <div className="
+          field-container
+          relative 
+          rounded-2xl 
+          p-4 
+          text-amber-300 
+          text-opacity-50 
+          text-center 
+          italic
+          bg-opacity-50 
+          bg-black"
+          >
             <button
               className="absolute top-2 right-2 px-2 py-2"
               onClick={handleExit}
@@ -143,8 +177,6 @@ export default function EditAccount() {
             </button>
 
             <div className="flex justify-around items-center">
-
-
               <div className="flex flex-col justify-center">
                 <div className="rounded-full px-4 max-w-[145px] max-h-[145px] border border-white bg-yellow-400">
                   <input
@@ -159,7 +191,7 @@ export default function EditAccount() {
                       src={updatedPhotoURL}
                       alt="Profile"
                       type="button"
-                      className="w-full h-full object-cover rounded-full"
+                      className="w-fit object-cover rounded-full"
                       onClick={() => fileInputRef.current.click()}
                     />
                   </label>
@@ -168,20 +200,15 @@ export default function EditAccount() {
                   <div className="text-xs">{selectedFileName}</div>
                 )}
               </div>
-
-              {/* Email Reset */}
-              {/* <button className="p-3 text-blue-499 hover:text-yellow-300">
-                Reset Email
-                </button>*/}
             </div>
 
-            <div className="flex md:flex md:justify-between">
-              <div className="flex flex-col items-center">
+            <div className="flex flex-col surfDuo:flex-row surfDuo:justify-between galTab:justify-evenly">
+              <div className="account-form notebk:w-1/3">
                 {/* FirstName */}
                 <div>
-                  <label htmlFor="firstName">First Name</label>
+                  <label className="flex self-end" htmlFor="firstName">First Name</label>
                   <input
-                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    className={inputStyle}
                     id="firstName"
                     type="text"
                     placeholder="First Name"
@@ -191,10 +218,10 @@ export default function EditAccount() {
                 </div>
 
                 {/* LastName */}
-                <div className="mt-5">
-                  <label htmlFor="lastName">Last Name</label>
+                <div>
+                  <label className="flex self-end" htmlFor="lastName">Last Name</label>
                   <input
-                    className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    className={inputStyle}
                     id="lastName"
                     type="text"
                     placeholder="Last Name"
@@ -202,31 +229,71 @@ export default function EditAccount() {
                     onChange={(e) => setUpdatedLastName(e.target.value)}
                   />
                 </div>
-              </div>
 
-              <div className="flex flex-col items-center md:flex md:justify-between">
                 {/* Username */}
                 <div>
-                  <label htmlFor="userName">Username</label>
+                  <label className="flex self-end" htmlFor="userName">Username</label>
                   <input
-                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    className={inputStyle}
                     id="Username"
                     type="text"
                     placeholder="Username"
-                    value={updatedUsername}
+                    value={updatedUsername || ""}
                     onChange={handleUsernameChange}
                   />
                 </div>
+              </div>
 
+              <div className="account-form notebk:w-1/3">
                 {/* Developer Role  */}
-                <div className="mt-5">
-                  <label htmlFor="devRole"> Dev Role</label>
+                <div>
+                  <label className="flex self-end" htmlFor="devRole"> Dev Role</label>
                   <input
-                    className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    className={inputStyle}
                     type="text"
                     placeholder="Developer Role"
                     value={updatedDevRole || ""}
                     onChange={handleDevRoleChange}
+                  />
+                </div>
+
+                {/* Portfolio Link */}
+                <div>
+                  <label className="flex self-end" htmlFor="portfolio">Portfolio</label>
+                  <input
+                    className={inputStyle}
+                    id="portfolio"
+                    type="text"
+                    placeholder="Portfolio URL"
+                    value={updatedPortfolio || ""}
+                    onChange={(e) => setUpdatedPortfolio(e.target.value)}
+                  />
+                </div>
+
+
+                {/* GitHub Link */}
+                <div>
+                  <label className="flex self-end" htmlFor="gitHub">GitHub</label>
+                  <input
+                    className={inputStyle}
+                    id="gitHub"
+                    type="text"
+                    placeholder="GitHub URL"
+                    value={updatedGitHub || ""}
+                    onChange={(e) => setUpdatedGitHub(e.target.value)}
+                  />
+                </div>
+
+                {/* LinkedIn Link */}
+                <div>
+                  <label className="flex self-end" htmlFor="linkedIn">LinkedIn</label>
+                  <input
+                    className={inputStyle}
+                    id="linkedIn"
+                    type="text"
+                    placeholder="LinkedIn URL"
+                    value={updatedLinkedIn || ""}
+                    onChange={(e) => setUpdatedLinkedIn(e.target.value)}
                   />
                 </div>
               </div>
@@ -241,7 +308,7 @@ export default function EditAccount() {
               hover:border-amber-700
               hover:w-80 ease-in-out duration-300"
                 onClick={handleEditAccount}
-                >
+              >
                 Save Changes
               </button>
             </div>
@@ -250,10 +317,10 @@ export default function EditAccount() {
                 Account updated successfully!
               </div>
             )}
-                {/* Password Reset */}
-                <div className="text-blue-499 my-4 hover:text-yellow-300">
-                  <ForgotPassword email={currentUser?.email} />
-                </div>
+            {/* Password Reset */}
+            <div className="text-blue-499 my-4 hover:text-yellow-300">
+              <ForgotPassword email={currentUser?.email} />
+            </div>
             <div className="flex mt-3 justify-center text-xs">
               <button
                 type="button"

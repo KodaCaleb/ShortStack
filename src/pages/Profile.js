@@ -11,6 +11,8 @@ import pancakeholder from "../assets/pancakeholder.svg";
 // Future Development Code
 import { RiUserFollowFill } from "react-icons/ri";
 import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
+import { ImProfile } from "react-icons/im";
+
 
 // Component that represents the user profile heading
 export default function UserProfileHeading() {
@@ -24,6 +26,9 @@ export default function UserProfileHeading() {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [portfolio, setPortfolio] = useState("");
+  const [gitHub, setGitHub] = useState("")
+  const [linkedIn, setLinkedIn] = useState("")
   const [userContentData, setUserContentData] = useState([]);
 
   // Function to delete a video from Firestore and update the state accordingly
@@ -58,6 +63,9 @@ export default function UserProfileHeading() {
       setUsername(userData.displayName || "")
       setFirstName(userData.firstName || "");
       setLastName(userData.lastName || "");
+      setPortfolio(userData.portfolio || "");
+      setGitHub(userData.gitHub || "");
+      setLinkedIn(userData.linkedIn || "");
 
       try {
         const getUserContentData = async () => {
@@ -139,12 +147,16 @@ export default function UserProfileHeading() {
                       <p className="text-amber-500 text-center">57</p>
                     </div>
                     <hr className="w-10 translate-y-5 rotate-90" />
-                    <a href="https://github.com" className="mr-5 hover:amber-500">
+                    <a href={gitHub} className="hover:amber-500">
                       <AiFillGithub className="github" style={{ color: "tan", cursor: "pointer" }} size={28} />
                     </a>
-                    <a href="https://github.com" className="hover:amber-500">
+                    <a href={linkedIn} className="hover:amber-500">
                       <AiFillLinkedin style={{ color: "tan", cursor: "pointer" }} size={28} />
                     </a>
+                    <a href={portfolio} className="hover:amber-500">
+                      <ImProfile style={{ color: "tan", cursor: "pointer" }} size={28} />
+                    </a>
+                    
                   </div>
                 </div>
               </div>

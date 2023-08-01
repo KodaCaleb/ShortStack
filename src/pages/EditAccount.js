@@ -25,7 +25,7 @@ export default function EditAccount() {
   const [updatedPortfolio, setUpdatedPortfolio] = useState(userData?.portfolio || "");
   const [updatedGitHub, setUpdatedGitHub] = useState(userData?.gitHub || "");
   const [updatedLinkedIn, setUpdatedLinkedIn] = useState(userData?.linkedIn || "");
-  const [updatedUsername, setUpdatedUsername] = useState(currentUser?.displayName || "");
+  const [updatedUsername, setUpdatedUsername] = useState(userData?.displayName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
   const [updatedFile, setUpdatedFile] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -38,12 +38,12 @@ export default function EditAccount() {
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
-    setUpdatedPhotoURL(userData?.photoURL || "");
-    setUpdatedUsername(currentUser?.displayName || "");
-    setUpdatedPortfolio(currentUser?.portfolio || "");
-    setUpdatedGitHub(currentUser?.gitHub || "");
-    setUpdatedLinkedIn(currentUser?.linkedIn || "");
-  }, [userData, currentUser]);
+    setUpdatedPhotoURL(userData?.photoURL || pancakeholder);
+    setUpdatedUsername(userData?.displayName || "");
+    setUpdatedPortfolio(userData?.portfolio || "");
+    setUpdatedGitHub(userData?.gitHub || "");
+    setUpdatedLinkedIn(userData?.linkedIn || "");
+  }, [userData]);
 
   const handleUsernameChange = (e) => {
     const inputValue = e.target.value;

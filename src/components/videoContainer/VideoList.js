@@ -21,14 +21,14 @@ export default function VideoList() {
       let videosQuery = query(
         collection(firestore, "videos"),
         orderBy("createdAt"),
-        limit(10)
+        limit(1)
       );
       if (afterDoc) {
         videosQuery = query(
           collection(firestore, "videos"),
           orderBy("createdAt"),
           startAfter(afterDoc),
-          limit(10)
+          limit(0)
         );
       }
       const videosSnapshot = await getDocs(videosQuery);

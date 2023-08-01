@@ -113,12 +113,12 @@ export default function LoginModal({ isOpen, closeModal }) {
             </div>
             <div className="flex mt-6 justify-center text-xs">
               {/* Forgot Password and Sign Up buttons */}
-              <button
+              <div
                 className="text-blue-499 hover:text-yellow-300"
                 type="button"
               >
                 <ForgotPassword email={email} />
-              </button>
+              </div>
               <span className="mx-2 text-gray-300">/</span>
               <button
                 className="text-blue-499 hover:text-yellow-300"

@@ -37,6 +37,7 @@ export default function PostContainer({ videoData }) {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(videoData.likes || null);
   // const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
   const [photoURL, setPhotoURL] = useState(pancakeholder)
   const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
@@ -80,6 +81,13 @@ export default function PostContainer({ videoData }) {
 
     checkIfLiked();
   }, [videoData, uid, loading]);
+
+
+
+  async function updateLikes(count) {
+    setLikesCount(count)
+  }
+
   async function likeVideo(videoId, userId) {
     if (videoId && userId && !loading) {
       // ensure neither is undefined or loading
@@ -106,6 +114,7 @@ export default function PostContainer({ videoData }) {
 
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
+        updateLikes(newLikesCount)
       });
 
       setUserHasLiked(true); // set userHasLiked to true after a successful like action
@@ -133,10 +142,12 @@ export default function PostContainer({ videoData }) {
 
         const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
         transaction.update(videoRef, { likes: newLikesCount });
+        updateLikes(newLikesCount)
       });
 
       setUserHasLiked(false); // set userHasLiked to false after a successful unlike action
     }
+    console.log(likesCount)
   }
 
   // const [showCommentSection, setShowCommentSection] = useState(false);
@@ -201,7 +212,6 @@ export default function PostContainer({ videoData }) {
   //     }
   //   }
   // };
-  console.log(videoData.userId)
   return (
     <>
       <div className="flex justify-center flex-row mt-20">
@@ -240,11 +250,12 @@ export default function PostContainer({ videoData }) {
           {/* Icons and Video Container */}
           <div className="app_videos h-fit flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
             <div className="flex flex-col icons-container">
+              <div classNames="flex flex-col items-center">
 
               {/* Heart Icon */}
               {userHasLiked ? (
                 <AiFillHeart
-                  className="icons m-4 hover:cursor-pointer"
+                  className="icons mt-4 mr-2 hover:cursor-pointer"
                   style={{ color: "tan" }}
                   size={28}
                   onClick={() => {
@@ -256,7 +267,7 @@ export default function PostContainer({ videoData }) {
                 />
               ) : (
                 <AiOutlineHeart
-                  className="icons m-4 hover:cursor-pointer"
+                  className="icons mt-4 mr-2 hover:cursor-pointer"
                   style={{ color: "tan" }}
                   size={28}
                   onClick={() => {
@@ -267,6 +278,8 @@ export default function PostContainer({ videoData }) {
                   }}
                 />
               )}
+                <div className="text-orange-200 text-center mr-2">{likesCount}</div>
+              </div>
 
               {/* Comment Icon */}
               {/* <BiCommentDetail

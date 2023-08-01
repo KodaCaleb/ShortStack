@@ -38,12 +38,12 @@ export default function EditAccount() {
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
-    setUpdatedPhotoURL(userData?.photoURL || "");
+    setUpdatedPhotoURL(userData?.photoURL || pancakeholder);
     setUpdatedUsername(userData?.displayName || "");
     setUpdatedPortfolio(userData?.portfolio || "");
     setUpdatedGitHub(userData?.gitHub || "");
     setUpdatedLinkedIn(userData?.linkedIn || "");
-  }, [userData, currentUser]);
+  }, [userData]);
 
   const handleUsernameChange = (e) => {
     const inputValue = e.target.value;

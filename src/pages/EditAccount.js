@@ -3,7 +3,6 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firestore, storage } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import AuthContext from "../utils/AuthContext";
-import { updateProfile } from "firebase/auth";
 import { UserDeleteAccount } from "../utils/UserDeleteAccount";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../utils/ForgotPassword";
@@ -18,6 +17,7 @@ export default function EditAccount() {
   const navigate = useNavigate();
 
   //Storing the updated input values
+  // const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
   const [updatedFirstName, setUpdatedFirstName] = useState(userData?.firstName || "");
   const [updatedLastName, setUpdatedLastName] = useState(userData?.lastName || "");
   const [updatedDevRole, setUpdatedDevRole] = useState(userData?.devRole || "");
@@ -25,7 +25,6 @@ export default function EditAccount() {
   const [updatedPortfolio, setUpdatedPortfolio] = useState(userData?.portfolio || "");
   const [updatedGitHub, setUpdatedGitHub] = useState(userData?.gitHub || "");
   const [updatedLinkedIn, setUpdatedLinkedIn] = useState(userData?.linkedIn || "");
-  // const [updatedEmail, setUpdatedEmail] = useState(currentUser?.email || "");
   const [updatedUsername, setUpdatedUsername] = useState(currentUser?.displayName || "");
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
   const [updatedFile, setUpdatedFile] = useState(null);
@@ -35,15 +34,17 @@ export default function EditAccount() {
   const MAX_STRING_LENGTH_USERNAME = 25;
   
   useEffect(() => {
+    // setUpdatedEmail(currentUser?.email || "");
     setUpdatedFirstName(userData?.firstName || "");
     setUpdatedLastName(userData?.lastName || "");
     setUpdatedDevRole(userData?.devRole || "");
     setUpdatedPhotoURL(userData?.photoURL || "");
-    // setUpdatedEmail(currentUser?.email || "");
     setUpdatedUsername(currentUser?.displayName || "");
+    setUpdatedPortfolio(currentUser?.portfolio || "");
+    setUpdatedGitHub(currentUser?.gitHub || "");
+    setUpdatedLinkedIn(currentUser?.linkedIn || "");
   }, [userData, currentUser]);
-  
-  console.log(updatedPortfolio, updatedGitHub, updatedLinkedIn)
+
   const handleUsernameChange = (e) => {
     const inputValue = e.target.value;
     // Truncate the input value if it exceeds the character limit
@@ -81,6 +82,7 @@ export default function EditAccount() {
             firstName: updatedFirstName,
             lastName: updatedLastName,
             devRole: updatedDevRole,
+            displayName: updatedUsername,
             photoURL: photoURL,
             gitHub: updatedGitHub,
             linkedIn: updatedLinkedIn,
@@ -95,15 +97,13 @@ export default function EditAccount() {
             firstName: updatedFirstName,
             lastName: updatedLastName,
             devRole: updatedDevRole,
+            displayName: updatedUsername,
             gitHub: updatedGitHub,
             linkedIn: updatedLinkedIn,
             portfolio: updatedPortfolio,
           };
           await setDoc(userDocRef, updatedFirestoreData, { merge: true });
         }
-
-        // After updating Firestore data, update the photoURL in Firebase Auth
-        await updateProfile(currentUser, { displayName: updatedUsername });
       }
 
       // Showing user if successful update
@@ -142,21 +142,23 @@ export default function EditAccount() {
   focus:shadow-outline`
 
   return (
-    <div className="mt-20">
-      <h3 className="text-white text-center p-3">
+    <div id="account-page" className="mt-20">
+      <h3 className="text-white text-center p-3 galTab:text-4xl">
         {" "}
         Account Information
       </h3>
-      <div className="w-11/12 m-auto">
+      <div className="w-11/12 mx-auto galTab:w-3/4 galTab:h-2/3 notebk:w-1/2">
         <form className="
         border-2 
         border-yellow-400 
         rounded-3xl  
         p-3 
         bg-zinc-200 
-        bg-opacity-20"
+        bg-opacity-20
+        surfPro:h-3/4"
         >
           <div className="
+          field-container
           relative 
           rounded-2xl 
           p-4 
@@ -200,8 +202,8 @@ export default function EditAccount() {
               </div>
             </div>
 
-            <div className="flex flex-col">
-              <div className="account-form">
+            <div className="flex flex-col surfDuo:flex-row surfDuo:justify-between galTab:justify-evenly">
+              <div className="account-form notebk:w-1/3">
                 {/* FirstName */}
                 <div>
                   <label className="flex self-end" htmlFor="firstName">First Name</label>
@@ -236,13 +238,13 @@ export default function EditAccount() {
                     id="Username"
                     type="text"
                     placeholder="Username"
-                    value={updatedUsername}
+                    value={updatedUsername || ""}
                     onChange={handleUsernameChange}
                   />
                 </div>
               </div>
 
-              <div className="account-form">
+              <div className="account-form notebk:w-1/3">
                 {/* Developer Role  */}
                 <div>
                   <label className="flex self-end" htmlFor="devRole"> Dev Role</label>
@@ -262,7 +264,7 @@ export default function EditAccount() {
                     className={inputStyle}
                     id="portfolio"
                     type="text"
-                    placeholder="Portfolio Link"
+                    placeholder="Portfolio URL"
                     value={updatedPortfolio || ""}
                     onChange={(e) => setUpdatedPortfolio(e.target.value)}
                   />
@@ -276,7 +278,7 @@ export default function EditAccount() {
                     className={inputStyle}
                     id="gitHub"
                     type="text"
-                    placeholder="GitHub Link"
+                    placeholder="GitHub URL"
                     value={updatedGitHub || ""}
                     onChange={(e) => setUpdatedGitHub(e.target.value)}
                   />
@@ -284,12 +286,12 @@ export default function EditAccount() {
 
                 {/* LinkedIn Link */}
                 <div>
-                  <label className="flex self-end" htmlFor="gitHub">LinkedIn</label>
+                  <label className="flex self-end" htmlFor="linkedIn">LinkedIn</label>
                   <input
                     className={inputStyle}
-                    id="gitHub"
+                    id="linkedIn"
                     type="text"
-                    placeholder="LinkedIn Link"
+                    placeholder="LinkedIn URL"
                     value={updatedLinkedIn || ""}
                     onChange={(e) => setUpdatedLinkedIn(e.target.value)}
                   />

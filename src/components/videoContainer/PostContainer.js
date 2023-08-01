@@ -142,6 +142,7 @@ useEffect(() => {
         updateLikes(newLikesCount)
       });
 
+      setUserHasLiked(true); // set userHasLiked to true after a successful like action
     }
   }
 

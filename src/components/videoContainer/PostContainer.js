@@ -177,19 +177,33 @@ useEffect(() => {
     }
   }
 
-  async function followUser(userIdToFollow) {
-    if (userIdToFollow && uid && !loading) {
-      const followingRef = doc(firestore, "Users", uid, "following", userIdToFollow);
-      await setDoc(followingRef, {});
+  async function followUser(postedUserId) {
+    if (postedUserId && uid && !loading) {
+      // Add to current user's following collection
+      const userFollowingRef = doc(firestore, "Users", uid, "following", postedUserId);
+      await setDoc(userFollowingRef, {});
+  
+      // Add to posted user's followers collection
+      const postedUserFollowerRef = doc(firestore, "Users", postedUserId, "followers", uid);
+      await setDoc(postedUserFollowerRef, {});
+  
       setIsFollowing(true);
+      console.log(`Followed user with ID ${postedUserId}`);
     }
   }
   
-  async function unfollowUser(userIdToUnfollow) {
-    if (userIdToUnfollow && uid && !loading) {
-      const followingRef = doc(firestore, "Users", uid, "following", userIdToUnfollow);
-      await deleteDoc(followingRef);
+  async function unfollowUser(postedUserId) {
+    if (postedUserId && uid && !loading) {
+      // Remove from current user's following collection
+      const userFollowingRef = doc(firestore, "Users", uid, "following", postedUserId);
+      await deleteDoc(userFollowingRef);
+  
+      // Remove from posted user's followers collection
+      const postedUserFollowerRef = doc(firestore, "Users", postedUserId, "followers", uid);
+      await deleteDoc(postedUserFollowerRef);
+  
       setIsFollowing(false);
+      console.log(`Unfollowed user with ID ${postedUserId}`);
     }
   }
 

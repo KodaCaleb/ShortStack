@@ -1,22 +1,24 @@
 import React, { useEffect, useState, useContext } from "react";
 import AuthContext from "../../utils/AuthContext";
-// import CommentSection from "./CommentSection";
 import Video from "./Video";
 import { storage, firestore } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 // import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
-// import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
+import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 import {
   doc,
   getDoc,
   runTransaction,
   setDoc,
   deleteDoc,
+  collection
 } from "firebase/firestore";
 import { useMediaQuery } from "react-responsive";
 import pancakeholder from "../../assets/pancakeholder.svg";
+// import CommentSection from "./CommentSection";
+// import { BiCommentDetail, BiShare, BiBookmarks } from "react-icons/bi";
 // import ViewProfiles from "../../pages/ViewProfiles";
 
 async function getUserData(userId) {
@@ -25,7 +27,6 @@ async function getUserData(userId) {
 
   if (docSnap.exists()) {
     const userData = docSnap.data();
-    console.log(userData)
     return userData;
   } else {
     console.error("No such document!");
@@ -38,11 +39,10 @@ export default function PostContainer({ videoData }) {
   const [userData, setUserData] = useState(null);
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(videoData.likes || null);
-  // const [isFollowing, setIsFollowing] = useState(true); // variables for follow buttons
+  const [isFollowing, setIsFollowing] = useState(false); // variables for follow buttons
   const [photoURL, setPhotoURL] = useState(pancakeholder)
-  const { user, loading } = useContext(AuthContext); // Destructure user and loading from the context
-
-  const uid = user ? user.uid : null; // Get the uid from the user object
+  const { user, loading } = useContext(AuthContext);
+  const uid = user ? user.uid : null;
 
   useEffect(() => {
     if (videoData.userId) {
@@ -63,159 +63,158 @@ export default function PostContainer({ videoData }) {
     }
   }, [userData]);
 
+  // Checking if you already liked the video
   useEffect(() => {
     const checkIfLiked = async () => {
       if (videoData.id && uid && !loading) {
-        // ensure neither is undefined or loading
+        // Check if the videoData, uid, and loading variables are defined and not loading
         const videoRef = doc(firestore, "videos", videoData.id);
         const likeRef = doc(videoRef, "likes", uid);
-        const docSnap = await getDoc(likeRef);
+        const likeData = await getDoc(likeRef);
 
-        if (docSnap.exists()) {
+        // If a document exists in the 'likes' subcollection for the current user and the video, the user has liked the video
+        if (likeData.exists()) {
           setUserHasLiked(true);
         } else {
           setUserHasLiked(false);
         }
       }
     };
-
+    
+    const checkIfFollowed = async () => {
+      if ( videoData.userId && uid && !loading) {
+        // Check if the videoData, uid, and loading variables are defined and not loading
+        const userFollowingRef = collection(firestore, "Users", uid, "following");
+        const followedUserDocRef = await doc(userFollowingRef, videoData.userId);
+        const followingData = await getDoc(followedUserDocRef)
+        
+        console.log("follow reference found:", followingData)
+        if(followingData.exists()) {
+          setIsFollowing(true);
+        } else {
+          setIsFollowing(false);
+        }
+      }
+    };
+    
+    // Call the function to check if the user has liked the video when the component mounts or when the dependencies change
     checkIfLiked();
-  }, [videoData, uid, loading]);
+    checkIfFollowed();
+  }, [videoData.id, videoData.userId, uid, loading]);
 
+  // Log the isFollowing state whenever it changes
+useEffect(() => {
+  console.log("followed state status", isFollowing);
+}, [isFollowing]);
 
-
-  async function updateLikes(count) {
-    setLikesCount(count)
-  }
-
+  // Function to handle liking a video
   async function likeVideo(videoId, userId) {
+    // Check if the videoId, userId, and loading variables are defined and not loading
     if (videoId && userId && !loading) {
       // ensure neither is undefined or loading
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
 
+      // Check if the user has already liked the video
       if ((await getDoc(likeRef)).exists()) {
         console.log("User has already liked this video.");
         return;
       }
 
+      // Add a document in the 'likes' subcollection to represent the user's like
       await setDoc(likeRef, {});
 
-      // Add video reference to the user's liked videos subcollection
+      // Add a reference to the liked video in the user's 'likedVideos' subcollection
       const userRef = doc(firestore, "Users", userId);
       const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
       await setDoc(userLikedVideoRef, {});
 
+      // Use a Firestore transaction to update the 'likes' count of the video
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         if (!videoDoc.exists()) {
           throw console.error("Document does not exist!");
         }
 
+        // Calculate the new likes count and update the 'likes' field in the video document
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
         updateLikes(newLikesCount)
       });
 
-      setUserHasLiked(true); // set userHasLiked to true after a successful like action
     }
   }
 
+  // Function to handle unliking a video
   async function unlikeVideo(videoId, userId) {
     if (videoId && userId && !loading) {
-      // ensure neither is undefined or loading
+
+      // Check if the videoId, userId, and loading variables are defined and not loading
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
 
-      await deleteDoc(likeRef); // Remove the user's like from the Firestore
+      // Delete the document representing the user's like from the 'likes' subcollection
+      await deleteDoc(likeRef);
 
-      // Remove video reference from the user's liked videos subcollection
+      // Delete the reference to the liked video from the user's 'likedVideos' subcollection
       const userRef = doc(firestore, "Users", userId);
       const userLikedVideoRef = doc(userRef, "likedVideos", videoId);
       await deleteDoc(userLikedVideoRef);
 
+      // Use a Firestore transaction to update the 'likes' count of the video
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
         if (!videoDoc.exists()) {
           console.error("Document does not exist!");
-        }
+        };
 
+        // Calculate the new likes count, ensuring likes never go below 0, and update the 'likes' field in the video document
         const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
         transaction.update(videoRef, { likes: newLikesCount });
         updateLikes(newLikesCount)
       });
 
-      setUserHasLiked(false); // set userHasLiked to false after a successful unlike action
+      setUserHasLiked(false); // Set userHasLiked to false after a successful unlike action
     }
-    console.log(likesCount)
+  }
+  // Function to handle liking a video
+  async function updateLikes(count) {
+    setLikesCount(count)
+  }
+  
+  async function followUser(postedUserId) {
+    if (postedUserId && uid && !loading) {
+      // Add to current user's following collection
+      const userFollowingRef = doc(firestore, "Users", uid, "following", postedUserId);
+      await setDoc(userFollowingRef, {});
+  
+      // Add to posted user's followers collection
+      const postedUserFollowerRef = doc(firestore, "Users", postedUserId, "followers", uid);
+      await setDoc(postedUserFollowerRef, {});
+  
+      setIsFollowing(true);
+      console.log(`Followed user with ID ${postedUserId}`);
+    }
+  }
+  
+  async function unfollowUser(postedUserId) {
+    if (postedUserId && uid && !loading) {
+      // Remove from current user's following collection
+      const userFollowingRef = doc(firestore, "Users", uid, "following", postedUserId);
+      await deleteDoc(userFollowingRef);
+  
+      // Remove from posted user's followers collection
+      const postedUserFollowerRef = doc(firestore, "Users", postedUserId, "followers", uid);
+      await deleteDoc(postedUserFollowerRef);
+  
+      setIsFollowing(false);
+      console.log(`Unfollowed user with ID ${postedUserId}`);
+    }
   }
 
-  // const [showCommentSection, setShowCommentSection] = useState(false);
-
-  // const handleCloseCommentSection = () => {
-  //   setShowCommentSection(false);
-  // };
-
-  // const handleCommentBtnClick = () => {
-  //   setShowCommentSection(!showCommentSection);
-  // };
-
-  // Logic for follow button?//
-  // const followUser = async () => {
-  //   //Logic for following user
-  //   if (!isFollowing) {
-  //     try {
-  //       const currentUserUid = uid; //pull current user id
-  //       const userToFollowUid = videoData.userId; //based off video data containing the uid
-
-  //       // Add document in "following" subcollection of the current user.
-  //       const followingRef = doc(firestore, "Users", currentUserUid)
-  //         .collection("following")
-  //         .doc(userToFollowUid);
-  //       await setDoc(followingRef, {});
-
-  //       // Add document in "followers" subcollection of the user being followed.
-  //       const followersRef = doc(
-  //         firestore,
-  //         "Users",
-  //         userToFollowUid,
-  //         "followers",
-  //         currentUserUid
-  //       );
-  //       await setDoc(followersRef, {});
-  //       setIsFollowing(true); // Update the state to indicate that the user is now being followed.
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  // };
-
-  // const unfollowUser = async () => {
-  //   //Logic for unfollowing user
-  //   if (isFollowing) {
-  //     try {
-  //       const currentUserUid = uid; //current users
-  //       const userToFollowUid = videoData.userId; //uses video data's user id
-
-  //       const followingRef = doc(firestore, "Users", currentUserUid)
-  //         .collection("following")
-  //         .doc(userToFollowUid); //deletes document in the following sub collection
-  //       await deleteDoc(followingRef);
-
-  //       const followersRef = doc(firestore, "User", userToFollowUid)
-  //         .collection("followers")
-  //         .doc(currentUserUid);
-  //       await deleteDoc(followersRef);
-  //       setIsFollowing(false); //updates to user that is now being unfollowed
-  //     } catch (error) {
-  //       console.error("error unfollowing the user:", error);
-  //     }
-  //   }
-  // };
   return (
     <>
       <div className="flex justify-center flex-row mt-20">
-
 
         {/* Post Container */}
         <div className="z-8 h-full rounded-3xl mb-64 w-full md:w-3/4">
@@ -304,27 +303,27 @@ export default function PostContainer({ videoData }) {
               {/* <BiShare className="icons m-4" style={{ color: "tan" }} size={28} /> */}
 
               {/* Follow Icon */}
-              {/* {isFollowing ? (
-              <RiUserFollowLine
-                className="icons m-4 hover:cursor-pointer"
-                style={{ color: "tan" }}
-                size={28}
-                onClick={() => {
-                  followUser(); //call the follow user function
-                  console.log("User clicked the RiUserFollowLine icon");
-                }}
-              /> */}
-              {/* ) : (
+              {isFollowing ? (
               <RiUserUnfollowFill
                 className="icons m-4 hover:cursor-pointer"
                 style={{ color: "tan" }}
                 size={28}
                 onClick={() => {
-                  unfollowUser(); //call the unfollower user function
+                  unfollowUser(videoData.userId); // call the unfollow user function
                   console.log("user clicked unfollow button");
                 }}
               />
-            )} */}
+            ) : (
+              <RiUserFollowLine
+                className="icons m-4 hover:cursor-pointer"
+                style={{ color: "tan" }}
+                size={28}
+                onClick={() => {
+                  followUser(videoData.userId); // call the follow user function
+                  console.log("User clicked the RiUserFollowLine icon");
+                }}
+              />
+            )}
             </div>
             <Video fullSize={isSmallScreen} videoData={videoData} />
             {/* {showCommentSection && (
@@ -340,4 +339,4 @@ export default function PostContainer({ videoData }) {
       </div>
     </>
   );
-}
+};

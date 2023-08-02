@@ -1,4 +1,3 @@
-
 // Import necessary modules and components
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
@@ -7,16 +6,12 @@ import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
-
-// Future Development Code
 import { RiUserFollowFill } from "react-icons/ri";
 import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 
-
 // Component that represents the user profile heading
 export default function UserProfileHeading() {
-
   // Extract user, loading, and userData from AuthContext using useContext hook
   const { loading, userData, currentUser } = useContext(AuthContext);
 
@@ -27,70 +22,67 @@ export default function UserProfileHeading() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [portfolio, setPortfolio] = useState("");
-  const [gitHub, setGitHub] = useState("")
-  const [linkedIn, setLinkedIn] = useState("")
+  const [gitHub, setGitHub] = useState("");
+  const [linkedIn, setLinkedIn] = useState("");
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalFollowers, setTotalFollowers] = useState(0);
   const [userContentData, setUserContentData] = useState([]);
-  // const [likesCount, setLikesCount] = useState(videoData.likes || null);
 
   useEffect(() => {
     if (currentUser && !loading) {
-
       const getTotalLikes = async () => {
         try {
-          const userVideoSnapshot = await getDocs(collection(
-            firestore,
-            "Users",
-            currentUser.uid,
-            "userContent"
-          ));
+          const userVideoSnapshot = await getDocs(
+            collection(firestore, "Users", currentUser.uid, "userContent")
+          );
           let totalLikes = 0;
 
           userVideoSnapshot.docs.forEach((videoDoc) => {
-            const videoData = videoDoc.data()
-            console.log(videoData)
+            const videoData = videoDoc.data();
             if (videoData.likes && typeof videoData.likes === 'number') {
               totalLikes += videoData.likes;
-            }
+            };
           });
 
-          setTotalLikes(totalLikes)
+          setTotalLikes(totalLikes);
         } catch (error) {
-          console.error(error)
+          console.error(error);
         }
-      }
-      getTotalLikes()
-    }
+      };
+      getTotalLikes();
+    };
   }, [currentUser, loading]);
-
+  // useEffect hook to fetch total followers for the user from Firestore
   useEffect(() => {
     if (currentUser && !loading) {
       const getAllFollowers = async () => {
         try {
-          const userFollowerSnapshot = await getDocs(collection(
-            firestore,
-            "Users",
-            currentUser.uid,
-            "followers"
-          ));
+          const userFollowerSnapshot = await getDocs(
+            collection(firestore, "Users", currentUser.uid, "followers")
+          );
 
           const followersCount = userFollowerSnapshot.size;
 
-          setTotalFollowers(followersCount)
+          setTotalFollowers(followersCount);
         } catch (error) {
           console.error(error);
+        }
       };
-    }
       getAllFollowers();
-    }
+    };
   }, [currentUser, loading]);
 
   // Function to delete a video from Firestore and update the state accordingly
   const deleteVideo = async (videoId, vidRef) => {
     try {
       // Delete the user-specific video reference
-      const videoDocRef = doc(firestore, "Users", currentUser.uid, "userContent", videoId);
+      const videoDocRef = doc(
+        firestore,
+        "Users",
+        currentUser.uid,
+        "userContent",
+        videoId
+      );
       await deleteDoc(videoDocRef);
 
       // Delete the main video document from the "videos" collection
@@ -106,7 +98,7 @@ export default function UserProfileHeading() {
         prev.filter((video) => video.id !== videoId)
       );
     } catch (error) {
-      console.log("Error deleting video:", error);
+      console.error("Error deleting video:", error);
     }
   };
 
@@ -124,7 +116,6 @@ export default function UserProfileHeading() {
 
       try {
         const getUserContentData = async () => {
-
           const userDocRef = collection(
             firestore,
             "Users",
@@ -146,7 +137,7 @@ export default function UserProfileHeading() {
       } catch (error) {
         alert(error);
       }
-    }
+    };
   }, [currentUser, userData, loading]);
 
   return (
@@ -211,7 +202,6 @@ export default function UserProfileHeading() {
                     <a href={portfolio} className="hover:amber-500">
                       <ImProfile style={{ color: "tan", cursor: "pointer" }} size={28} />
                     </a>
-
                   </div>
                 </div>
               </div>
@@ -245,4 +235,4 @@ export default function UserProfileHeading() {
       </div>
     </>
   );
-}
+};

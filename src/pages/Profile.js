@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { firestore, storage } from "../firebase";
-import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import { collection, doc, getDocs, deleteDoc, onSnapshot } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
@@ -29,7 +29,39 @@ export default function UserProfileHeading() {
   const [portfolio, setPortfolio] = useState("");
   const [gitHub, setGitHub] = useState("")
   const [linkedIn, setLinkedIn] = useState("")
+  const [totalLikes, setTotalLikes] = useState(0);
   const [userContentData, setUserContentData] = useState([]);
+  // const [likesCount, setLikesCount] = useState(videoData.likes || null);
+
+  useEffect(() => {
+    if (currentUser && !loading) {
+
+      const getTotalLikes = async () => {
+        try {
+          const userVideoSnapshot = await getDocs(collection(
+            firestore,
+            "Users",
+            currentUser.uid,
+            "userContent"
+          ));
+          let totalLikes = 0;
+
+          userVideoSnapshot.docs.forEach((videoDoc) => {
+            const videoData = videoDoc.data()
+            console.log(videoData)
+            if (videoData.likes && typeof videoData.likes === 'number') {
+              totalLikes += videoData.likes;
+            }
+          });
+
+          setTotalLikes(totalLikes)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      getTotalLikes()
+    }
+  }, [currentUser, loading]);
 
   // Function to delete a video from Firestore and update the state accordingly
   const deleteVideo = async (videoId, vidRef) => {
@@ -144,7 +176,7 @@ export default function UserProfileHeading() {
                     </div>
                     <div className="flex flex-col items-center">
                       <AiFillHeart style={{ color: "tan" }} size={28} />
-                      <p className="text-amber-500 text-center">57</p>
+                      <p className="text-amber-500 text-center">{totalLikes}</p>
                     </div>
                     <hr className="w-10 translate-y-5 rotate-90" />
                     <a href={gitHub} className="hover:amber-500">
@@ -156,7 +188,7 @@ export default function UserProfileHeading() {
                     <a href={portfolio} className="hover:amber-500">
                       <ImProfile style={{ color: "tan", cursor: "pointer" }} size={28} />
                     </a>
-                    
+
                   </div>
                 </div>
               </div>

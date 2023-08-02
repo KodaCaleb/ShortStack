@@ -56,13 +56,6 @@ function Navbar() {
       } else {
         setMatchingVideos([]);
       }
-
-      const formElement = e.currentTarget;
-      const searchButton = formElement.querySelector("#search");
-      if (searchButton) {
-        searchButton.blur();
-      }
-
     } catch (error) {
       console.error("error searching videos", error);
     }
@@ -85,14 +78,13 @@ function Navbar() {
           <div className="absolute inset-x-0 bottom-0 h-0 border-yellow-600 border border-opacity-25 "></div>
           <div className="absolute inset-x-0 bottom-0 h-4 bg-yellow-300 opacity-20 filter blur"></div>
           <div className="nav-image w-1/3">
-          <CollapseMenu openModal={openModal} />
+            <CollapseMenu openModal={openModal} />
           </div>
           <h1
             className={`logo
             flex
             place-self-center
             justify-center
-            
             mb-2
             text-white 
             md:text-4xl 
@@ -100,12 +92,11 @@ function Navbar() {
             text-xl  
             title 
             ${isSearchBarVisible ? "w-1/3" : "w-1/4"
-            }`}
+              }`}
           >
             short_Stack
           </h1>
         </div>
-
         {/* Search bar */}
         <div className="flex items-center"></div>
         {isSearchBarVisible && !isModalOpen && (
@@ -113,7 +104,7 @@ function Navbar() {
             <form
               id="searchForm"
               className="searchbar-container"
-              onSubmit={(e) => {
+              onClick={(e) => {
                 e.preventDefault();
                 if (searchTag.trim() !== "") {
                   handleSearch(e);
@@ -125,16 +116,27 @@ function Navbar() {
                 type="text"
                 value={searchTag}
                 onChange={(e) => setSearchTag(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && searchTag.trim() !== "") {
+                    handleSearch(e);
+                  }
+                }}
                 placeholder="Search Tutorials"
               />
               <button
-                type="submit"
+                type="button"
                 className="search active h-4 w-6 bg-yellow-400"
+                id="search"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (searchTag.trim() !== "") {
+                    handleSearch(e);
+                  }
+                }}
               ></button>
             </form>
           </div>
         )}
-
         {/* Login button */}
         <div className="login-button absolute top-4 right-4">
           {isLoggedIn ? (

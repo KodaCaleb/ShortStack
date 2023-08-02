@@ -97,6 +97,8 @@ export default function PostContainer({ videoData }) {
 
   // Function to handle liking a video
   async function likeVideo(videoId, userId) {
+
+
     if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
@@ -110,6 +112,8 @@ export default function PostContainer({ videoData }) {
       // Use a Firestore transaction to update the 'likes' count of the video
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
+        const videoUserId = videoDoc.data().userId;
+        const userContentRef = doc(firestore, "Users", videoUserId, "userContent", videoRef.id)
         if (!videoDoc.exists()) {
           throw console.error("Document does not exist!");
         };
@@ -117,6 +121,7 @@ export default function PostContainer({ videoData }) {
         // Calculate the new likes count and update the 'likes' field in the video document
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
+        transaction.update(userContentRef, { likes: newLikesCount });
         updateLikes(newLikesCount);
       });
 
@@ -141,6 +146,8 @@ export default function PostContainer({ videoData }) {
       // Use a Firestore transaction to update the 'likes' count of the video
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
+        const videoUserId = videoDoc.data().userId;
+        const userContentRef = doc(firestore, "Users", videoUserId, "userContent", videoRef.id)
         if (!videoDoc.exists()) {
           console.error("Document does not exist!");
         };
@@ -148,6 +155,7 @@ export default function PostContainer({ videoData }) {
         // Calculate the new likes count, ensuring likes never go below 0, and update the 'likes' field in the video document
         const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
         transaction.update(videoRef, { likes: newLikesCount });
+        transaction.update(userContentRef, { likes: newLikesCount });
         updateLikes(newLikesCount);
       });
 

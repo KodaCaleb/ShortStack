@@ -213,13 +213,13 @@ export default function UserProfileHeading() {
         ) : (
           <div className="
           user-content 
-          grid grid-cols-2 gap-8 
+          grid grid-cols-2 gap-4
           p-2
           m-4
           surfDuo:grid-cols-3 
-          notebk:grid-cols-4 
+          notebk:grid-cols-3 
           notebk:gap-40
-          notebk:mx-32">
+          notebk:mx-16">
             {userContentData.map((content, index) => (
               <div key={index} className="">
                 <Video

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { firestore, storage } from "../firebase";
-import { collection, doc, getDocs, deleteDoc, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
@@ -30,6 +30,7 @@ export default function UserProfileHeading() {
   const [gitHub, setGitHub] = useState("")
   const [linkedIn, setLinkedIn] = useState("")
   const [totalLikes, setTotalLikes] = useState(0);
+  const [totalFollowers, setTotalFollowers] = useState(0);
   const [userContentData, setUserContentData] = useState([]);
   // const [likesCount, setLikesCount] = useState(videoData.likes || null);
 
@@ -60,6 +61,28 @@ export default function UserProfileHeading() {
         }
       }
       getTotalLikes()
+    }
+  }, [currentUser, loading]);
+
+  useEffect(() => {
+    if (currentUser && !loading) {
+      const getAllFollowers = async () => {
+        try {
+          const userFollowerSnapshot = await getDocs(collection(
+            firestore,
+            "Users",
+            currentUser.uid,
+            "followers"
+          ));
+
+          const followersCount = userFollowerSnapshot.size;
+
+          setTotalFollowers(followersCount)
+        } catch (error) {
+          console.error(error);
+      };
+    }
+      getAllFollowers();
     }
   }, [currentUser, loading]);
 
@@ -172,7 +195,7 @@ export default function UserProfileHeading() {
                   <div className="flex mt-2 justify-evenly">
                     <div className="flex flex-col items-center mr-5">
                       <RiUserFollowFill style={{ color: "tan" }} size={28} />
-                      <p className="text-amber-500 text-center">22</p>
+                      <p className="text-amber-500 text-center">{totalFollowers}</p>
                     </div>
                     <div className="flex flex-col items-center">
                       <AiFillHeart style={{ color: "tan" }} size={28} />

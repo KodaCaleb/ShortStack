@@ -18,7 +18,7 @@ function Navbar() {
   const location = useLocation();
 
   // Define an array of paths where the search bar should be hidden
-  const hiddenSearchBarPaths = ["/myprofile", "/account", "/Upload"];
+  const hiddenSearchBarPaths = ["/myprofile", "/account", "/Upload", "/viewprofiles"];
 
   // Function to check if the search bar should be visible based on the current location
   const isSearchBarVisible = !hiddenSearchBarPaths.includes(location.pathname);

@@ -1,4 +1,3 @@
-
 // Import necessary modules and components
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../utils/AuthContext";
@@ -7,16 +6,12 @@ import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import Video from "../components/videoContainer/Video";
 import pancakeholder from "../assets/pancakeholder.svg";
-
-// Future Development Code
 import { RiUserFollowFill } from "react-icons/ri";
 import { AiFillHeart, AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 
-
 // Component that represents the user profile heading
 export default function UserProfileHeading() {
-
   // Extract user, loading, and userData from AuthContext using useContext hook
   const { loading, userData, currentUser } = useContext(AuthContext);
 
@@ -27,15 +22,67 @@ export default function UserProfileHeading() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [portfolio, setPortfolio] = useState("");
-  const [gitHub, setGitHub] = useState("")
-  const [linkedIn, setLinkedIn] = useState("")
+  const [gitHub, setGitHub] = useState("");
+  const [linkedIn, setLinkedIn] = useState("");
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [totalFollowers, setTotalFollowers] = useState(0);
   const [userContentData, setUserContentData] = useState([]);
+
+  useEffect(() => {
+    if (currentUser && !loading) {
+      const getTotalLikes = async () => {
+        try {
+          const userVideoSnapshot = await getDocs(
+            collection(firestore, "Users", currentUser.uid, "userContent")
+          );
+          let totalLikes = 0;
+
+          userVideoSnapshot.docs.forEach((videoDoc) => {
+            const videoData = videoDoc.data();
+            if (videoData.likes && typeof videoData.likes === 'number') {
+              totalLikes += videoData.likes;
+            };
+          });
+
+          setTotalLikes(totalLikes);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      getTotalLikes();
+    };
+  }, [currentUser, loading]);
+  // useEffect hook to fetch total followers for the user from Firestore
+  useEffect(() => {
+    if (currentUser && !loading) {
+      const getAllFollowers = async () => {
+        try {
+          const userFollowerSnapshot = await getDocs(
+            collection(firestore, "Users", currentUser.uid, "followers")
+          );
+
+          const followersCount = userFollowerSnapshot.size;
+
+          setTotalFollowers(followersCount);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      getAllFollowers();
+    };
+  }, [currentUser, loading]);
 
   // Function to delete a video from Firestore and update the state accordingly
   const deleteVideo = async (videoId, vidRef) => {
     try {
       // Delete the user-specific video reference
-      const videoDocRef = doc(firestore, "Users", currentUser.uid, "userContent", videoId);
+      const videoDocRef = doc(
+        firestore,
+        "Users",
+        currentUser.uid,
+        "userContent",
+        videoId
+      );
       await deleteDoc(videoDocRef);
 
       // Delete the main video document from the "videos" collection
@@ -51,7 +98,7 @@ export default function UserProfileHeading() {
         prev.filter((video) => video.id !== videoId)
       );
     } catch (error) {
-      console.log("Error deleting video:", error);
+      console.error("Error deleting video:", error);
     }
   };
 
@@ -69,7 +116,6 @@ export default function UserProfileHeading() {
 
       try {
         const getUserContentData = async () => {
-
           const userDocRef = collection(
             firestore,
             "Users",
@@ -91,7 +137,7 @@ export default function UserProfileHeading() {
       } catch (error) {
         alert(error);
       }
-    }
+    };
   }, [currentUser, userData, loading]);
 
   return (
@@ -140,11 +186,11 @@ export default function UserProfileHeading() {
                   <div className="flex mt-2 justify-evenly">
                     <div className="flex flex-col items-center mr-5">
                       <RiUserFollowFill style={{ color: "tan" }} size={28} />
-                      <p className="text-amber-500 text-center">22</p>
+                      <p className="text-amber-500 text-center">{totalFollowers}</p>
                     </div>
                     <div className="flex flex-col items-center">
                       <AiFillHeart style={{ color: "tan" }} size={28} />
-                      <p className="text-amber-500 text-center">57</p>
+                      <p className="text-amber-500 text-center">{totalLikes}</p>
                     </div>
                     <hr className="w-10 translate-y-5 rotate-90" />
                     <a href={gitHub} className="hover:amber-500">
@@ -156,7 +202,6 @@ export default function UserProfileHeading() {
                     <a href={portfolio} className="hover:amber-500">
                       <ImProfile style={{ color: "tan", cursor: "pointer" }} size={28} />
                     </a>
-                    
                   </div>
                 </div>
               </div>
@@ -168,13 +213,13 @@ export default function UserProfileHeading() {
         ) : (
           <div className="
           user-content 
-          grid grid-cols-2 gap-8 
+          grid grid-cols-2 gap-4
           p-2
           m-4
           surfDuo:grid-cols-3 
-          notebk:grid-cols-4 
+          notebk:grid-cols-3 
           notebk:gap-40
-          notebk:mx-32">
+          notebk:mx-16">
             {userContentData.map((content, index) => (
               <div key={index} className="">
                 <Video
@@ -190,4 +235,4 @@ export default function UserProfileHeading() {
       </div>
     </>
   );
-}
+};

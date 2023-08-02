@@ -36,6 +36,13 @@ export default function PostContainer({ videoData }) {
   const { user, loading } = useContext(AuthContext);
   const uid = user ? user.uid : null;
 
+// Function to handle the click event on the user's profile picture and store the userId in local storage
+  const handleProfilePictureClick = () => {
+    if (videoData.userId) {
+      localStorage.setItem("clickedUserId", videoData.userId);
+    }
+  };
+
   // Fetch user data for the user who posted the video when the component mounts or when the videoData changes
   useEffect(() => {
     if (videoData.userId) {
@@ -97,6 +104,8 @@ export default function PostContainer({ videoData }) {
 
   // Function to handle liking a video
   async function likeVideo(videoId, userId) {
+
+
     if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
@@ -110,6 +119,8 @@ export default function PostContainer({ videoData }) {
       // Use a Firestore transaction to update the 'likes' count of the video
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
+        const videoUserId = videoDoc.data().userId;
+        const userContentRef = doc(firestore, "Users", videoUserId, "userContent", videoRef.id)
         if (!videoDoc.exists()) {
           throw console.error("Document does not exist!");
         };
@@ -117,6 +128,7 @@ export default function PostContainer({ videoData }) {
         // Calculate the new likes count and update the 'likes' field in the video document
         const newLikesCount = (videoDoc.data().likes || 0) + 1;
         transaction.update(videoRef, { likes: newLikesCount });
+        transaction.update(userContentRef, { likes: newLikesCount });
         updateLikes(newLikesCount);
       });
 
@@ -141,6 +153,8 @@ export default function PostContainer({ videoData }) {
       // Use a Firestore transaction to update the 'likes' count of the video
       await runTransaction(firestore, async (transaction) => {
         const videoDoc = await transaction.get(videoRef);
+        const videoUserId = videoDoc.data().userId;
+        const userContentRef = doc(firestore, "Users", videoUserId, "userContent", videoRef.id)
         if (!videoDoc.exists()) {
           console.error("Document does not exist!");
         };
@@ -148,6 +162,7 @@ export default function PostContainer({ videoData }) {
         // Calculate the new likes count, ensuring likes never go below 0, and update the 'likes' field in the video document
         const newLikesCount = Math.max((videoDoc.data().likes || 0) - 1, 0); // Ensure likes never go below 0
         transaction.update(videoRef, { likes: newLikesCount });
+        transaction.update(userContentRef, { likes: newLikesCount });
         updateLikes(newLikesCount);
       });
 
@@ -199,7 +214,7 @@ export default function PostContainer({ videoData }) {
           {userData && (
             <div className="flex justify-center username header-container w-fullp-2 text-amber-200 z-10 text-xl">
               <div id="photo-link" className="mr-4">
-                <Link to={"/viewprofiles"}>
+                <Link to={"/viewprofiles"} onClick={handleProfilePictureClick}>
                   <img
                     className="rounded-full h-20 mr-2 bg-yellow-500"
                     src={photoURL}

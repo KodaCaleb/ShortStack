@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react"; // import the useContext method
 import AuthContext from "../utils/AuthContext"; // import AuthContext method also for global state setup
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { storage, firestore } from "../firebase";
 import TagsInput from "../components/uploadLogic/TagsInput";
 
@@ -71,6 +71,7 @@ export default function VideoInput(props) {
             vidRef: downloadURL,
             userId: uid,
             likes: 0,
+            createdAt: serverTimestamp(),
           };
 
           // Generate a document reference ID beforehand

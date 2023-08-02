@@ -23,7 +23,7 @@ Clone the repository. Install all required dependencies using: npm i. Once insta
 
 ![Home Page](./assets/screenshot-short-stack-home.png)
 
-https://github.com/KodaCaleb/ShortStack.git
+<https://shortstack.vercel.app>
 
  This app is intended for developers looking to share short-form videos that are coding related. Users can view random videos on the homepage, or they can join the community by creating a profile. Members can search for videos on specific topics or can upload their own videos for others to view, like, and learn from.
 

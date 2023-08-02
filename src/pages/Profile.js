@@ -35,7 +35,7 @@ export default function UserProfileHeading() {
   const deleteVideo = async (videoId, vidRef) => {
     try {
       // Delete the user-specific video reference
-      const videoDocRef = doc(firestore, "Users", currentUser, "userContent", videoId);
+      const videoDocRef = doc(firestore, "Users", currentUser.uid, "userContent", videoId);
       await deleteDoc(videoDocRef);
 
       // Delete the main video document from the "videos" collection

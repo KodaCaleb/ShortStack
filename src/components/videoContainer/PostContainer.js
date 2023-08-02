@@ -22,7 +22,6 @@ async function getUserData(userId) {
     const userData = docSnap.data();
     return userData;
   } else {
-    console.error("No such document!");
     return null;
   };
 };
@@ -79,7 +78,6 @@ export default function PostContainer({ videoData }) {
         const userFollowingRef = collection(firestore, "Users", uid, "following");
         const followedUserDocRef = await doc(userFollowingRef, videoData.userId);
         const followingData = await getDoc(followedUserDocRef);
-        console.log("follow reference found:", followingData);
 
         if (followingData.exists()) {
           setIsFollowing(true);
@@ -95,7 +93,6 @@ export default function PostContainer({ videoData }) {
 
   // Log the isFollowing state whenever it changes
   useEffect(() => {
-    console.log("followed state status", isFollowing);
   }, [isFollowing]);
 
   // Function to handle liking a video
@@ -103,12 +100,6 @@ export default function PostContainer({ videoData }) {
     if (videoId && userId && !loading) {
       const videoRef = doc(firestore, "videos", videoId);
       const likeRef = doc(videoRef, "likes", userId);
-
-      // Check if the user has already liked the video
-      if ((await getDoc(likeRef)).exists()) {
-        console.log("User has already liked this video.");
-        return;
-      };
 
       // Add a document in the 'likes' subcollection to represent the user's like
       await setDoc(likeRef, {});
@@ -194,9 +185,8 @@ export default function PostContainer({ videoData }) {
       // Remove from posted user's followers collection
       const postedUserFollowerRef = doc(firestore, "Users", postedUserId, "followers", uid);
       await deleteDoc(postedUserFollowerRef);
-      
+
       setIsFollowing(false);
-      console.log(`Unfollowed user with ID ${postedUserId}`);
     };
   };
 
@@ -235,7 +225,7 @@ export default function PostContainer({ videoData }) {
           {/* Icons and Video Container */}
           <div className="app_videos h-fit flex justify-center relative rounded-2xl overflow-scroll min-h-{600}">
             <div className="flex flex-col icons-container">
-              <div classNames="flex flex-col items-center">
+              <div className="flex flex-col items-center">
                 {/* Heart Icon */}
                 {userHasLiked ? (
                   <button className="icons mt-3 mr-2 hover:cursor-pointer">

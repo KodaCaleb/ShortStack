@@ -59,7 +59,7 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$&])[A-Za-z\d!@$&]{8,20}$/;
     if (!passwordRegex.test(password)) {
       setMessage(
-        "Password must have at least one upper/lowercase letter, one number, and one of the following symbols: !, @, $, &. It should be 6 to 20 characters long."
+        "Password should be 6 to 20 characters and include at least one upper/lowercase letter, one number, and one of: !, @, $, &."
       );
       setIsLoading(false);
       return;
@@ -283,6 +283,12 @@ export default function SignUpModal({ closeModal, toggleModalMode }) {
               <p className='text-sm'>File Selected:</p>
               <p>{selectedFile.name}</p>
             </>
+          )}
+          {/* Render password error message */}
+          {message && (
+            <p className='text-red-500 text-center my-2 max-w-xs mx-auto'>
+              {message}
+            </p>
           )}
           {/* Submit Form Button */}
           <div className="flex items-center p-4 justify-center">
